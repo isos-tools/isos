@@ -1,8 +1,11 @@
 # ISOS
 
-> _Ancient Greek "ἴσως" for equally, fairly, equitably._\
-> _It could also expand to **Inclusive Study of STEM**._
+> _Ancient Greek "ἴσως" for equally, fairly, equitably..._
 
-You can download an installer from the [latest release](https://github.com/isos-tools/isos/releases/latest).
+## Installation
 
-Have a read through the [documentation](https://isos-tools.github.io/isos/).
+Download from the [latest release](https://github.com/isos-tools/isos/releases/latest) page.
+
+## Usage
+
+Documentation can be found at the [isos.tools](https://isos.tools) website.
