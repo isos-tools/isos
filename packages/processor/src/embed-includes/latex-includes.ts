@@ -3,7 +3,7 @@ import { getArgsContent } from '@unified-latex/unified-latex-util-arguments';
 import { unifiedLatexFromString } from '@unified-latex/unified-latex-util-parse';
 import { unifiedLatexStringCompiler } from '@unified-latex/unified-latex-util-to-string';
 import { visit } from '@unified-latex/unified-latex-util-visit';
-import { dirname, parse, resolve } from 'pathe';
+import { dirname, join, parse, resolve } from 'pathe';
 import { unified } from 'unified';
 
 import { Fs } from '@isos/fs/types';
@@ -39,7 +39,11 @@ async function getLatexAst(
 ) {
   const processor = unified()
     // @ts-expect-error
-    .use(unifiedLatexFromString)
+    .use(unifiedLatexFromString, {
+      macros: {
+        graphicspath: { signature: 'm' },
+      },
+    })
     .use(recursivelyIncludeFiles, ctx, fs, subFiles);
   const parsed = processor.parse(input);
   const transformed = await processor.run(parsed);
@@ -53,22 +57,41 @@ function recursivelyIncludeFiles(
   subFiles: string[],
 ) {
   return async (tree: Ast.Root) => {
-    const dir = dirname(ctx.srcFilePath);
+    // console.log(tree);
+
+    const srcDir = dirname(ctx.srcFilePath);
     const includePaths: string[] = [];
+
+    let graphicsPath = '';
 
     visit(tree, (node) => {
       if (node.type === 'macro') {
         if (isInclude(node)) {
-          const fullPath = getFullPath(node, dir);
+          const fullPath = getFullPath(node, srcDir, '.tex');
           includePaths.push(fullPath);
           subFiles.push(fullPath);
         }
+
+        // let graphicspath float through files
+        if (node.content === 'graphicspath') {
+          const args = getArgsContent(node as Ast.Macro);
+          const lastArg = args[args.length - 1] || [];
+          const group = lastArg.find((o) => o.type === 'group') || {
+            type: 'group',
+            content: [],
+          };
+          const content = group.content as Ast.String[];
+          graphicsPath = printRaw(content);
+        }
+
         if (isImage(node)) {
-          // default to .pdf if no extension given
-          const fullPath = getFullPath(node, dir);
-          const { name, ext } = parse(fullPath);
-          const filePath = `${dir}/${name}${ext || '.pdf'}`;
-          subFiles.push(filePath);
+          const args = getArgsContent(node as Ast.Macro);
+          const lastArg = args[args.length - 1] || [];
+          // prepend graphicspath to image file paths
+          lastArg.unshift({ type: 'string', content: graphicsPath });
+
+          const fullPath = getFullPath(node, srcDir, '.pdf');
+          subFiles.push(fullPath);
         }
       }
     });
@@ -91,8 +114,8 @@ function recursivelyIncludeFiles(
 
     visit(tree, (node, info) => {
       if (node.type === 'macro' && isInclude(node)) {
-        const filePath = getFullPath(node, dir);
-        const ast = contents[filePath];
+        const fullPath = getFullPath(node, srcDir, '.tex');
+        const ast = contents[fullPath];
         if (ast) {
           const idx = info.index || 0;
           const parent = info.parents[0] as Ast.Environment;
@@ -113,8 +136,9 @@ function isImage(node: Ast.Macro) {
   return ['includegraphics'].includes(node.content);
 }
 
-function getFullPath(node: Ast.Macro, dir: string) {
+function getFullPath(node: Ast.Macro, srcDir: string, defaultExt: string) {
   const args = getArgsContent(node as Ast.Macro);
-  const filePath = printRaw(args[args.length - 1] || []);
-  return resolve(dir, filePath);
+  const fullPath = printRaw(args[args.length - 1] || []);
+  const { dir, name, ext } = parse(fullPath);
+  return resolve(srcDir, dir, `${name}${ext || defaultExt}`);
 }

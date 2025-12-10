@@ -48,6 +48,16 @@ export function figureToImage() {
   };
 }
 
+function extractImage(figure: Ast.Node): Ast.Macro | null {
+  let image = null;
+  visit(figure, (node) => {
+    if (node.type === 'macro' && node.content === 'includegraphics') {
+      image = node;
+    }
+  });
+  return image;
+}
+
 function extractLabel(figure: Ast.Node): Ast.Macro | null {
   let label = null;
   visit(figure, (node, info) => {
@@ -78,16 +88,6 @@ function extractCaption(figure: Ast.Node): Ast.Macro | null {
     }
   });
   return caption;
-}
-
-function extractImage(figure: Ast.Node): Ast.Macro | null {
-  let image = null;
-  visit(figure, (node) => {
-    if (node.type === 'macro' && node.content === 'includegraphics') {
-      image = node;
-    }
-  });
-  return image;
 }
 
 function extractCaptionText(caption: Ast.Macro) {
