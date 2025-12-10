@@ -37,6 +37,10 @@ export function extractTopMatter(ctx: Context) {
         const idx = info.index || 0;
         const parent = info.parents[0] as Environment;
 
+        if (node.content === 'maketitle') {
+          ctx.frontmatter.hasMakeTitle = true;
+        }
+
         if (node.content === 'title') {
           ctx.frontmatter.title = extractMarkdown(node);
           parent.content?.splice(idx, 1);

@@ -1,39 +1,60 @@
 import { Element, ElementContent, Root as HastRoot } from 'hast';
 import { Root } from 'mdast';
 import { toHast } from 'mdast-util-to-hast';
+import { visit } from 'unist-util-visit';
 
 import { Author, Context } from '../../markdown-to-mdx/context';
 import { createRemarkProcessor } from '../../remark-processor';
 
 export function cover({ frontmatter }: Context) {
   return (tree: Root) => {
-    // console.log(frontmatter);
-    const children: ElementContent[] = [];
+    visit(tree, 'containerDirective', (node, idx = 0, parent) => {
+      // console.dir(tree, { depth: null });
 
-    if (frontmatter.title) {
-      children.push(createTitle(frontmatter.title));
-    }
-    if (frontmatter.author.length) {
-      children.push(createAuthor(frontmatter.author));
-    }
-    if (frontmatter.date) {
-      children.push(createDate(frontmatter.date));
-    }
-    if (frontmatter.abstract) {
-      children.push(createAbstract(frontmatter.abstract));
-    }
+      if (node.name === 'make-title') {
+        // console.log(frontmatter);
+        const children: ElementContent[] = [];
 
-    if (children.length > 0) {
-      tree.children.unshift({
-        type: 'containerDirective',
-        name: 'header',
-        children: [],
-        data: {
-          hName: 'header',
-          hChildren: children,
-        },
-      });
-    }
+        if (frontmatter.title) {
+          const title = createTitle(frontmatter.title);
+          if (title) {
+            children.push(title);
+          }
+        }
+        if (frontmatter.author.length) {
+          const author = createAuthor(frontmatter.author);
+          if (author) {
+            children.push(author);
+          }
+        }
+        if (frontmatter.date) {
+          const date = createDate(frontmatter.date);
+          if (date) {
+            children.push(date);
+          }
+        }
+        if (frontmatter.abstract) {
+          const abstract = createAbstract(frontmatter.abstract);
+          if (abstract) {
+            children.push(abstract);
+          }
+        }
+
+        if (children.length > 0) {
+          Object.assign(node, {
+            name: 'header',
+            children: [],
+            data: {
+              hName: 'header',
+              hChildren: children,
+            },
+          });
+        } else {
+          parent?.children.splice(idx, 1);
+        }
+      }
+    });
+
     // console.dir(tree, { depth: null });
   };
 }
@@ -47,8 +68,11 @@ function createTitle(title: string): Element {
   };
 }
 
-function createAuthor(authors: Author[]): Element {
+function createAuthor(authors: Author[]): Element | null {
   if (authors.length === 1) {
+    if (!authors[0].name.length) {
+      return null;
+    }
     return {
       type: 'element',
       tagName: 'p',
@@ -63,39 +87,39 @@ function createAuthor(authors: Author[]): Element {
         ...createAuthorContent(authors[0]),
       ],
     };
-  } else {
-    return {
-      type: 'element',
-      tagName: 'div',
-      properties: {
-        className: ['authors'],
-      },
-      children: [
-        {
-          type: 'element',
-          tagName: 'p',
-          properties: {},
-          children: [
-            {
-              type: 'text',
-              value: 'Written by:',
-            },
-          ],
-        },
-        {
-          type: 'element',
-          tagName: 'ul',
-          properties: {},
-          children: authors.map((author) => ({
-            type: 'element',
-            tagName: 'li',
-            properties: {},
-            children: createAuthorContent(author),
-          })),
-        },
-      ],
-    };
   }
+
+  return {
+    type: 'element',
+    tagName: 'div',
+    properties: {
+      className: ['authors'],
+    },
+    children: [
+      {
+        type: 'element',
+        tagName: 'p',
+        properties: {},
+        children: [
+          {
+            type: 'text',
+            value: 'Written by:',
+          },
+        ],
+      },
+      {
+        type: 'element',
+        tagName: 'ul',
+        properties: {},
+        children: authors.map((author) => ({
+          type: 'element',
+          tagName: 'li',
+          properties: {},
+          children: createAuthorContent(author),
+        })),
+      },
+    ],
+  };
 }
 
 function createAuthorContent(author: Author): ElementContent[] {
@@ -204,6 +228,9 @@ function getBlockHast(str: string) {
 
 function getInlineHast(str: string) {
   const hast = getBlockHast(str);
+  if (!hast.length) {
+    return [];
+  }
   const p = hast[0] as Element;
   return p.children;
 }

@@ -16,6 +16,7 @@ export type Context = {
   type: FileType;
   content: string;
   frontmatter: {
+    hasMakeTitle: boolean;
     title: string;
     date: string;
     author: Author[];
@@ -46,6 +47,7 @@ export async function createContext(
     type,
     content: '',
     frontmatter: {
+      hasMakeTitle: false,
       title: '',
       date: '',
       author: [],
@@ -69,6 +71,7 @@ export function createTestContext(
     type,
     content,
     frontmatter: {
+      hasMakeTitle: false,
       title: '',
       date: '',
       author: [],

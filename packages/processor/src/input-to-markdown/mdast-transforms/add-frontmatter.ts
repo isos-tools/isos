@@ -6,22 +6,26 @@ import { Context } from '../context';
 
 export function addFrontmatter(ctx: Context) {
   return (tree: Root) => {
-    // console.log(ctx.frontmatter);
     const toExport: Record<string, any> = {};
 
-    if (ctx.frontmatter.title) {
-      toExport.title = ctx.frontmatter.title;
-    }
+    if (ctx.frontmatter.hasMakeTitle) {
+      if (ctx.frontmatter.title) {
+        toExport.title = ctx.frontmatter.title;
+      }
 
-    if (ctx.frontmatter.date) {
-      toExport.date = ctx.frontmatter.date;
-    }
+      if (ctx.frontmatter.date) {
+        toExport.date = ctx.frontmatter.date;
+      }
 
-    if (ctx.frontmatter.author.length > 0) {
-      if (ctx.frontmatter.author.length > 1) {
-        toExport.author = ctx.frontmatter.author;
-      } else {
-        toExport.author = ctx.frontmatter.author[0];
+      if (ctx.frontmatter.author.length > 0) {
+        const authors = ctx.frontmatter.author.filter(
+          (o) => o.name !== '',
+        );
+        if (authors.length > 1) {
+          toExport.author = authors;
+        } else if (authors.length > 0) {
+          toExport.author = authors[0];
+        }
       }
     }
 
@@ -30,7 +34,6 @@ export function addFrontmatter(ctx: Context) {
     }
 
     if (ctx.frontmatter['reference-location'] !== 'margin') {
-      // console.log('hey!');
       toExport['reference-location'] =
         ctx.frontmatter['reference-location'];
     }

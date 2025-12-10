@@ -6,6 +6,7 @@ import { displayQuoteToBlockQuote } from '../../plugins/blockquote';
 import { callouts } from '../../plugins/callout/callouts';
 import { createCallout } from '../../plugins/callout/rehype-remark-callout';
 import { rehypeRemarkPre } from '../../plugins/code/rehype-remark-pre';
+import { createMakeTitle } from '../../plugins/cover/create-maketitle';
 import { defListHastToMdast } from '../../plugins/definition-list';
 import {
   createFootnote,
@@ -95,6 +96,12 @@ function spanHandler(
 
     if (className.includes('macro-title')) {
       const result = createTitle(state, node);
+      state.patch(node, result);
+      return result;
+    }
+
+    if (className.includes('macro-maketitle')) {
+      const result = createMakeTitle();
       state.patch(node, result);
       return result;
     }
