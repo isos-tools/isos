@@ -3,7 +3,7 @@ import { visit } from 'unist-util-visit';
 
 export function addDefaultAltText() {
   return (tree: Root) => {
-    // console.log('addDefaultAltText');
+    // console.log('hast: addDefaultAltText');
     visit(tree, 'element', (node) => {
       // console.log(node);
       if (node.tagName === 'img') {

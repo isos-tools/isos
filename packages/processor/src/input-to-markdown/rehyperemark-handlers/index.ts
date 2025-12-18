@@ -16,6 +16,7 @@ import {
 import { createFramed } from '../../plugins/framed/framed';
 import { createHeadings } from '../../plugins/headings/headings';
 import { createSetCounter } from '../../plugins/headings/set-counter-to-directive';
+import { createFigure } from '../../plugins/images/create-figure';
 import { createInlineMaths, createMaths } from '../../plugins/maths/maths';
 import { createReference } from '../../plugins/refs-and-counts/reference';
 import { rehypeRemarkDel } from '../../plugins/strikethrough/rehypre-remark-del';
@@ -70,6 +71,8 @@ export function createRehypeRemarkHandlers(
       state.patch(node, result);
       return result;
     },
+
+    figure: figureHandler,
   };
 }
 
@@ -273,6 +276,26 @@ function divHandler(ctx: Context, state: State, node: Element) {
       // const result = createWarn(node, 'environment', environmentName);
       // state.patch(node, result);
       // return result;
+    }
+  }
+
+  return state.all(node);
+}
+
+function figureHandler(state: State, node: Element) {
+  const { className } = node.properties;
+
+  if (Array.isArray(className)) {
+    if (className.includes('environment')) {
+      const classes = className.filter((name) => name !== 'environment');
+      const environmentName = String(classes[0]);
+
+      if (environmentName === 'figure') {
+        // console.dir(node, { depth: null })
+        const result = createFigure(state, node);
+        state.patch(node, result);
+        return result;
+      }
     }
   }
 

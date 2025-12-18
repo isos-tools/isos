@@ -13,7 +13,7 @@ const validAttrs = [
 
 export function imageAttributes() {
   return (tree: Root) => {
-    // console.log('imageAttributes');
+    // console.log('mdast: imageAttributes');
     // console.dir(tree, { depth: null });
     visit(tree, 'image', (node, idx, parent) => {
       const parentChildren = parent?.children || [];

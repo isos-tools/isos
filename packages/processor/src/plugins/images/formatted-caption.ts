@@ -2,7 +2,7 @@
 import parseAttr from 'md-attr-parser';
 
 export function altToCaptionAttribute(markdown: string) {
-  // console.log('altToCaptionAttribute');
+  // console.log('md regex: altToCaptionAttribute');
   // console.log(markdown);
   return markdown
     .split('\n')
@@ -22,7 +22,7 @@ export function altToCaptionAttribute(markdown: string) {
 }
 
 export function captionAttributeToAlt(markdown: string) {
-  // console.log('captionAttributeToAlt');
+  // console.log('md regex: captionAttributeToAlt');
   // console.log(markdown);
   return markdown
     .split('\n')

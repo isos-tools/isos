@@ -7,7 +7,7 @@ import { mintedToPre } from '../plugins/code/minted-to-pre';
 import { descriptionToDl } from '../plugins/definition-list';
 import { footnoteMarkToRef } from '../plugins/footnotes/footnote-mark-text-to-ref-def';
 import { footnoteToRefDef } from '../plugins/footnotes/footnote-to-ref-def';
-import { createFigure } from '../plugins/images/create-figure';
+import { createImage } from '../plugins/images/create-image';
 import {
   altToCaptionAttribute,
   captionAttributeToAlt,
@@ -18,6 +18,7 @@ import {
   pandocAttributesToMathsMeta,
 } from '../plugins/maths/formatted-maths';
 import { enumerateToOl } from '../plugins/ordered-list/enumberate-to-ol';
+import { createTable } from '../plugins/tables/create-table';
 import {
   codeToTableCaption,
   tableCaptionToCode,
@@ -141,7 +142,7 @@ function createLatexToHastHandlers(ctx: Context): LatexConvertOptions {
       enumerate: enumerateToOl,
     },
     macroReplacements: {
-      includegraphics: createFigure,
+      includegraphics: createImage,
     },
   };
 }

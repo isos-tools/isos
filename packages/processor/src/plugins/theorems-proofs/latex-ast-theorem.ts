@@ -59,7 +59,7 @@ function extractName(node: Environment) {
     return name;
   }
 
-  // amsthm environments conjecture, exercise and solution are not set in:
+  // amsthm environments: conjecture, exercise and solution are not set in:
   // https://github.com/siefkenj/unified-latex/blob/main/packages/unified-latex-ctan/package/mathtools/provides.ts#L209-L217
 
   const first = node.content[0];

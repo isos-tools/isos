@@ -65,11 +65,11 @@ test('div', async () => {
     <section id="sec-introduction">
       <h2><span class="count">1</span> Introduction</h2>
       <figure id="tbl-table">
-        <figCaption>Table 1: An <em>image</em> treated like a table</figCaption>
+        <figcaption><strong>Table 1:</strong> An <em>image</em> treated like a table</figcaption>
         <img src="table.png" alt="Image" />
       </figure>
       <figure id="tbl-chair">
-        <figCaption>Table 2: An <em>image</em> treated like a chair</figCaption>
+        <figcaption><strong>Table 2:</strong> An <em>image</em> treated like a chair</figcaption>
         <table>
           <thead>
             <tr>

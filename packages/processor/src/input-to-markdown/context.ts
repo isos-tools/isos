@@ -11,6 +11,7 @@ type Author = {
 export type Context = {
   srcFilePath: string;
   includePaths: string[];
+  graphicsPath: string;
   imagePaths: string[];
   fileCache: FileCache;
   type: FileType;
@@ -42,6 +43,7 @@ export async function createContext(
   return {
     srcFilePath,
     includePaths: [],
+    graphicsPath: '',
     imagePaths: [],
     fileCache,
     type,
@@ -66,6 +68,7 @@ export function createTestContext(
   return {
     srcFilePath: 'test',
     includePaths: [],
+    graphicsPath: '',
     imagePaths: [],
     fileCache,
     type,

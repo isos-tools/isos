@@ -62,8 +62,6 @@ function recursivelyIncludeFiles(
     const srcDir = dirname(ctx.srcFilePath);
     const includePaths: string[] = [];
 
-    let graphicsPath = '';
-
     visit(tree, (node) => {
       if (node.type === 'macro') {
         if (isInclude(node)) {
@@ -81,14 +79,14 @@ function recursivelyIncludeFiles(
             content: [],
           };
           const content = group.content as Ast.String[];
-          graphicsPath = printRaw(content);
+          ctx.graphicsPath = printRaw(content);
         }
 
         if (isImage(node)) {
           const args = getArgsContent(node as Ast.Macro);
           const lastArg = args[args.length - 1] || [];
           // prepend graphicspath to image file paths
-          lastArg.unshift({ type: 'string', content: graphicsPath });
+          lastArg.unshift({ type: 'string', content: ctx.graphicsPath });
 
           const fullPath = getFullPath(node, srcDir, '.pdf');
           subFiles.push(fullPath);

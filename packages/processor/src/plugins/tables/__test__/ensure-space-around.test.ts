@@ -33,16 +33,30 @@ test('tables', async () => {
   // return;
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
-    ::: {#thm-1}
+    :::: {#thm-1}
     Hi.
+
+    ::: {.fig}
+
+
+
+
+
 
     | Date gilt matures | Coupon |       Price      |
     | :---------------: | :----: | :--------------: |
     | 7th December 2028 |  $6\%$ | $\pounds 120.66$ |
     |   7th June 2021   |  $8\%$ | $\pounds 134.70$ |
 
-    Hello.
+
+
+
+
+
     :::
+
+    Hello.
+    ::::
   `);
 
   expect(markdown).toBe(expectedMarkdown);
@@ -54,27 +68,29 @@ test('tables', async () => {
   const expectedHtml = unindentStringAndTrim(String.raw`
     <div class="definition theorem" id="thm-1">
       <p><span class="title"><strong>Theorem 1.</strong></span> Hi.</p>
-      <table>
-        <thead>
-          <tr>
-            <th style="text-align:center;">Date gilt matures</th>
-            <th style="text-align:center;">Coupon</th>
-            <th style="text-align:center;">Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="text-align:center;">7th December 2028</td>
-            <td style="text-align:center;"><code class="latex">6\%</code></td>
-            <td style="text-align:center;"><code class="latex">\pounds 120.66</code></td>
-          </tr>
-          <tr>
-            <td style="text-align:center;">7th June 2021</td>
-            <td style="text-align:center;"><code class="latex">8\%</code></td>
-            <td style="text-align:center;"><code class="latex">\pounds 134.70</code></td>
-          </tr>
-        </tbody>
-      </table>
+      <figure>
+        <table>
+          <thead>
+            <tr>
+              <th style="text-align:center;">Date gilt matures</th>
+              <th style="text-align:center;">Coupon</th>
+              <th style="text-align:center;">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align:center;">7th December 2028</td>
+              <td style="text-align:center;"><code class="latex">6\%</code></td>
+              <td style="text-align:center;"><code class="latex">\pounds 120.66</code></td>
+            </tr>
+            <tr>
+              <td style="text-align:center;">7th June 2021</td>
+              <td style="text-align:center;"><code class="latex">8\%</code></td>
+              <td style="text-align:center;"><code class="latex">\pounds 134.70</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </figure>
       <p>Hello.</p>
     </div>
   `);

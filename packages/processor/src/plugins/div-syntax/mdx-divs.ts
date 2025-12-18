@@ -1,4 +1,4 @@
-import { Element, ElementContent, Properties } from 'hast';
+import { Element, ElementContent, Properties, Text } from 'hast';
 import {
   BlockContent,
   DefinitionContent,
@@ -19,6 +19,7 @@ import { defaultFloats } from './default-floats';
 
 export function divSyntax(_ctx: Context) {
   return (tree: Root) => {
+    // console.log('mdast: divSyntax');
     const floats = defaultObjects.filter((o) => o.type === 'float');
     // console.dir(tree, { depth: null });
     visit(tree, 'containerDirective', (node) => {
@@ -31,6 +32,20 @@ export function divSyntax(_ctx: Context) {
             const ctxObj = floats.find((o) => o.name === float.name);
             if (ctxObj) {
               createFigure(node, float.name, ctxObj, id);
+            }
+          }
+        }
+
+        const klass = node.attributes?.class;
+        if (klass) {
+          const classes = klass.split(' ');
+          if (classes.includes('fig')) {
+            const float = defaultFloats.find((o) => o.abbr === 'fig');
+            if (float) {
+              const ctxObj = floats.find((o) => o.name === float.name);
+              if (ctxObj) {
+                createFigure(node, float.name, ctxObj);
+              }
             }
           }
         }
@@ -58,43 +73,58 @@ function createFigure(
 
   const children: ElementContent[] = [];
 
+  const contentHast = getContentHast(content);
+
+  children.push(...contentHast);
+
   if (caption.length > 0) {
     const captionHast = getCaptionHast(caption);
-    children.push(
-      {
-        type: 'element',
-        tagName: 'figCaption',
-        properties: {},
-        children: [
-          {
-            type: 'text',
-            value: ctxObj.heading || '',
-          },
-          {
-            type: 'element',
-            tagName: 'span',
-            properties: {
-              className: [`${ctxObj.abbr}-count`, floatName],
-              'data-id': id,
+    const figCaption: Element = {
+      type: 'element',
+      tagName: 'figcaption',
+      properties: {},
+      children: [
+        {
+          type: 'element',
+          tagName: 'strong',
+          properties: {},
+          children: [
+            {
+              type: 'text',
+              value: ctxObj.heading || '',
             },
-            children: [],
-          },
-          {
-            type: 'text',
-            value: ': ',
-          },
-          ...captionHast,
-        ],
-      },
-      {
-        type: 'text',
-        value: '\n',
-      },
-    );
+            {
+              type: 'element',
+              tagName: 'span',
+              properties: {
+                className: [`${ctxObj.abbr}-count`, floatName],
+                'data-id': id,
+              },
+              children: [],
+            },
+            {
+              type: 'text',
+              value: ':',
+            },
+          ],
+        },
+        {
+          type: 'text',
+          value: ' ',
+        },
+        ...captionHast,
+      ],
+    };
+    const newLine: Text = {
+      type: 'text',
+      value: '\n',
+    };
+    if (floatName === 'figure') {
+      children.push(newLine, figCaption);
+    } else {
+      children.unshift(figCaption, newLine);
+    }
   }
-
-  const contentHast = getContentHast(content);
-  children.push(...contentHast);
 
   node.data = {
     ...(node.data || {}),

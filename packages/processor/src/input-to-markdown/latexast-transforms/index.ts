@@ -8,7 +8,7 @@ import {
 } from '../../plugins/fancy/fancy-section-to-section';
 import { ignoreOptionalSidenoteArgs } from '../../plugins/footnotes/ignore-optional-args';
 import { setSideNotes } from '../../plugins/footnotes/latexast-set-sidenotes';
-import { figureToImage } from '../../plugins/images/figure-to-image';
+// import { figureToImage } from '../../plugins/images/figure-to-image';
 // import { inlineFilesFromContext } from '../../plugins/includes/inline-files-from-context';
 import { equationLabelToId } from '../../plugins/maths/equation-label-to-id';
 // import { extractFancyTitle } from './extract-fancytitle';
@@ -32,7 +32,7 @@ export function createLatexastTransforms(ctx: Context): PluggableList {
     trimVerbatim,
     convertEmToEmph,
     // replaceTildeWithSpace,
-    figureToImage,
+    // figureToImage,
     expandDocumentMacrosPlugin,
     expandMathOperatorPlugin,
     equationLabelToId,
