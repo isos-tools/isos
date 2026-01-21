@@ -308,3 +308,53 @@ test('hspace', async () => {
   // const quartoHtml = await markdownToQuartoHtml(markdown);
   // console.log(quartoHtml);
 });
+
+test('expand newcommand inside newcommand', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+
+    \usepackage{amsmath}
+
+    \newcommand\pd\partial
+
+    \begin{document}
+
+    \newcommand\curldet[3]{\frac{\pd}{\pd y}}
+
+    \renewcommand\curldet[3]{\frac{\pd}{\pd y}}
+
+    Hello $\curldet{a}{b}{c}$
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    Hello $\frac{\partial}{\partial y}$
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown, {
+    // state: {
+    //   // @ts-expect-error
+    //   maths: {
+    //     mathsAsTex: false,
+    //     mathsFontName: 'computerModern',
+    //     syntaxHighlight: false,
+    //   },
+    // },
+  });
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <p>Hello <code class="latex">\frac{\partial}{\partial y}</code></p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+
+  // const quartoHtml = await markdownToQuartoHtml(markdown);
+  // console.log(quartoHtml);
+});

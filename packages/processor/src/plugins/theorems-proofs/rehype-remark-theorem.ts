@@ -16,11 +16,18 @@ export function createTheorem(
     attributes.name = div.properties.name;
   }
 
+  // console.log(state.all(div));
+
   const children = state
     .all(div)
     .reduce((acc: (Paragraph | ContainerDirective)[], child) => {
-      if (child.type === 'containerDirective') {
-        acc.push(child);
+      if (['containerDirective', 'paragraph'].includes(child.type)) {
+        acc.push(child as Paragraph | ContainerDirective);
+      } else if (child.type === 'break') {
+        acc.push({
+          type: 'paragraph',
+          children: [],
+        });
       } else {
         const last = acc[acc.length - 1];
 
