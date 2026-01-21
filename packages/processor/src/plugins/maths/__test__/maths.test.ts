@@ -259,3 +259,52 @@ test('labelled align environments', async () => {
   // const quartoHtml = await markdownToQuartoHtml(markdown);
   // console.log(quartoHtml);
 });
+
+test('hspace', async () => {
+  const latex = String.raw`
+    \[
+    \hspace{-5mm}
+    \]
+
+    \[
+    \hspace*{-5mm}
+    \]
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    $$
+    \hspace{-5mm}
+    $$
+
+    $$
+    \hspace{-5mm}
+    $$
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown, {
+    // state: {
+    //   // @ts-expect-error
+    //   maths: {
+    //     mathsAsTex: false,
+    //     mathsFontName: 'computerModern',
+    //     syntaxHighlight: false,
+    //   },
+    // },
+  });
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <p class="maths"><code class="latex">\hspace{-5mm}</code></p>
+    <p class="maths"><code class="latex">\hspace{-5mm}</code></p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+
+  // const quartoHtml = await markdownToQuartoHtml(markdown);
+  // console.log(quartoHtml);
+});

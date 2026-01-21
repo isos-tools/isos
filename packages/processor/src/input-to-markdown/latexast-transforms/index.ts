@@ -17,6 +17,7 @@ import { tableCaptionToData } from '../../plugins/tables/table-caption-to-data';
 import { Context } from '../context';
 import { insertParbreaksAroundBlockElements } from './block-elements';
 import { convertEmToEmph } from './convert-em-to-emph';
+import { convertHspace } from './convert-hspace';
 import { expandDocumentMacrosPlugin } from './expand-macros';
 import { expandMathOperatorPlugin } from './expand-math-ops';
 
@@ -30,6 +31,7 @@ export function createLatexastTransforms(ctx: Context): PluggableList {
     [extractTopMatter, ctx],
 
     trimVerbatim,
+    convertHspace,
     convertEmToEmph,
     // replaceTildeWithSpace,
     // figureToImage,
