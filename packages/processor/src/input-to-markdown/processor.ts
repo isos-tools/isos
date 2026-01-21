@@ -76,12 +76,13 @@ export function createProcessor(
       const ctx = await createContext(srcFilePath, fileCache);
 
       // step 2: read srcFile contents
-      handlers.onStatus('Scanning project files...');
+      handlers.onStatus('Checking for changes...');
       log.info(`reading source file: ${ctx.srcFilePath}`);
       ctx.content = await fs.readTextFile(ctx.srcFilePath);
       if (token.aborted()) return;
 
       // step 3: recursively combine included files
+      // handlers.onStatus('compiling source files...');
       log.info(`compiling source files`);
       const { subFiles } = await embedIncludes(ctx, fs);
       const len = subFiles.length;
@@ -136,6 +137,7 @@ export function createProcessor(
       const markdown = await inputToMarkdown(ctx.content, options);
       if (token.aborted()) return;
 
+      handlers.onStatus(`Converting ${ctx.type} to html...`);
       handlers.onComplete({ markdown, ctx });
     } catch (err: any) {
       handlers.onLoading(false);

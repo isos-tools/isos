@@ -18,7 +18,6 @@ import {
   pandocAttributesToMathsMeta,
 } from '../plugins/maths/formatted-maths';
 import { enumerateToOl } from '../plugins/ordered-list/enumberate-to-ol';
-import { createTable } from '../plugins/tables/create-table';
 import {
   codeToTableCaption,
   tableCaptionToCode,
@@ -32,6 +31,7 @@ import { addFrontmatter } from './mdast-transforms/add-frontmatter';
 import { formatBreak } from './mdast-transforms/format-break';
 import { createRehypeRemarkHandlers } from './rehyperemark-handlers';
 import { nbspToSpace } from './string-transforms/nbsp-to-space';
+import { removeExcessNewline } from './string-transforms/remove-excess-newline';
 
 export type Options = {
   srcFilePath: string;
@@ -52,6 +52,48 @@ export type Options = {
     mdAstTransforms: PluggableList;
   };
   markdownStringTransforms: Array<(markdown: string) => string>;
+};
+
+export const latexAstFromStringOptions = {
+  macros: {
+    // signatures are defined in section 3 of:
+    // https://ctan.math.washington.edu/tex-archive/macros/latex/contrib/l3packages/xparse.pdf
+    // sidenote: { signature: 'm' },
+    // title: { signature: 'om' },
+    // underline: { signature: 'm' },
+    // exsheetnumber: { signature: 'm' },
+    textsuperscript: { signature: 'm' },
+    textsubscript: { signature: 'm' },
+    sout: { signature: 'm' },
+    mintinline: { signature: 'm m' },
+    scalerel: { signature: 'm m' },
+
+    counterwithin: { signature: 'm m' },
+
+    footnote: { signature: 'o o m' },
+    sidenote: { signature: 'o o m' },
+    marginnote: { signature: 'o o m' },
+    framedsidenote: { signature: 'o o m' },
+    setsidenotes: { signature: 'm' },
+
+    setcounter: { signature: 'm m' },
+
+    author: { signature: 'o m' },
+    affil: { signature: 'o m' },
+    orcidlink: { signature: 'm' },
+
+    notebox: { signature: 'm' },
+    tipbox: { signature: 'm' },
+    warningbox: { signature: 'm' },
+    cautionbox: { signature: 'm' },
+    importantbox: { signature: 'm' },
+
+    fancysection: {
+      signature: 'm',
+      renderInfo: { breakAround: true },
+    },
+    fancyboxed: { signature: 'm' },
+  },
 };
 
 export function createDefaultOptions(
@@ -76,46 +118,7 @@ export function createDefaultOptions(
       mdAstTransforms: createMdastTransforms(ctx, { noInlineImages }),
     },
     latexToMdAst: {
-      latexAstFromStringOptions: {
-        macros: {
-          // signatures are defined in section 3 of:
-          // https://ctan.math.washington.edu/tex-archive/macros/latex/contrib/l3packages/xparse.pdf
-          // sidenote: { signature: 'm' },
-          // title: { signature: 'om' },
-          // underline: { signature: 'm' },
-          // exsheetnumber: { signature: 'm' },
-          textsuperscript: { signature: 'm' },
-          textsubscript: { signature: 'm' },
-          sout: { signature: 'm' },
-          mintinline: { signature: 'm m' },
-
-          counterwithin: { signature: 'm m' },
-
-          footnote: { signature: 'o o m' },
-          sidenote: { signature: 'o o m' },
-          marginnote: { signature: 'o o m' },
-          framedsidenote: { signature: 'o o m' },
-          setsidenotes: { signature: 'm' },
-
-          setcounter: { signature: 'm m' },
-
-          author: { signature: 'o m' },
-          affil: { signature: 'o m' },
-          orcidlink: { signature: 'm' },
-
-          notebox: { signature: 'm' },
-          tipbox: { signature: 'm' },
-          warningbox: { signature: 'm' },
-          cautionbox: { signature: 'm' },
-          importantbox: { signature: 'm' },
-
-          fancysection: {
-            signature: 'm',
-            renderInfo: { breakAround: true },
-          },
-          fancyboxed: { signature: 'm' },
-        },
-      },
+      latexAstFromStringOptions,
       latexAstTransforms: createLatexastTransforms(ctx),
       latexAstToHtmlAstOptions: () => createLatexToHastHandlers(ctx),
       htmlAstTransforms: createHastTransforms(ctx),
@@ -129,6 +132,7 @@ export function createDefaultOptions(
       captionAttributeToAlt,
       mathsMetaToPandocAttributes,
       nbspToSpace,
+      removeExcessNewline,
     ],
   };
 }

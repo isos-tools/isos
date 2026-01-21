@@ -53,6 +53,7 @@ function shouldGetParBreaks(node: Node | Argument) {
     isEnumerate(node) ||
     isItemize(node) ||
     isFigure(node) ||
+    isImage(node) ||
     isTable(node) ||
     isCallout(node)
   );
@@ -72,6 +73,10 @@ function isItemize(node: Node | Argument) {
 
 function isFigure(node: Node | Argument) {
   return node.type === 'environment' && node.env === 'figure';
+}
+
+function isImage(node: Node | Argument) {
+  return node.type === 'macro' && node.content === 'includegraphics';
 }
 
 // function isCenter(node: Node | Argument) {

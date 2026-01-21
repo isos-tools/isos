@@ -77,53 +77,57 @@ function createFigure(
 
   children.push(...contentHast);
 
+  // if (caption.length > 0) {
+  const strong: Element = {
+    type: 'element',
+    tagName: 'strong',
+    properties: {},
+    children: [
+      {
+        type: 'text',
+        value: ctxObj.heading || '',
+      },
+      {
+        type: 'element',
+        tagName: 'span',
+        properties: {
+          className: [`${ctxObj.abbr}-count`, floatName],
+          'data-id': id,
+        },
+        children: [],
+      },
+    ],
+  };
+  const captionHast = getCaptionHast(caption);
+  const figCaption: Element = {
+    type: 'element',
+    tagName: 'figcaption',
+    properties: {},
+    children: [strong],
+  };
+
   if (caption.length > 0) {
-    const captionHast = getCaptionHast(caption);
-    const figCaption: Element = {
-      type: 'element',
-      tagName: 'figcaption',
-      properties: {},
-      children: [
-        {
-          type: 'element',
-          tagName: 'strong',
-          properties: {},
-          children: [
-            {
-              type: 'text',
-              value: ctxObj.heading || '',
-            },
-            {
-              type: 'element',
-              tagName: 'span',
-              properties: {
-                className: [`${ctxObj.abbr}-count`, floatName],
-                'data-id': id,
-              },
-              children: [],
-            },
-            {
-              type: 'text',
-              value: ':',
-            },
-          ],
-        },
-        {
-          type: 'text',
-          value: ' ',
-        },
-        ...captionHast,
-      ],
-    };
-    const newLine: Text = {
+    strong.children.push({
       type: 'text',
-      value: '\n',
-    };
-    if (floatName === 'figure') {
-      children.push(newLine, figCaption);
-    } else {
-      children.unshift(figCaption, newLine);
-    }
+      value: ':',
+    });
+    figCaption.children.push(
+      {
+        type: 'text',
+        value: ' ',
+      },
+      ...captionHast,
+    );
+  }
+
+  const newLine: Text = {
+    type: 'text',
+    value: '\n',
+  };
+  if (floatName === 'figure') {
+    children.push(newLine, figCaption);
+  } else {
+    children.unshift(figCaption, newLine);
   }
 
   node.data = {
@@ -139,25 +143,32 @@ function createFigure(
 
 function separateContentAndCaption({ children }: ContainerDirective) {
   if (children.length > 1) {
-    const captionP = children[children.length - 1] as Paragraph;
-    const rest = children.slice(0, -1);
-    const content: (BlockContent | DefinitionContent | PhrasingContent)[] =
-      [];
-    if (rest.length === 1 && rest[0].type === 'paragraph') {
-      content.push(...rest[0].children);
-    } else {
-      content.push(...rest);
+    const lastP = children[children.length - 1] as Paragraph;
+
+    if (!lastP.children.find((o) => o.type === 'image')) {
+      const rest = children.slice(0, -1);
+
+      const content: (
+        | BlockContent
+        | DefinitionContent
+        | PhrasingContent
+      )[] = [];
+      if (rest.length === 1 && rest[0].type === 'paragraph') {
+        content.push(...rest[0].children);
+      } else {
+        content.push(...rest);
+      }
+      return {
+        caption: lastP.children as PhrasingContent[],
+        content: content as (BlockContent | DefinitionContent)[],
+      };
     }
-    return {
-      caption: captionP.children as PhrasingContent[],
-      content: content as (BlockContent | DefinitionContent)[],
-    };
-  } else {
-    return {
-      caption: [] as PhrasingContent[],
-      content: children as (BlockContent | DefinitionContent)[],
-    };
   }
+
+  return {
+    caption: [] as PhrasingContent[],
+    content: children as (BlockContent | DefinitionContent)[],
+  };
 }
 
 function getCaptionHast(caption: PhrasingContent[]) {

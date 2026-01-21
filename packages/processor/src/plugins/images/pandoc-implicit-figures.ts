@@ -18,12 +18,11 @@ export function pandocImplicitFigures() {
       const id = props['id'] || null;
       const caption = props['data-caption'] || '';
 
-      if (!caption) {
+      if (!caption && !id) {
         return;
       }
 
       // console.log(caption);
-      const captionHast = getCaptionHast(String(caption));
 
       const img: Element =
         process.env.NODE_ENV === 'test' || node.url.startsWith('data')
@@ -53,6 +52,50 @@ export function pandocImplicitFigures() {
 
       // console.log(node.url);
 
+      const strong: Element = {
+        type: 'element',
+        tagName: 'strong',
+        properties: {},
+        children: [
+          {
+            type: 'text',
+            value: 'Figure',
+          },
+          {
+            type: 'element',
+            tagName: 'span',
+            properties: {
+              className: ['fig-count', 'figure'],
+              'data-id': id,
+            },
+            children: [],
+          },
+        ],
+      };
+
+      const captionHast = getCaptionHast(String(caption));
+
+      const figCaption: Element = {
+        type: 'element',
+        tagName: 'figcaption',
+        properties: {},
+        children: [strong],
+      };
+
+      if (caption) {
+        strong.children.push({
+          type: 'text',
+          value: ':',
+        });
+        figCaption.children.push(
+          {
+            type: 'text',
+            value: ' ',
+          },
+          ...captionHast,
+        );
+      }
+
       parent.data = {
         hName: 'figure',
         hProperties: {
@@ -60,47 +103,10 @@ export function pandocImplicitFigures() {
           alt: null,
           id,
         },
-        hChildren: [
-          img,
-          {
-            type: 'element',
-            tagName: 'figcaption',
-            properties: {},
-            children: [
-              {
-                type: 'element',
-                tagName: 'strong',
-                properties: {},
-                children: [
-                  {
-                    type: 'text',
-                    value: 'Figure',
-                  },
-                  {
-                    type: 'element',
-                    tagName: 'span',
-                    properties: {
-                      className: ['fig-count', 'figure'],
-                      'data-id': id,
-                    },
-                    children: [],
-                  },
-                  {
-                    type: 'text',
-                    value: ':',
-                  },
-                ],
-              },
-              {
-                type: 'text',
-                value: ' ',
-              },
-              ...captionHast,
-            ],
-          },
-        ],
+        hChildren: [img, figCaption],
       };
     });
+    // console.dir(tree, { depth: null });
   };
 }
 

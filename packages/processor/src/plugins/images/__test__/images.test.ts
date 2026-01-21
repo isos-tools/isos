@@ -410,3 +410,231 @@ test('figure with two images with alt text, caption and label', async () => {
   expect(html).toBe(expectedHtml);
 });
 
+test('figure with only label', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{graphicx}
+    \begin{document}
+
+    \begin{figure}
+      \includegraphics[width=60mm]{fig/ex1-1.png}
+      \label{fig:sphere}
+    \end{figure}
+
+    as shown in \cref{fig:sphere}.
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ![](fig/ex1-1.png){#fig-sphere}
+
+    as shown in @fig-sphere.
+  `);
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <figure id="fig-sphere"><img src="fig/ex1-1.png" alt="Image" />
+      <figcaption><strong>Figure 1</strong></figcaption>
+    </figure>
+    <p>as shown in <a href="#fig-sphere" class="ref">Figure 1</a>.</p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('center inside theorem causes error', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{graphicx}
+    \begin{document}
+
+    \begin{solution}
+      as shown in \cref{fig:sphere}.
+
+      \begin{center}
+        \includegraphics[width=60mm]{fig/ex1-1.png}
+        \label{fig:sphere}
+      \end{center}
+    \end{solution}
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ::: {#sol-fig-sphere}
+    as shown in @fig-sphere.
+
+    ![](fig/ex1-1.png)
+
+    :::
+  `);
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <div class="remark solution" id="sol-fig-sphere">
+      <p><span class="title"><em>Solution 1</em>. </span>as shown in <span class="warn"><strong>unknown ref:</strong> <code>fig-sphere</code></span>.</p>
+      <p><img src="fig/ex1-1.png" alt="Image" /></p>
+    </div>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('figure inside theorem', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{graphicx}
+    \begin{document}
+
+    \begin{solution}
+      as shown in \cref{fig:sphere}.
+
+      \begin{figure}[H]
+        \includegraphics[width=60mm]{fig/ex1-1.png}
+        \label{fig:sphere}
+      \end{figure}
+    \end{solution}
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ::: {#sol-1}
+    as shown in @fig-sphere.
+
+    ![](fig/ex1-1.png){#fig-sphere}
+
+    :::
+  `);
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <div class="remark solution" id="sol-1">
+      <p><span class="title"><em>Solution 1</em>. </span>as shown in <a href="#fig-sphere" class="ref">Figure 1</a>.</p>
+      <figure id="fig-sphere"><img src="fig/ex1-1.png" alt="Image" />
+        <figcaption><strong>Figure 1</strong></figcaption>
+      </figure>
+    </div>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('syntax bug', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{graphicx}
+    \begin{document}
+
+    We can see
+    $$\frac{x}$$
+    giving.\\
+    \includegraphics[width=40mm]{fig/ex1-4a.png}\\
+    \quad
+    \includegraphics[width=40mm]{fig/ex1-4b.png}
+    \quad
+    \includegraphics[width=50mm]{fig/ex1-4c.png}
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    We can see
+
+    $$
+    \frac{x}
+    $$
+
+    giving.
+
+    ![](fig/ex1-4a.png)
+
+    ![](fig/ex1-4b.png)
+
+    ![](fig/ex1-4c.png)
+  `);
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <p>We can see</p>
+    <p class="maths"><code class="latex">\frac{x}</code></p>
+    <p>giving.</p>
+    <p><img src="fig/ex1-4a.png" alt="Image" /></p>
+    <p><img src="fig/ex1-4b.png" alt="Image" /></p>
+    <p><img src="fig/ex1-4c.png" alt="Image" /></p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('images with no label or caption', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{graphicx}
+    \begin{document}
+
+    \begin{figure}
+      \includegraphics*[width=45mm]{fig/ex1-2a.png}
+      \includegraphics*[width=45mm]{fig/ex1-2b.png}
+      \includegraphics*[width=45mm]{fig/ex1-2c.png}
+    \end{figure}
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ::: {.fig}
+
+    ![](fig/ex1-2a.png)
+
+    ![](fig/ex1-2b.png)
+
+    ![](fig/ex1-2c.png)
+
+    :::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <figure>
+      <p><img src="fig/ex1-2a.png" alt="Image" /></p>
+      <p><img src="fig/ex1-2b.png" alt="Image" /></p>
+      <p><img src="fig/ex1-2c.png" alt="Image" /></p>
+      <figcaption><strong>Figure 1</strong></figcaption>
+    </figure>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
