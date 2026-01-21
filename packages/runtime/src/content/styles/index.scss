@@ -302,6 +302,15 @@ article {
       color: white;
       border-radius: 0.2em;
     }
+    svg.missing-maths {
+      height: 2.5ex;
+      vertical-align: -0.75ex;
+      path {
+        stroke: currentcolor;
+        fill: currentcolor;
+        stroke-width: 0;
+      }
+    }
   }
 
   .framed {

@@ -172,7 +172,7 @@ test('image with alt text and caption', async () => {
   expect(html).toBe(expectedHtml);
 });
 
-test('image with label', async () => {
+test('image with alt text, caption and label', async () => {
   const latex = String.raw`
     \documentclass{article}
     \usepackage{graphicx}
@@ -286,6 +286,7 @@ test('figure with image and text', async () => {
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
     ::: {#fig-f-x-y}
+
     ![](image.png)
 
     [Interactive plot $\rightarrow$](https://moodle.gla.ac.uk)
@@ -342,6 +343,7 @@ test('figure with two images with alt text and caption', async () => {
 
   const expectedMarkdown = unindentStringAndTrim(`
     ::: {.fig}
+
     ![](image.png){alt="My alt text"}
 
     ![](image2.png){alt="My alt text2"}
@@ -384,6 +386,7 @@ test('figure with two images with alt text, caption and label', async () => {
 
   const expectedMarkdown = unindentStringAndTrim(`
     ::: {#fig-logo}
+
     ![](image.png){alt="My alt text"}
 
     ![](image2.png){alt="My alt text2"}
@@ -393,7 +396,7 @@ test('figure with two images with alt text, caption and label', async () => {
   `);
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(expectedMarkdown);
+  const html = await testProcessor.md(markdown);
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
