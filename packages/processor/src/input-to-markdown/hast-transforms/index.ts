@@ -7,9 +7,11 @@ import { scaleRelToMissingMaths } from '../../plugins/missing-maths/scalerel-to-
 import { tablePropertiesToTextDirective } from '../../plugins/tables/table-properties-to-directive';
 import { Context } from '../context';
 import { removeCenterEnv } from './remove-centre-env';
+import { removePageStyle } from './remove-page-style';
 
 export function createHastTransforms(_ctx: Context): PluggableList {
   return [
+    removePageStyle,
     endashEmdashToDashes,
     mintInlineToCode,
     figureToP,

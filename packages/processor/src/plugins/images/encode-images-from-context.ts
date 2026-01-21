@@ -7,7 +7,7 @@ import { Options } from '../../input-to-markdown/options';
 
 // const supportedExtensions = ['.pdf', '.jpg', '.jpeg', '.png'];
 
-export function inlineImagesFromContext(ctx: Context, options: Options) {
+export function encodeImagesFromContext(ctx: Context, options: Options) {
   return async (tree: Root) => {
     // console.log(ctx.fileCache.getStore());
     // console.log('inlineImages', options.noInlineImages);

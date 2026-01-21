@@ -5,9 +5,11 @@ export function addDefaultAltText() {
   return (tree: Root) => {
     // console.log('hast: addDefaultAltText');
     visit(tree, 'element', (node) => {
-      // console.log(node);
       if (node.tagName === 'img') {
-        if (node.properties.alt === '') {
+        if (
+          typeof node.properties.alt !== 'string' ||
+          node.properties.alt === ''
+        ) {
           node.properties.alt = 'Image';
         }
       }

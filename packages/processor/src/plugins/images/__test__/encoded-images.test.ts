@@ -5,7 +5,7 @@ import { testProcessor, unindentStringAndTrim } from '@isos/test-utils';
 // @ts-ignore
 // import { pdfLatexFixtureToHtml } from '../../../test-utils/pdflatex-to-html';
 
-test('inline images', { timeout: 20_000 }, async () => {
+test('encoded images', { timeout: 20_000 }, async () => {
   // const pdfLatexHtml = await pdfLatexFixtureToHtml.poppler(
   //   'images/article.tex',
   // );

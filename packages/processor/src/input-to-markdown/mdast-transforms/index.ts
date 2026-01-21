@@ -1,7 +1,7 @@
 import { PluggableList } from 'unified';
 
 import { headingLabels } from '../../plugins/headings/mdast-heading-labels';
-import { inlineImagesFromContext } from '../../plugins/images/inline-images-from-context';
+import { encodeImagesFromContext } from '../../plugins/images/encode-images-from-context';
 import { deleteToDoubleTilde } from '../../plugins/strikethrough/delete-to-double-tilde';
 import { theoremLabelAsId } from '../../plugins/theorems-proofs/theorem-label-as-id';
 import { Context } from '../context';
@@ -16,7 +16,7 @@ export function createMdastTransforms(
 
     deleteToDoubleTilde,
     headingLabels,
-    [inlineImagesFromContext, ctx, options],
+    [encodeImagesFromContext, ctx, options],
     [theoremLabelAsId, ctx],
     // () => (tree) => {
     //   console.dir(tree, { depth: null });
