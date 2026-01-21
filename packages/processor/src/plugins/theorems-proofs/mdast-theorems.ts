@@ -84,7 +84,7 @@ function createTheorem(
   if (firstP) {
     firstP.children.unshift(...children);
   } else {
-    node.children.push({
+    node.children.unshift({
       type: 'paragraph',
       children,
     });

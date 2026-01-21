@@ -1462,3 +1462,48 @@ test('qed placement 2', async () => {
 
   expect(html).toBe(expectedHtml);
 });
+
+test('syntax bug', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{amsmath,amsthm}
+    \theoremstyle{definition}
+    \newtheorem{theorem}{Theorem}
+
+    \begin{document}
+
+    \begin{theorem}
+    \[\mathbf{a}\]
+    \end{theorem}
+
+    \end{document}
+  `;
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    ::: {#thm-1}
+
+    $$
+    \mathbf{a}
+    $$
+
+    :::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <div class="definition theorem" id="thm-1">
+      <p><span class="title"><strong>Theorem 1.</strong></span> </p>
+      <p class="maths"><code class="latex">\mathbf{a}</code></p>
+    </div>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
