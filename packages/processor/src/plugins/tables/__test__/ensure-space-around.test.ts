@@ -38,20 +38,10 @@ test('tables', async () => {
 
     ::: {.fig}
 
-
-
-
-
-
     | Date gilt matures | Coupon |       Price      |
     | :---------------: | :----: | :--------------: |
     | 7th December 2028 |  $6\%$ | $\pounds 120.66$ |
     |   7th June 2021   |  $8\%$ | $\pounds 134.70$ |
-
-
-
-
-
 
     :::
 
@@ -90,6 +80,7 @@ test('tables', async () => {
             </tr>
           </tbody>
         </table>
+        <figcaption><strong>Figure 1</strong></figcaption>
       </figure>
       <p>Hello.</p>
     </div>

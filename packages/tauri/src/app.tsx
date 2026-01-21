@@ -22,8 +22,7 @@ import { WarningLineHighlight } from './warnings/warn-line-highlight';
 export function App() {
   const [filePath, setFilePath] = useLocalStorage('file-path', '');
   const [subFilePaths, setSubFilePaths] = useState<string[]>([]);
-  const [_error, setError] = useState('');
-  // const { setError } = useContext(ErrorContext);
+  const [error, setError] = useState('');
   const [markdown, setMarkdown] = useState('');
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState('');
@@ -31,7 +30,7 @@ export function App() {
   useEffect(() => {
     const processor = createProcessor(filePath, fs, {
       onError(err) {
-        setError(err.message);
+        setError(err?.message || err);
       },
       onComplete({ markdown, ctx }) {
         setMarkdown(markdown);
@@ -95,6 +94,7 @@ export function App() {
         handleProcessFile={handleProcessFile}
         handleExportFile={handleExportFile}
       />
+      {error && <div className="error">{error}</div>}
       <Log />
       {markdown === '' ? (
         <Intro />

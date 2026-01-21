@@ -3,12 +3,12 @@ import { expect, test } from 'vitest';
 import { testProcessor, unindentStringAndTrim } from '@isos/test-utils';
 
 test('framed environment', async () => {
-  const markdown = await testProcessor.latex(`
-    \\begin{framed}
-    \\begin{definition} A \\emph{matrix}.
-    \\end{definition}
-    \\vspace*{-4mm}
-    \\end{framed}
+  const markdown = await testProcessor.latex(String.raw`
+    \begin{framed}
+    \begin{definition} A \emph{matrix}.
+    \end{definition}
+    \vspace*{-4mm}
+    \end{framed}
   `);
 
   // console.log(markdown);

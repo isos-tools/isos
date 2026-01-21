@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 
 import { testProcessor, unindentStringAndTrim } from '@isos/test-utils';
 
-test('tables', async () => {
+test('tabular', async () => {
   const latex = String.raw`
     \begin{tabular}{lcr}
     Beep & Pharetra & Commodo Pellentesque \\

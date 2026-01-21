@@ -25,11 +25,23 @@ export function footnoteToRefDef() {
 
         Object.assign(node, reference);
 
+        // trim left
+        const trimmed = node.children.slice(
+          node.children.findIndex(
+            (o) => !(o.type === 'text' && o.value === '\n'),
+          ),
+        );
+
         const definition: FootnoteDefinition = {
           type: 'footnoteDefinition',
           identifier: String(count),
           label: label || String(count),
-          children: [{ type: 'paragraph', children: node.children }],
+          children: [
+            {
+              type: 'paragraph',
+              children: trimmed,
+            },
+          ],
         };
 
         const nextIdx = (idx || 0) + 1;

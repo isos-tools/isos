@@ -58,14 +58,14 @@ const TableOfContentsWrapper = styled.div`
     }
 
     &.depth-2 {
-      margin-top: 1em;
+      // margin-top: 1em;
 
       &:first-child {
         margin-top: 0;
       }
 
       & > a {
-        font-size: 1.2em;
+        font-size: 0.9em;
         font-weight: 700;
         color: var(--textColor);
       }

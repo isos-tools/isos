@@ -32,7 +32,29 @@ test('div', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const quartoMarkdown = unindentStringAndTrim(`
+  const html = await testProcessor.md(markdown, {
+    noSections: false,
+  });
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(`
+    <section id="sec-hi">
+      <h2><span class="count">1</span> Hello</h2>
+      <p>See <a href="#sec-hi" class="ref">Section 1</a>.</p>
+    </section>
+  `);
+
+  expect(html).toBe(expectedHtml);
+
+  // const pandocHtml = await markdownToPandocHtml(expectedMarkdown);
+  // console.log(pandocHtml);
+
+  // const quartoHtml = await markdownToQuartoHtml(expectedMarkdown);
+  // console.log(quartoHtml);
+});
+
+test('syntax bug', async () => {
+  const markdown = unindentStringAndTrim(`
     ## Introduction {#sec-introduction}
 
     ::: {#tbl-table}
@@ -49,14 +71,14 @@ test('div', async () => {
     |---|---|
     | C | D |
 
-    An *image* treated like a chair
+    A *table* treated like a table
 
     :::
 
     See @sec-introduction and @tbl-table and @tbl-chair.
   `);
 
-  const html = await testProcessor.md(quartoMarkdown, {
+  const html = await testProcessor.md(markdown, {
     noSections: false,
   });
   // console.log(html);
@@ -69,7 +91,7 @@ test('div', async () => {
         <img src="table.png" alt="Image" />
       </figure>
       <figure id="tbl-chair">
-        <figcaption><strong>Table 2:</strong> An <em>image</em> treated like a chair</figcaption>
+        <figcaption><strong>Table 2:</strong> A <em>table</em> treated like a table</figcaption>
         <table>
           <thead>
             <tr>
@@ -90,10 +112,4 @@ test('div', async () => {
   `);
 
   expect(html).toBe(expectedHtml);
-
-  // const pandocHtml = await markdownToPandocHtml(expectedMarkdown);
-  // console.log(pandocHtml);
-
-  // const quartoHtml = await markdownToQuartoHtml(expectedMarkdown);
-  // console.log(quartoHtml);
 });
