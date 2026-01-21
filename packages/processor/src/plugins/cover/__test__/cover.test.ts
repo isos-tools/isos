@@ -410,3 +410,32 @@ test('maketitle under content', async () => {
   // const quartoHtml = await markdownToQuartoHtml(expectedMarkdown);
   // console.log(quartoHtml);
 });
+
+test('pagestyle', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \begin{document}
+
+    \pagestyle{plain}
+
+    hello
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    hello
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <p>hello</p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
