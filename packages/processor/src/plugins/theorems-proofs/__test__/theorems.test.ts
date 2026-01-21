@@ -1397,14 +1397,13 @@ test('qed placement', async () => {
     ::: {.proof}
     We must:
 
-    1) Let:
+    1. Let:
 
-    2) Let
+    2. Let
 
        $$
        S\qedhere
        $$
-
 
     :::
   `);
