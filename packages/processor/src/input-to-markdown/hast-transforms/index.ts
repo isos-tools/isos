@@ -7,7 +7,7 @@ import { figureToP } from '../../plugins/images/figure-to-p';
 import { scaleRelToMissingMaths } from '../../plugins/missing-maths/scalerel-to-missing-maths';
 import { tablePropertiesToTextDirective } from '../../plugins/tables/table-properties-to-directive';
 import { Context } from '../context';
-import { removeCenterEnv } from './remove-centre-env';
+import { centerEnvToDiv } from './centre-env-to-div';
 import { removePageStyle } from './remove-page-style';
 
 export function createHastTransforms(ctx: Context): PluggableList {
@@ -18,7 +18,7 @@ export function createHastTransforms(ctx: Context): PluggableList {
     mintInlineToCode,
     figureToP,
     tablePropertiesToTextDirective,
-    removeCenterEnv,
+    centerEnvToDiv,
     scaleRelToMissingMaths,
     // () => {
     //   return (tree) => {
