@@ -14,7 +14,6 @@ import {
   createFootnoteText,
 } from '../../plugins/footnotes/footnote';
 import { createFramed } from '../../plugins/framed/framed';
-import { createHeadings } from '../../plugins/headings/headings';
 import { createSetCounter } from '../../plugins/headings/set-counter-to-directive';
 import { createFigure } from '../../plugins/images/create-figure';
 import { createInlineMaths, createMaths } from '../../plugins/maths/maths';
@@ -36,13 +35,6 @@ export function createRehypeRemarkHandlers(
 ): Record<string, Handle> {
   return {
     ...defListHastToMdast,
-
-    h1: headingHandler,
-    h2: headingHandler,
-    h3: headingHandler,
-    h4: headingHandler,
-    h5: headingHandler,
-    h6: headingHandler,
 
     div(state: State, node: Element) {
       return divHandler(ctx, state, node);
@@ -76,14 +68,8 @@ export function createRehypeRemarkHandlers(
   };
 }
 
-function headingHandler(state: State, node: Element) {
-  const result = createHeadings(state, node);
-  state.patch(node, result);
-  return result;
-}
-
 function spanHandler(
-  _ctx: Context,
+  ctx: Context,
   state: State,
   node: Element,
   parents?: Parents,
@@ -167,7 +153,7 @@ function spanHandler(
     }
 
     if (className.includes('macro-setcounter')) {
-      const result = createSetCounter(state, node);
+      const result = createSetCounter(ctx, state, node);
       state.patch(node, result);
       return result;
     }

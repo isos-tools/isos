@@ -2,11 +2,7 @@ import { Root } from 'hast';
 import { visit } from 'unist-util-visit';
 
 import { Context } from '../../markdown-to-mdx/context';
-import {
-  createHeadingCounter,
-  headingDepths,
-} from '../headings/heading-counter';
-import { latexSectionToDepth } from '../headings/section-to-heading';
+import { createHeadingCounter } from '../headings/heading-counter';
 import { createTheoremCounter } from '../theorems-proofs/theorem-counter';
 import { formatCount } from './format-count';
 
@@ -28,19 +24,11 @@ export function addCounts(ctx: Context) {
       if (node.tagName === 'div') {
         const className = node.properties.className;
         if (Array.isArray(className) && className[0] === 'set-counter') {
-          const name = String(node.properties['data-name'] || '');
-          const isHeading = [
-            'title',
-            'section',
-            'subsection',
-            'subsubsection',
-            'paragraph',
-            'subparagraph',
-          ].includes(name);
-
-          if (isHeading) {
+          const type = String(node.properties['data-type'] || '');
+          if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(type)) {
             const value = node.properties['data-value'];
-            headingCounter.setCount(headingDepths[name], Number(value));
+            const depth = Number(type.slice(1));
+            headingCounter.setCount(depth, Number(value));
 
             // remove div
             if (parent) {
@@ -122,7 +110,7 @@ export function addCounts(ctx: Context) {
                 const counts: number[] = [];
 
                 if (numberWithin) {
-                  const depth = latexSectionToDepth(numberWithin);
+                  const depth = Number(numberWithin.slice(1));
 
                   if (newSection && depth >= headingDepth) {
                     theoremCounter.reset(countName);

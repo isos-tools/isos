@@ -276,7 +276,7 @@ test('theorems with section counter', async () => {
     ---
     theorems:
       theorem:
-        numberWithin: section
+        numberWithin: h2
       lemma:
         referenceCounter: theorem
     ---
@@ -446,7 +446,7 @@ test('theorems with subsection counter', async () => {
     ---
     theorems:
       theorem:
-        numberWithin: subsection
+        numberWithin: h3
       lemma:
         referenceCounter: theorem
     ---
@@ -616,7 +616,7 @@ test('theorems with subsubsection counter', async () => {
     ---
     theorems:
       theorem:
-        numberWithin: subsubsection
+        numberWithin: h4
       lemma:
         referenceCounter: theorem
     ---
@@ -786,7 +786,7 @@ test('theorems with paragraph counter', async () => {
     ---
     theorems:
       theorem:
-        numberWithin: paragraph
+        numberWithin: h5
       lemma:
         referenceCounter: theorem
     ---
@@ -961,7 +961,7 @@ test('theorems with subparagraph counter', async () => {
     ---
     theorems:
       theorem:
-        numberWithin: subparagraph
+        numberWithin: h6
       lemma:
         referenceCounter: theorem
     ---
@@ -1164,9 +1164,9 @@ test('theorems with reference and section counters', async () => {
     ---
     theorems:
       theorem:
-        numberWithin: subsection
+        numberWithin: h3
       lemma:
-        numberWithin: section
+        numberWithin: h2
       corollary:
         referenceCounter: theorem
       proposition:

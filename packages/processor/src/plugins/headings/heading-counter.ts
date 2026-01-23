@@ -1,5 +1,3 @@
-// import { RefObjectsYaml } from '../refs-and-counts/default-objects';
-
 type HeadingCounter = {
   get: (depth: number) => number;
   getCounts: (depth: number) => number[];
@@ -34,51 +32,3 @@ export function createHeadingCounter(): HeadingCounter {
     },
   };
 }
-
-// export function formatCounts(counts: number[]) {
-//   return counts.join('.');
-// }
-
-export const headingDepths: Record<string, number> = {
-  title: 1,
-  section: 2,
-  subsection: 3,
-  subsubsection: 4,
-  paragraph: 5,
-  subparagraph: 6,
-};
-
-// export function getHeadingDepth(
-//   theorems: RefObjectsYaml,
-//   name: string,
-// ): number {
-//   // console.log(theorems, name);
-//   const environment = theorems[name];
-//   if (environment === undefined) {
-//     throw new Error(`thereom not found: ${name}`);
-//   }
-
-//   function findParentHeading(name: string) {
-//     const environment = theorems[name];
-//     if (environment.numberWithin) {
-//       return environment.numberWithin;
-//     }
-//     if (environment.referenceCounter) {
-//       return findParentHeading(environment.referenceCounter);
-//     }
-//     throw new Error(
-//       `thereom parent \`numberWithin\` not found for: ${name}`,
-//     );
-//   }
-
-//   const parentHeading = findParentHeading(name);
-
-//   // console.log(parentHeading, theorems);
-
-//   const parentDepth = headingDepths[parentHeading];
-//   if (parentDepth === undefined) {
-//     throw new Error(`thereom \`numberWithin\` not found: ${name}`);
-//   }
-
-//   return parentDepth + 1;
-// }

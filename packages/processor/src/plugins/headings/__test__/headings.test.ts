@@ -215,7 +215,7 @@ test('headings with setcounter', async () => {
 
     ## Delta
 
-    ::set-counter{name="section" value="8"}
+    ::set-counter{type="h2" value="8"}
 
     ## Charlie
 

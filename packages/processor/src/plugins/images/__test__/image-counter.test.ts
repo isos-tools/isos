@@ -53,7 +53,7 @@ test('image with counter', async () => {
     theorems:
       theorem:
         style: plain
-        numberWithin: section
+        numberWithin: h2
     ---
 
     ## Hello {#hi}

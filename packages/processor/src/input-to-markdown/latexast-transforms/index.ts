@@ -18,6 +18,7 @@ import { Context } from '../context';
 import { insertParbreaksAroundBlockElements } from './block-elements';
 import { convertEmToEmph } from './convert-em-to-emph';
 import { convertHspace } from './convert-hspace';
+import { documentClass } from './document-class';
 import { expandEnvironments } from './expand-environments';
 import { expandDocumentMacrosPlugin } from './expand-macros';
 import { expandMathOperatorPlugin } from './expand-math-ops';
@@ -26,6 +27,7 @@ import { expandMathOperatorPlugin } from './expand-math-ops';
 
 export function createLatexastTransforms(ctx: Context): PluggableList {
   return [
+    [documentClass, ctx],
     expandEnvironments,
     // [inlineFilesFromContext, ctx],
     [setSideNotes, ctx],

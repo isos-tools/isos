@@ -8,7 +8,7 @@ export function setHeadingCounterToDiv() {
       node.data = {
         hProperties: {
           className: ['set-counter'],
-          'data-name': node.attributes?.name,
+          'data-type': node.attributes?.type,
           'data-value': node.attributes?.value,
         },
       };

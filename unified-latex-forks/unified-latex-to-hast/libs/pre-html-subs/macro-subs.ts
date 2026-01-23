@@ -30,22 +30,22 @@ function factory(
   };
 }
 
-function createHeading(tag: string, attrs = {}) {
+type Attrs = {
+  className: string;
+};
+
+function createHeading(tag: string, attrs: Attrs) {
   return (macro: Ast.Macro) => {
     const args = getArgsContent(macro);
     const starred = !!args[0];
-    const attributes: Record<string, string> = starred
-      ? { className: 'starred' }
-      : {};
-
-    if (attrs) {
-      Object.assign(attributes, attrs);
+    let className = attrs.className;
+    if (starred) {
+      className += ' starred';
     }
-
     return htmlLike({
       tag,
       content: args[args.length - 1] || [],
-      attributes,
+      attributes: { className },
     });
   };
 }
@@ -67,16 +67,16 @@ export const macroReplacements: Record<
   underline: factory('span', { className: 'underline' }),
   mbox: factory('span', { className: 'mbox' }),
   phantom: factory('span', { className: 'phantom' }),
-  part: createHeading('h1'),
-  chapter: createHeading('h2'),
-  section: createHeading('h3'),
-  subsection: createHeading('h4'),
-  subsubsection: createHeading('h5'),
-  paragraph: createHeading('h6', { className: 'section-paragraph' }),
-  subparagraph: createHeading('h6', {
-    className: 'section-subparagraph',
+  part: createHeading('h1', { className: 'section-part' }),
+  chapter: createHeading('h2', { className: 'section-chapter' }),
+  section: createHeading('h3', { className: 'section-section' }),
+  subsection: createHeading('h4', { className: 'section-subsection' }),
+  subsubsection: createHeading('h5', {
+    className: 'section-subsubsection',
   }),
-  appendix: createHeading('h2'),
+  paragraph: createHeading('h6', { className: 'section-paragraph' }),
+  subparagraph: createHeading('h6', { className: 'section-subparagraph' }),
+  appendix: createHeading('h2', { className: 'appendix' }),
   smallskip: () =>
     htmlLike({
       tag: 'br',
