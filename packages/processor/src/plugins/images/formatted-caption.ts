@@ -5,14 +5,18 @@ export function altToCaptionAttribute(markdown: string) {
   // console.log('md regex: altToCaptionAttribute');
   // console.log(markdown);
 
-  const regex = /!\[(.*?)\]\((.+?)\){(.+?)}/g;
+  const regex = /!\[(.*?)\]\((.+?)\)({(.*?)})?/g;
 
   return markdown.replace(regex, (...match) => {
     const caption = match[1];
     const url = match[2];
-    const attrs = parseAttr(match[3]).prop;
+    const attrs = parseAttr(match[4] || '').prop;
     const attributes = serialiseAttributes({ ...attrs, caption });
-    return `![](${url})\`${attributes}\``;
+    let result = `![](${url})`;
+    if (attributes) {
+      result += `\`${attributes}\``;
+    }
+    return result;
   });
 }
 
