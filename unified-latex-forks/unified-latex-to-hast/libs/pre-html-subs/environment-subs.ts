@@ -103,11 +103,11 @@ function createCenteredElement(env: Ast.Environment) {
 
 function createTableFromTabular(env: Ast.Environment) {
   const args = getArgsContent(env);
-  // console.dir(args);
 
   let columnSpecs: TabularColumn[] = [];
   try {
-    columnSpecs = parseTabularSpec(args[1] || []);
+    const specArg = args[args.length - 1];
+    columnSpecs = parseTabularSpec(specArg || []);
   } catch (e) {}
 
   const rows = parseAlignEnvironment(env.content).filter(
@@ -228,6 +228,7 @@ export const environmentReplacements: Record<
   itemize: enumerateFactory('ul', 'itemize'),
   center: createCenteredElement,
   tabular: createTableFromTabular,
+  tabularx: createTableFromTabular,
   quote: (env) => {
     return htmlLike({
       tag: 'blockquote',

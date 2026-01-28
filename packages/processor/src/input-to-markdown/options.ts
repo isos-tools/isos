@@ -96,6 +96,9 @@ export const latexAstFromStringOptions = {
     },
     fancyboxed: { signature: 'm' },
   },
+  environments: {
+    tabularx: { signature: 'm o m', renderInfo: { alignContent: true } },
+  },
 };
 
 export function createDefaultOptions(

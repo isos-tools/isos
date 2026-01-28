@@ -84,7 +84,10 @@ function isImage(node: Node | Argument) {
 // }
 
 function isTable(node: Node | Argument) {
-  return node.type === 'environment' && node.env === 'tabular';
+  return (
+    node.type === 'environment' &&
+    (node.env === 'tabular' || node.env === 'tabularx')
+  );
 }
 
 const callouts = [

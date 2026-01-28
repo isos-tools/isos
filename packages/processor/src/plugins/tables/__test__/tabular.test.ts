@@ -100,3 +100,47 @@ test('table with unsupported formatting', async () => {
 
   expect(html).toBe(expected);
 });
+
+test('tabularx', async () => {
+  const latex = String.raw`
+    \begin{tabularx}{\textwidth}{|c|X|X|}
+    Beep & Pharetra & Commodo Pellentesque \\
+    beep & 1024 & xyz \\
+    \end{tabularx}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    | Beep | Pharetra | Commodo Pellentesque |
+    | :--: | -------- | -------------------- |
+    | beep | 1024     | xyz                  |
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(expectedMarkdown);
+  // console.log(html);
+
+  const expected = unindentStringAndTrim(`
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align:center;">Beep</th>
+          <th>Pharetra</th>
+          <th>Commodo Pellentesque</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align:center;">beep</td>
+          <td>1024</td>
+          <td>xyz</td>
+        </tr>
+      </tbody>
+    </table>
+  `);
+
+  expect(html).toBe(expected);
+});
