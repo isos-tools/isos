@@ -22,6 +22,7 @@ import { documentClass } from './document-class';
 import { expandEnvironments } from './expand-environments';
 import { expandDocumentMacrosPlugin } from './expand-macros';
 import { expandMathOperatorPlugin } from './expand-math-ops';
+import { removeNewDocumentCommand } from './remove-new-document-command';
 
 // import { replaceTildeWithSpace } from './replace-tilde-with-space';
 
@@ -29,6 +30,7 @@ export function createLatexastTransforms(ctx: Context): PluggableList {
   return [
     [documentClass, ctx],
     expandEnvironments,
+    removeNewDocumentCommand,
     // [inlineFilesFromContext, ctx],
     [setSideNotes, ctx],
     [extractTheoremDefinitions, ctx],

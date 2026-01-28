@@ -68,6 +68,8 @@ export const latexAstFromStringOptions = {
     mintinline: { signature: 'm m' },
     scalerel: { signature: 'm m' },
 
+    newframedtheorem: { signature: 'sO{}O{}momo' },
+    newhideabletheorem: { signature: 'sO{}O{}momo' },
     counterwithin: { signature: 'm m' },
 
     footnote: { signature: 'o o m' },

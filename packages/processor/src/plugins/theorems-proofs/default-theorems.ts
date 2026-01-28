@@ -10,6 +10,8 @@ export type Theorem = {
   counterWithin?: string;
   referenceCounter?: string;
   unnumbered?: boolean;
+  framed?: boolean;
+  hideable?: 'show' | 'hide' | 'clicktoshow';
 };
 
 // https://quarto.org/docs/authoring/cross-references.html#theorems-and-proofs

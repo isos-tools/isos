@@ -59,8 +59,16 @@ function createTheorem(
   theoremName: string,
   id?: string,
 ) {
+  const className = [theorem.style || '', theoremName];
+  if (theorem.framed) {
+    className.push('framed');
+  }
+  if (theorem.hideable) {
+    className.push(`hideable-${theorem.hideable}`);
+  }
+
   const properties: Properties = {
-    className: removeDupes([theorem.style || '', theoremName]),
+    className: removeDupes(className),
   };
 
   if (theoremName !== 'proof' && !theorem.unnumbered) {
@@ -78,15 +86,15 @@ function createTheorem(
 
   const customName = node.attributes?.name || undefined;
   const label = createTitle(theorem, theoremName, customName, id);
-  const children = createTitleElements(theorem, label);
+  const title = createTitleElements(theorem, label);
   const firstP = node.children.find((o) => o.type === 'paragraph');
 
   if (firstP) {
-    firstP.children.unshift(...children);
+    firstP.children.unshift(...title);
   } else {
     node.children.unshift({
       type: 'paragraph',
-      children,
+      children: title,
     });
   }
 

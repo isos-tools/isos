@@ -8,6 +8,8 @@ export type RefObject = {
   counterWithin?: string;
   referenceCounter?: string;
   unnumbered?: boolean;
+  framed?: boolean;
+  hideable?: 'show' | 'hide' | 'clicktoshow';
 };
 
 export const defaultObjects: RefObject[] = [
