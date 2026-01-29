@@ -233,8 +233,8 @@ test('headings with setcounter', async () => {
     <h2 id="charlie"><span class="count">3</span> Charlie</h2>
     <h2 id="delta"><span class="count">4</span> Delta</h2>
 
-    <h2 id="charlie-1"><span class="count">8</span> Charlie</h2>
-    <h2 id="delta-1"><span class="count">9</span> Delta</h2>
+    <h2 id="charlie-1"><span class="count">9</span> Charlie</h2>
+    <h2 id="delta-1"><span class="count">10</span> Delta</h2>
   `);
 
   expect(html).toBe(expected);
@@ -262,4 +262,77 @@ test('unnumbered heading with italic word in the middle', async () => {
   `);
 
   expect(html).toBe(expectedHtml);
+});
+
+test('section with setcounter', async () => {
+  const latex = String.raw`
+    \setcounter{section}{-1}
+    \section{Alpha}
+    \section{Bravo}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ::set-counter{type="h2" value="-1"}
+
+    ## Alpha
+
+    ## Bravo
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expected = unindentStringAndTrim(`
+    <h2 id="alpha"><span class="count">0</span> Alpha</h2>
+    <h2 id="bravo"><span class="count">1</span> Bravo</h2>
+  `);
+
+  expect(html).toBe(expected);
+});
+
+test('chapter with setcounter', async () => {
+  const latex = String.raw`
+    \documentclass{report}
+    \begin{document}
+    \setcounter{chapter}{-1}
+    \chapter{Alpha}
+    \section{Bravo}
+    \subsection{Charlie}
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ---
+    documentClass: report
+    ---
+
+    ::set-counter{type="h2" value="-1"}
+
+    ## Alpha
+
+    ### Bravo
+
+    #### Charlie
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expected = unindentStringAndTrim(`
+    <h2 id="alpha"><span class="count">0</span> Alpha</h2>
+    <h3 id="bravo"><span class="count">0.1</span> Bravo</h3>
+    <h4 id="charlie"><span class="count">0.1.1</span> Charlie</h4>
+  `);
+
+  expect(html).toBe(expected);
 });

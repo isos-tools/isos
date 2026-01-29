@@ -39,6 +39,7 @@ test('newframedtheorem', async () => {
 
   const expectedMarkdown = unindentStringAndTrim(`
     ---
+    documentClass: report
     theorems:
       exercise:
         heading: Example

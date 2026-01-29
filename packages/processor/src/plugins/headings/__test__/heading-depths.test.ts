@@ -52,8 +52,8 @@ test('headings with article documentclass', async () => {
       <h1>Alpha</h1>
     </header>
     <h2 id="bravo">Bravo</h2>
-    <h3 id="charlie"><span class="count">1</span> Charlie</h3>
-    <h4 id="delta"><span class="count">1.1</span> Delta</h4>
+    <h3 id="charlie"><span class="count">0.1</span> Charlie</h3>
+    <h4 id="delta"><span class="count">0.1.1</span> Delta</h4>
     <h5 id="echo">Echo</h5>
     <h6 id="foxtrot">Foxtrot</h6>
   `);
@@ -85,6 +85,7 @@ test('headings with report documentclass', async () => {
   const expectedMarkdown = unindentStringAndTrim(`
     ---
     title: Alpha
+    documentClass: report
     ---
 
     :::make-title
@@ -144,6 +145,7 @@ test('headings with report documentclass and part', async () => {
   const expectedMarkdown = unindentStringAndTrim(`
     ---
     title: Alpha
+    documentClass: report
     ---
 
     :::make-title
@@ -290,6 +292,7 @@ test('theorem with report documentclass', async () => {
   const expectedMarkdown = unindentStringAndTrim(`
     ---
     title: Alpha
+    documentClass: report
     theorems:
       theorem:
         numberWithin: h3
@@ -335,12 +338,12 @@ test('theorem with report documentclass', async () => {
     <div class="definition lemma" id="lem-1">
       <p><span class="title"><strong>Lemma 0.0.2.</strong></span> Some text</p>
     </div>
-    <h3 id="my-section"><span class="count">1</span> My section</h3>
+    <h3 id="my-section"><span class="count">0.1</span> My section</h3>
     <div class="definition theorem" id="thm-2">
-      <p><span class="title"><strong>Theorem 1.1.</strong></span> Some text</p>
+      <p><span class="title"><strong>Theorem 0.1.1.</strong></span> Some text</p>
     </div>
     <div class="definition lemma" id="lem-2">
-      <p><span class="title"><strong>Lemma 1.2.</strong></span> Some text</p>
+      <p><span class="title"><strong>Lemma 0.1.2.</strong></span> Some text</p>
     </div>
   `);
 
@@ -375,6 +378,7 @@ test('theorem with report documentclass and part', async () => {
   const expectedMarkdown = unindentStringAndTrim(`
     ---
     title: Alpha
+    documentClass: report
     theorems:
       theorem:
         numberWithin: h2

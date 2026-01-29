@@ -481,6 +481,10 @@ test('framedsidenote', async () => {
   // console.log(markdown);
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
+    ---
+    documentClass: tufte-handout
+    ---
+
     The algebra of real numbers depends[^1] and[^2]:
 
     [^1]: abc
@@ -546,6 +550,10 @@ test('framedsidenote with offset', async () => {
   // console.log(markdown);
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
+    ---
+    documentClass: tufte-handout
+    ---
+
     :::framed
     Associativity for scalar multiplication[^1] every vector.
 
@@ -623,6 +631,10 @@ test('marginnote', async () => {
   // console.log(markdown);
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
+    ---
+    documentClass: tufte-handout
+    ---
+
     Acting as the identity elsewhere. For example, here is a $4$-cycle on the set $\{1,2,\ldots,8\}$:[^1]
 
     [^1]: Throughout these notes, we will use colour to highlight portions of certain permutations, such as the red here.

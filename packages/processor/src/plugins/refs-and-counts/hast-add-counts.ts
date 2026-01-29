@@ -28,7 +28,7 @@ export function addCounts(ctx: Context) {
           if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(type)) {
             const value = node.properties['data-value'];
             const depth = Number(type.slice(1));
-            headingCounter.setCount(depth, Number(value));
+            headingCounter.setCount(depth, Number(value) + 1);
 
             // remove div
             if (parent) {

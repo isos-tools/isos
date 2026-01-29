@@ -16,13 +16,13 @@ export type Context = {
   fileCache: FileCache;
   type: FileType;
   content: string;
-  documentClass: string;
+  hasMakeTitle: boolean;
   sectionToHeading: Record<
     string,
     'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
   >;
   frontmatter: {
-    hasMakeTitle: boolean;
+    documentClass?: string;
     title: string;
     date: string;
     author: Author[];
@@ -53,10 +53,9 @@ export async function createContext(
     fileCache,
     type,
     content: '',
-    documentClass: 'article',
+    hasMakeTitle: false,
     sectionToHeading: {},
     frontmatter: {
-      hasMakeTitle: false,
       title: '',
       date: '',
       author: [],
@@ -80,10 +79,9 @@ export function createTestContext(
     fileCache,
     type,
     content,
-    documentClass: 'article',
+    hasMakeTitle: false,
     sectionToHeading: {},
     frontmatter: {
-      hasMakeTitle: false,
       title: '',
       date: '',
       author: [],

@@ -6,7 +6,8 @@ import { Context } from '../../input-to-markdown/context';
 export function adjustHeadingDepth(ctx: Context) {
   return (tree: Root) => {
     const hasPart = hasPartHeading(tree);
-    ctx.sectionToHeading = createHeadingDepths(ctx.documentClass, hasPart);
+    const { documentClass: doc } = ctx.frontmatter;
+    ctx.sectionToHeading = createHeadingDepths(doc || '', hasPart);
 
     visit(tree, 'element', (node) => {
       if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(node.tagName)) {

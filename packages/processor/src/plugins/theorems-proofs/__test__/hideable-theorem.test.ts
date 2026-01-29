@@ -43,6 +43,7 @@ test('newhideabletheorem', async () => {
 
   const expectedMarkdown = unindentStringAndTrim(`
     ---
+    documentClass: report
     theorems:
       solution:
         numberWithin: h2
@@ -90,6 +91,7 @@ test('newhideabletheorem hide', async () => {
 
   const expectedMarkdown = unindentStringAndTrim(`
     ---
+    documentClass: report
     theorems:
       solution:
         numberWithin: h2
@@ -137,6 +139,7 @@ test('newhideabletheorem emptybox', async () => {
 
   const expectedMarkdown = unindentStringAndTrim(`
     ---
+    documentClass: report
     theorems:
       solution:
         numberWithin: h2
@@ -184,6 +187,7 @@ test('newhideabletheorem not framed', async () => {
 
   const expectedMarkdown = unindentStringAndTrim(`
     ---
+    documentClass: report
     theorems:
       solution:
         numberWithin: h2

@@ -13,11 +13,7 @@ export function createHeadingCounter(): HeadingCounter {
       return count[depth - 1];
     },
     getCounts(depth: number) {
-      const counts = count.slice(1, depth);
-
-      // remove zero counts from the left side
-      const idx = counts.findIndex((n) => n !== 0);
-      return idx > 0 ? counts.slice(idx) : counts;
+      return count.slice(1, depth);
     },
     setCount(depth: number, value: number) {
       count[depth - 1] = value - 1;

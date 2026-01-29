@@ -38,7 +38,7 @@ export function extractTopMatter(ctx: Context) {
         const parent = info.parents[0] as Environment;
 
         if (node.content === 'maketitle') {
-          ctx.frontmatter.hasMakeTitle = true;
+          ctx.hasMakeTitle = true;
         }
 
         if (node.content === 'title') {
