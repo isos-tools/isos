@@ -1,7 +1,9 @@
-import { Root } from 'hast';
+import { ElementContent, Parent, Root } from 'hast';
+import remarkRehype from 'remark-rehype';
 import { visit } from 'unist-util-visit';
 
 import { Context } from '../../markdown-to-mdx/context';
+import { createRemarkProcessor } from '../../remark-processor';
 import { createHeadingCounter } from '../headings/heading-counter';
 import { createTheoremCounter } from '../theorems-proofs/theorem-counter';
 import { formatCount } from './format-count';
@@ -13,9 +15,7 @@ export function addCounts(ctx: Context) {
   return (tree: Root) => {
     const theoremCounter = createTheoremCounter();
     const headingCounter = createHeadingCounter();
-
-    let headingDepth = 0;
-    let newSection = false;
+    const theoremStore: Record<string, string> = {};
 
     // console.dir(tree, { depth: null });
 
@@ -48,9 +48,8 @@ export function addCounts(ctx: Context) {
             if (className.includes('unnumbered')) {
               Object.assign(node, { type: 'text', value: '' });
             } else {
-              headingDepth = Number(String(className[1]).slice(-1));
+              const headingDepth = Number(String(className[1]).slice(-1));
               headingCounter.increment(headingDepth);
-              newSection = true;
 
               if (headingDepth < 2 || headingDepth > 4) {
                 Object.assign(node, { type: 'text', value: '' });
@@ -96,11 +95,11 @@ export function addCounts(ctx: Context) {
 
             const theoremName = String(className[1]);
             const ctxTheorem = ctx.frontmatter.theorems[theoremName];
-            // console.log(ctx.frontmatter.theorems);
 
             if (ctxTheorem) {
               const { referenceCounter, unnumbered } = ctxTheorem;
               const id = String(node.properties['data-id'] || '');
+              const tag = String(node.properties['data-tag'] || '');
               let value = '';
 
               if (!unnumbered) {
@@ -112,13 +111,17 @@ export function addCounts(ctx: Context) {
                 if (numberWithin) {
                   const depth = Number(numberWithin.slice(1));
 
-                  if (newSection && depth >= headingDepth) {
+                  const str = headingCounter.getCounts(depth).join('');
+                  if (theoremStore[countName] !== str) {
+                    theoremStore[countName] = str;
                     theoremCounter.reset(countName);
-                    newSection = false;
                   }
 
-                  const count = theoremCounter.increment(countName);
-                  counts.push(...headingCounter.getCounts(depth), count);
+                  if (!tag) {
+                    const headingCounts = headingCounter.getCounts(depth);
+                    const count = theoremCounter.increment(countName);
+                    counts.push(...headingCounts, count);
+                  }
 
                   // TODO: counterWithin
                   // } else if (counterWithin) {
@@ -131,24 +134,45 @@ export function addCounts(ctx: Context) {
 
                   //   const count = theoremCounter.increment(countName);
                   //   counts.push(...headingCounter.getCounts(depth), count);
-                } else {
+                } else if (!tag) {
                   counts.push(theoremCounter.increment(countName));
                 }
 
-                const count = formatCount(counts);
+                const firstAboveZeroIdx = counts.findIndex((n) => n > 0);
+                const count =
+                  countTheorem.type === 'float'
+                    ? formatCount(counts.slice(firstAboveZeroIdx))
+                    : formatCount(counts);
+
                 value = ` ${count}`;
 
                 if (id) {
-                  const label = `${ctxTheorem.heading} ${count}`;
-                  ctx.frontmatter.refMap[id] = { id, label };
+                  if (className[0] === 'eq-count' && tag) {
+                    const label = `${ctxTheorem.heading} (${tag})`;
+                    ctx.frontmatter.refMap[id] = { id, label };
+                  } else {
+                    const label = `${ctxTheorem.heading} ${count}`;
+                    ctx.frontmatter.refMap[id] = { id, label };
+                  }
                 }
               }
 
               if (className[0] === 'eq-count') {
-                Object.assign(node, {
-                  type: 'text',
-                  value: `(${value.trim()})`,
-                });
+                if (tag) {
+                  Object.assign(node, {
+                    type: 'element',
+                    tagName: 'span',
+                    properties: {
+                      className: ['eq-count'],
+                    },
+                    children: getTagHast(`(${tag})`),
+                  });
+                } else {
+                  Object.assign(node, {
+                    type: 'text',
+                    value: `(${value.trim()})`,
+                  });
+                }
               } else {
                 Object.assign(node, { type: 'text', value });
               }
@@ -160,4 +184,17 @@ export function addCounts(ctx: Context) {
 
     // console.log(ctx.frontmatter.refMap);
   };
+}
+
+const processor = createRemarkProcessor([remarkRehype]);
+
+function getTagHast(tag: string) {
+  const parsed = processor.parse(String(tag));
+  const transformed = processor.runSync(parsed) as Parent;
+
+  if (transformed.children.length === 0) {
+    return [];
+  }
+  const firstChild = transformed.children[0] as Parent;
+  return firstChild.children as ElementContent[];
 }

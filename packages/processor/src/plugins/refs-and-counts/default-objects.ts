@@ -116,6 +116,7 @@ export const defaultObjects: RefObject[] = [
     heading: 'Figure',
     abbr: 'fig',
     unnumbered: false,
+    numberWithin: 'chapter',
   },
   {
     type: 'float',
@@ -123,6 +124,7 @@ export const defaultObjects: RefObject[] = [
     heading: 'Table',
     abbr: 'tbl',
     unnumbered: false,
+    numberWithin: 'chapter',
   },
   {
     type: 'float',

@@ -42,8 +42,7 @@ export function addFrontmatter(ctx: Context) {
         ctx.frontmatter['reference-location'];
     }
 
-    const { theorems } = ctx.frontmatter;
-    const theoremsYaml = theoremsToFrontmatter(theorems);
+    const theoremsYaml = theoremsToFrontmatter(ctx);
     if (Object.keys(theoremsYaml).length > 0) {
       toExport.theorems = theoremsYaml;
     }

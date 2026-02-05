@@ -16,9 +16,14 @@ export function createMaths(node: Element): Math {
     type: 'math',
     value: math.value,
   };
+  const meta = [];
   const id = String(node.properties.id || '');
   if (id) {
-    result.meta = ` {#${id}}`;
+    meta.push(`#${id}`);
+  }
+
+  if (id) {
+    result.meta = ` {${meta.join(' ')}}`;
   }
   return result;
 }

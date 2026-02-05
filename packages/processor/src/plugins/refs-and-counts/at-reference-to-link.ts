@@ -1,11 +1,13 @@
-import { Element, Root, Text } from 'hast';
+import { Element, ElementContent, Parent, Root, Text } from 'hast';
 import { findAndReplace } from 'hast-util-find-and-replace';
+import remarkRehype from 'remark-rehype';
 
 import { Context, Reference } from '../../markdown-to-mdx/context';
+import { createRemarkProcessor } from '../../remark-processor';
 
 const pattern = /(^|[^a-zA-Z0-9])@([\w-]+)/g;
 
-export default function atReferenceToLink(ctx: Context) {
+export function atReferenceToLink(ctx: Context) {
   return (tree: Root) => {
     // console.dir(tree, { depth: null });
     // console.log(ctx.frontmatter.refMap);
@@ -25,9 +27,6 @@ export default function atReferenceToLink(ctx: Context) {
         if (reference) {
           output.push(createReferenceLink(reference));
         } else {
-          // TODO: warn about undefined reference
-          // console.error(`undefined reference: ${ref}`);
-
           output.push(createBrokenReferenceWarning(ref));
         }
 
@@ -45,8 +44,21 @@ function createReferenceLink(reference: Reference): Element {
       href: `#${reference.id}`,
       class: 'ref',
     },
-    children: [{ type: 'text', value: reference.label }],
+    children: getTagHast(reference.label),
   };
+}
+
+const processor = createRemarkProcessor([remarkRehype]);
+
+function getTagHast(tag: string) {
+  const parsed = processor.parse(String(tag));
+  const transformed = processor.runSync(parsed) as Parent;
+
+  if (transformed.children.length === 0) {
+    return [];
+  }
+  const firstChild = transformed.children[0] as Parent;
+  return firstChild.children as ElementContent[];
 }
 
 function createBrokenReferenceWarning(ref: string): Element {

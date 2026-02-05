@@ -358,3 +358,82 @@ test('expand newcommand inside newcommand', async () => {
   // const quartoHtml = await markdownToQuartoHtml(markdown);
   // console.log(quartoHtml);
 });
+
+test('maths equations with labels and tags', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{amsmath}
+    \usepackage[noabbrev, capitalise, nameinlink]{cleveref}
+    \begin{document}
+
+    \begin{equation}\label{eq:einstein1}
+      E=mc^2
+    \end{equation}
+
+    Hello, \cref{eq:einstein1}.
+
+    \begin{equation}\label{eq:einstein2}
+      E=mc^2\tag{hello $E$}
+    \end{equation}
+
+    Hello, \cref{eq:einstein2}.
+
+    \begin{equation}\label{eq:einstein3}
+      E=mc^2
+    \end{equation}
+
+    Hello, \cref{eq:einstein3}.
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    $$
+    \begin{equation}E=mc^{2}\end{equation}
+    $$ {#eq-einstein-1}
+
+    Hello, @eq-einstein-1.
+
+    $$
+    \begin{equation}E=mc^{2}\tag{hello $E$}\end{equation}
+    $$ {#eq-einstein-2}
+
+    Hello, @eq-einstein-2.
+
+    $$
+    \begin{equation}E=mc^{2}\end{equation}
+    $$ {#eq-einstein-3}
+
+    Hello, @eq-einstein-3.
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown, {
+    // state: {
+    //   maths: {
+    //     mathsAsTex: false,
+    //     mathsFontName: 'computerModern',
+    //     syntaxHighlight: false,
+    //   },
+    // },
+  });
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <p id="eq-einstein-1" class="maths env-equation"><code class="latex">\begin{equation}E=mc^{2}\end{equation}</code><span class="eq-count">(1)</span></p>
+    <p>Hello, <a href="#eq-einstein-1" class="ref">Equation 1</a>.</p>
+    <p id="eq-einstein-2" class="maths env-equation"><code class="latex">\begin{equation}E=mc^{2}\end{equation}</code><span class="eq-count"><span class="eq-count">(hello <code class="latex">E</code>)</span></span></p>
+    <p>Hello, <a href="#eq-einstein-2" class="ref">Equation (hello <code class="latex">E</code>)</a>.</p>
+    <p id="eq-einstein-3" class="maths env-equation"><code class="latex">\begin{equation}E=mc^{2}\end{equation}</code><span class="eq-count">(2)</span></p>
+    <p>Hello, <a href="#eq-einstein-3" class="ref">Equation 2</a>.</p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+
+  // const quartoHtml = await markdownToQuartoHtml(markdown);
+  // console.log(quartoHtml);
+});

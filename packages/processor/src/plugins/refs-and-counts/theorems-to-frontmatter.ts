@@ -1,3 +1,4 @@
+import { Context } from '../../input-to-markdown/context';
 import {
   RefObject,
   RefObjectYaml,
@@ -5,13 +6,12 @@ import {
   defaultObjects,
 } from './default-objects';
 
-export function theoremsToFrontmatter(theorems: RefObjectsYaml) {
-  // const {theorems} = ctx.frontmatter
-  // console.log(ctx.frontmatter.theorems);
+export function theoremsToFrontmatter(ctx: Context) {
+  const { theorems } = ctx.frontmatter;
+  // console.log(theorems);
   return Object.entries(theorems).reduce(
     (acc: RefObjectsYaml, [name, theorem]) => {
       const obj = defaultObjects.find((o) => o.name === name);
-      // console.log(obj);
 
       if (obj) {
         const result: RefObjectYaml = {};
@@ -24,13 +24,14 @@ export function theoremsToFrontmatter(theorems: RefObjectsYaml) {
             continue;
           }
 
-          // unnumbered theorems are given an .unnumbered class
-          // so don't need to be recorded in frontmatter
-          // if (key === 'unnumbered') {
-          //   continue;
-          // }
-
-          result[key] = value;
+          if (key === 'numberWithin') {
+            // note: this conversion needs to be done at this stage
+            // so the check above can pass even though we need to
+            // convert the section to its heading.
+            result[key] = ctx.sectionToHeading[value];
+          } else {
+            result[key] = value;
+          }
         }
 
         if (Object.keys(result).length > 0) {

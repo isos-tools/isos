@@ -28,6 +28,8 @@ export type Frontmatter = {
   date: string;
   author: Author | Author[];
   abstract: string;
+  documentClass?: string;
+  hasPart?: boolean;
   theorems: RefObjectsYaml;
   'reference-location': string;
 };
@@ -41,6 +43,8 @@ export type Context = {
     theorems: RefObjectsYaml;
     refMap: Record<string, Reference>;
     referenceLocation: string;
+    documentClass?: string;
+    hasPart?: boolean;
   };
   hasSideNotes: boolean;
 };

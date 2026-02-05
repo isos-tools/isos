@@ -3,50 +3,47 @@ import { getArgsContent } from '@unified-latex/unified-latex-util-arguments';
 import { visit } from '@unified-latex/unified-latex-util-visit';
 import kebabCase from 'lodash.kebabcase';
 
-import { printRaw } from '../../../../../unified-latex-forks/unified-latex-util-print-raw/libs/print-raw';
+import { printRaw } from '@isos/unified-latex-util-print-raw';
 
 export function equationLabelToId() {
   return (tree: Ast.Root) => {
     visit(tree, (node) => {
       if (node.type === 'mathenv') {
         const env = (node.env || {}) as Ast.Node;
-        const label = extractLabel(node);
+        const id = extractMacro(node, 'label');
 
         if (
           env.type === 'string' &&
           ['equation', 'align'].includes(env.content)
         ) {
-          if (label) {
-            Object.assign(node, {
-              data: {
-                id: extractLabelText(label),
-              },
-            });
+          const data: Record<string, string> = {};
+          if (id) {
+            data.id = kebabCase(extractText(id));
           }
+          Object.assign(node, { data });
         }
       }
     });
   };
 }
 
-function extractLabel(mathEnv: Ast.Node): Ast.Macro | null {
-  let label = null;
+function extractMacro(mathEnv: Ast.Node, name: string): Ast.Macro | null {
+  let macro = null;
   visit(mathEnv, (node, info) => {
-    if (node.type === 'macro' && node.content === 'label') {
-      label = node;
+    if (node.type === 'macro' && node.content === name) {
+      macro = node;
 
-      // remove label
+      // remove macro
       const parent = info.parents[0];
       if (parent && parent.type === 'mathenv') {
         parent.content.splice(info.index || 0, 1);
       }
     }
   });
-  return label;
+  return macro;
 }
 
-function extractLabelText(label: Ast.Macro) {
-  const args = getArgsContent(label);
-  const text = printRaw(args[args.length - 1] || []).trim();
-  return kebabCase(text);
+function extractText(macro: Ast.Macro) {
+  const args = getArgsContent(macro);
+  return printRaw(args[args.length - 1] || []).trim();
 }

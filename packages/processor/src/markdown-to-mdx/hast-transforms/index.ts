@@ -12,8 +12,9 @@ import { footNotesToSideNotes } from '../../plugins/footnotes/footnotes-to-siden
 import { replaceFootnoteRefDefs } from '../../plugins/footnotes/replace-ref-def';
 import { addDefaultAltText } from '../../plugins/images/default-image-alt';
 import { addMathsRefsAndCount } from '../../plugins/maths/add-maths-refs-and-count';
+import { mathTagToRefLabel } from '../../plugins/maths/math-tag-to-ref-label';
 import { missingMathsImageToSvg } from '../../plugins/missing-maths/missing-maths-img-to-svg';
-import atReferenceToLink from '../../plugins/refs-and-counts/at-reference-to-link';
+import { atReferenceToLink } from '../../plugins/refs-and-counts/at-reference-to-link';
 import { addCounts } from '../../plugins/refs-and-counts/hast-add-counts';
 import { Context } from '../context';
 import { Options } from '../options';
@@ -85,6 +86,7 @@ function createRehypeFragmentPlugins(
     // ],
 
     // should be last
+    [mathTagToRefLabel, ctx],
     [addCounts, ctx],
     [atReferenceToLink, ctx], // depends on addCounts
 

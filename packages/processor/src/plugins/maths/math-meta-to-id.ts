@@ -14,11 +14,15 @@ export function mathMetaToId() {
         const attr = parseAttr(meta).prop;
 
         if (attr) {
+          const properties = {
+            'data-id': attr.id,
+          };
+
           node.data = {
             ...(node.data || {}),
             hProperties: {
               ...(node.data?.hProperties || {}),
-              'data-id': attr.id,
+              ...properties,
             },
           };
         }

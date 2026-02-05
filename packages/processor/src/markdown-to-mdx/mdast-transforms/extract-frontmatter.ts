@@ -3,6 +3,7 @@ import { Root } from 'mdast';
 import { visit } from 'unist-util-visit';
 import { parse } from 'yaml';
 
+import { createHeadingDepths } from '../../plugins/headings/heading-depths';
 import {
   RefObjectsYaml,
   createDefaultObjectsYaml,
@@ -39,6 +40,15 @@ export function extractFrontmatter(ctx: Context) {
       if (fm.abstract) {
         ctx.frontmatter.abstract = fm.abstract;
       }
+
+      if (fm.documentClass) {
+        ctx.frontmatter.documentClass = fm.documentClass;
+      }
+
+      if (fm.hasPart) {
+        ctx.frontmatter.hasPart = fm.hasPart;
+      }
+
       if (fm.theorems) {
         const { custom = [], ...theorems } = fm.theorems;
         const customObj = custom.reduce(
@@ -48,6 +58,21 @@ export function extractFrontmatter(ctx: Context) {
           },
           {},
         );
+
+        // convert section to heading in theorem.numberWithin
+        const { documentClass, hasPart } = ctx.frontmatter;
+        const depths = createHeadingDepths(documentClass, hasPart);
+        Object.entries(ctx.frontmatter.theorems).forEach(
+          ([name, theorem]) => {
+            if (!Array.isArray(theorem)) {
+              if (theorem.numberWithin) {
+                const thm = ctx.frontmatter.theorems[name];
+                thm.numberWithin = depths[theorem.numberWithin];
+              }
+            }
+          },
+        );
+
         ctx.frontmatter.theorems = merge(
           ctx.frontmatter.theorems,
           theorems || {},
