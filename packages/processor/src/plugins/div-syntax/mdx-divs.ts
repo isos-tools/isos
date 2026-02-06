@@ -25,6 +25,8 @@ export function divSyntax(_ctx: Context) {
     visit(tree, 'containerDirective', (node) => {
       if (node.name === ' ') {
         const id = node.attributes?.id;
+        const className = node.attributes?.class;
+
         if (id) {
           const [abbr] = id.split('-');
           const float = defaultFloats.find((o) => o.abbr === abbr);
@@ -34,11 +36,8 @@ export function divSyntax(_ctx: Context) {
               createFigure(node, float.name, ctxObj, id);
             }
           }
-        }
-
-        const klass = node.attributes?.class;
-        if (klass) {
-          const classes = klass.split(' ');
+        } else if (className) {
+          const classes = className.split(' ');
           if (classes.includes('fig')) {
             const float = defaultFloats.find((o) => o.abbr === 'fig');
             if (float) {
@@ -75,7 +74,7 @@ function createFigure(
 
   const contentHast = getContentHast(content);
 
-  children.push(...contentHast);
+  children.push(contentHast);
 
   // if (caption.length > 0) {
   const strong: Element = {
@@ -191,7 +190,16 @@ function getContentHast(content: (BlockContent | DefinitionContent)[]) {
     children: content,
   }) as Element;
 
-  return contentHast.children;
+  const elem: ElementContent = {
+    type: 'element',
+    tagName: 'div',
+    properties: {
+      className: ['fig-content'],
+    },
+    children: contentHast.children,
+  };
+
+  return elem;
 }
 
 function removeDupes(arr: string[]) {

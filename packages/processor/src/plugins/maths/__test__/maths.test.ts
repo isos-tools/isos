@@ -359,6 +359,50 @@ test('expand newcommand inside newcommand', async () => {
   // console.log(quartoHtml);
 });
 
+test('maths equation with tag', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{amsmath}
+    \begin{document}
+    \begin{equation}
+      a+b\tag{$*$}
+    \end{equation}
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    $$
+    \begin{equation}a+b\tag{$*$}\end{equation}
+    $$
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown, {
+    // state: {
+    //   maths: {
+    //     mathsAsTex: false,
+    //     mathsFontName: 'computerModern',
+    //     syntaxHighlight: false,
+    //   },
+    // },
+  });
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <p class="maths env-equation"><code class="latex">\begin{equation}a+b\end{equation}</code><span class="eq-tag">(<code class="latex">*</code>)</span></p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+
+  // const quartoHtml = await markdownToQuartoHtml(markdown);
+  // console.log(quartoHtml);
+});
+
 test('maths equations with labels and tags', async () => {
   const latex = String.raw`
     \documentclass{article}

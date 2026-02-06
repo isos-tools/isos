@@ -23,13 +23,19 @@ export function createImage(node: Macro): Macro {
   const attrs = args.slice(0, -1).filter(Boolean).flat() as Ast.Node[];
   // console.dir(attrs, { depth: null });
 
+  const altIdx = attrs.findIndex((o) => {
+    return o.type === 'string' && o.content === 'alt';
+  });
   if (
-    attrs[0] &&
-    attrs[0].type === 'string' &&
-    attrs[0].content === 'alt' &&
-    attrs[2].type === 'group'
+    altIdx !== -1 &&
+    attrs.length > 2 &&
+    attrs[altIdx + 1].type === 'string' &&
+    // @ts-expect-error
+    attrs[altIdx + 1].content === '=' &&
+    attrs[altIdx + 2].type === 'group'
   ) {
-    attributes.alt = convertToMarkdown(attrs[2].content).trim();
+    // @ts-expect-error
+    attributes.alt = convertToMarkdown(attrs[altIdx + 2].content).trim();
   }
 
   // const id = attrs.find(

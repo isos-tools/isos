@@ -257,7 +257,7 @@ article {
     dt {
       margin-left: -$marginLeft;
       margin-right: 0.3em;
-      font-style: italic;
+      font-weight: bold;
     }
 
     dd {
@@ -271,25 +271,30 @@ article {
   }
 
   table {
+    $border: 2px;
     margin: 0 auto;
     border-collapse: collapse;
     font-size: 0.9em;
+    border-radius: 0.35em;
+    box-shadow: 0 0 0 $border hsl(from var(--textColor) h s calc(l - 70));
 
-    &,
     th,
     td {
-      border: 2px solid hsl(from var(--textColor) h s calc(l - 70));
-    }
-    & {
+      border: $border solid hsl(from var(--textColor) h s calc(l - 70));
       border-right-width: 0;
       border-bottom-width: 0;
+      padding: 0.5em 0.8em;
+      vertical-align: top;
+
+      &:first-child {
+        border-left-width: 0;
+      }
     }
-    th,
-    td {
-      padding: 0 0.4em;
+
+    thead tr th {
       border-top-width: 0;
-      border-left-width: 0;
     }
+
   }
 
   code.maths {
@@ -313,19 +318,6 @@ article {
     }
   }
 
-  .framed {
-    box-shadow: 0 0 0 2px hsl(from var(--textColor) h s calc(l - 50));
-    padding: 1em 2em 1em 1.2em;
-    margin: 2em 0;
-
-    & > *:first-child * {
-      margin-top: 0;
-    }
-    p:last-child {
-      margin-bottom: 0;
-    }
-  }
-
   // .maths {
   //   svg {
   //     overflow: visible;
@@ -338,6 +330,10 @@ article {
     // overflow: auto;
     svg {
       max-width: 100%;
+    }
+
+    .eq-tag, .eq-count {
+      font-style: normal;
     }
   }
 
@@ -353,7 +349,8 @@ article {
     } */
   }
 
-  // theorems
+  // theorems ----------------
+
   .plain {
     font-style: italic;
     .title {
@@ -389,6 +386,25 @@ article {
     }
   }
 
+  .framed {
+    box-shadow: 0 0 0 2px hsl(from var(--textColor) h s calc(l - 70));
+    padding: 1em 2em 1em 1.2em;
+    margin: 2em 0;
+    border-radius: 0.35rem;
+
+    & > *:first-child * {
+      margin-top: 0;
+    }
+    p:first-child {
+      margin-top: 0;
+    }
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  // ----------------
+
   img {
     display: block;
     margin: 0 auto;
@@ -399,7 +415,25 @@ article {
     margin: 0;
     text-align: center;
 
+    .fig-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      p {
+        flex: 1;
+        max-width: 50%;
+        padding: 1rem;
+        margin: 0;
+        img {
+          display: block;
+          width: 100%;
+        }
+      }
+    }
+
     figcaption {
+      flex: none;
+      width: 100%;
       text-align: center;
       margin: 0.5em 0;
 
@@ -412,6 +446,7 @@ article {
   pre {
     background: hsl(from var(--textColor) h s calc(l - 80));
     border-left: 0.3em solid hsl(from var(--textColor) h s calc(l - 50));
+
     code:not(.maths) {
       display: block;
       background: none;
@@ -431,6 +466,7 @@ article {
 
       display: flex;
       align-items: center;
+
       svg {
         $size: 0.8em;
         flex: 0 0 auto;
@@ -474,70 +510,70 @@ article {
     }
   }
 
-  .boxout {
-    &.proposition,
-    &.lemma {
-      font-style: italic;
-    }
+  // .boxout {
+  //   &.proposition,
+  //   &.lemma {
+  //     font-style: italic;
+  //   }
 
-    .type {
-      // display: inline-block;
-      // margin-right: 0.3em;
-      display: table;
-      margin-top: 4em;
-      margin-bottom: 1em;
+  //   .type {
+  //     // display: inline-block;
+  //     // margin-right: 0.3em;
+  //     display: table;
+  //     margin-top: 4em;
+  //     margin-bottom: 1em;
 
-      text-indent: 0;
-      padding: 0.1em 0.5em 0.05em;
-      border-radius: 0.3em;
-      font-size: 0.8em;
-      font-style: normal;
-      background: #e3c591aa;
-      color: #a36c0b;
+  //     text-indent: 0;
+  //     padding: 0.1em 0.5em 0.05em;
+  //     border-radius: 0.3em;
+  //     font-size: 0.8em;
+  //     font-style: normal;
+  //     background: #e3c591aa;
+  //     color: #a36c0b;
 
-      // homemade small-caps
-      // text-transform: uppercase;
-      // font-size: 0.8rem;
-      // &::first-letter,
-      // .count {
-      //   font-size: 1rem;
-      // }
-    }
+  //     // homemade small-caps
+  //     // text-transform: uppercase;
+  //     // font-size: 0.8rem;
+  //     // &::first-letter,
+  //     // .count {
+  //     //   font-size: 1rem;
+  //     // }
+  //   }
 
-    &.proof,
-    &.solution {
-      padding-right: 1rem;
+  //   &.proof,
+  //   &.solution {
+  //     padding-right: 1rem;
 
-      .type {
-        background: #b9d1b8aa;
-        color: #369755;
-      }
+  //     .type {
+  //       background: #b9d1b8aa;
+  //       color: #369755;
+  //     }
 
-      .proof-box {
-        position: relative;
-        display: block;
-        font-size: 1.2em;
-        font-weight: 900;
-        color: var(--bg);
-        margin-top: 0.5em;
-        margin-bottom: 1.5em;
-        margin-left: 0.35em;
+  //     .proof-box {
+  //       position: relative;
+  //       display: block;
+  //       font-size: 1.2em;
+  //       font-weight: 900;
+  //       color: var(--bg);
+  //       margin-top: 0.5em;
+  //       margin-bottom: 1.5em;
+  //       margin-left: 0.35em;
 
-        &::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          left: 0;
-          margin: auto 0;
-          width: 0.4em;
-          height: 0.4em;
-          border: 2px solid #369755;
-          border-radius: 3px;
-          box-shadow: 0 0 0 0.35em #b9d1b8aa;
-          background: #b9d1b8aa;
-        }
-      }
-    }
-  }
+  //       &::after {
+  //         content: '';
+  //         position: absolute;
+  //         top: 0;
+  //         bottom: 0;
+  //         left: 0;
+  //         margin: auto 0;
+  //         width: 0.4em;
+  //         height: 0.4em;
+  //         border: 2px solid #369755;
+  //         border-radius: 3px;
+  //         box-shadow: 0 0 0 0.35em #b9d1b8aa;
+  //         background: #b9d1b8aa;
+  //       }
+  //     }
+  //   }
+  // }
 }

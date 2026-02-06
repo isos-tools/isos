@@ -1,11 +1,13 @@
-import { Root } from 'hast';
+import { ElementContent, Parent, Root } from 'hast';
+import remarkRehype from 'remark-rehype';
 import { visit } from 'unist-util-visit';
+
+import { createRemarkProcessor } from '../../remark-processor';
 
 const pattern = /\\tag\{(.+?)\}/;
 
 export function mathTagToRefLabel() {
   return (tree: Root) => {
-    // console.dir(tree, { depth: null });
     visit(tree, 'element', (node) => {
       if (node.tagName === 'pre') {
         if (node.children.length > 1) {
@@ -28,13 +30,18 @@ export function mathTagToRefLabel() {
                 if (match !== null) {
                   // remove tag
                   codeFirst.value = codeFirst.value.replace(pattern, '');
+
                   // add tag as eq-count attribute
+                  const tag = match[1];
                   const eqCountFirst = eqCount.children[0];
-                  if (
-                    eqCountFirst.type === 'element' &&
-                    eqCountFirst.properties['data-id']
-                  ) {
-                    eqCountFirst.properties['data-tag'] = match[1];
+                  if (eqCountFirst.type === 'element') {
+                    const id = eqCountFirst.properties['data-id'];
+                    if (id) {
+                      eqCountFirst.properties['data-tag'] = tag;
+                    } else {
+                      eqCount.properties.className = ['eq-tag'];
+                      eqCount.children = getTagHast(`(${tag})`);
+                    }
                   }
                 }
               }
@@ -44,4 +51,17 @@ export function mathTagToRefLabel() {
       }
     });
   };
+}
+
+const processor = createRemarkProcessor([remarkRehype]);
+
+function getTagHast(tag: string) {
+  const parsed = processor.parse(String(tag));
+  const transformed = processor.runSync(parsed) as Parent;
+
+  if (transformed.children.length === 0) {
+    return [];
+  }
+  const firstChild = transformed.children[0] as Parent;
+  return firstChild.children as ElementContent[];
 }

@@ -96,6 +96,22 @@ export function pandocImplicitFigures() {
         );
       }
 
+      const figContent: Element = {
+        type: 'element',
+        tagName: 'div',
+        properties: {
+          className: ['fig-content'],
+        },
+        children: [
+          {
+            type: 'element',
+            tagName: 'p',
+            properties: {},
+            children: [img],
+          },
+        ],
+      };
+
       parent.data = {
         hName: 'figure',
         hProperties: {
@@ -103,7 +119,7 @@ export function pandocImplicitFigures() {
           alt: null,
           id,
         },
-        hChildren: [img, figCaption],
+        hChildren: [figContent, figCaption],
       };
     });
     // console.dir(tree, { depth: null });

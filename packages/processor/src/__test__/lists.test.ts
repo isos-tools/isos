@@ -131,3 +131,39 @@ test('description to dl', async () => {
 
   expect(html).toBe(expectedHtml);
 });
+
+test.skip('description with newlines to dl', async () => {
+  const markdown = await testProcessor.latex(String.raw`
+    \begin{description}
+    \item[Nabla identities] $a$,\\
+      $b$,\\
+      $c$.
+    \end{description}
+  `);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    Nabla identities
+    :   $a$,\
+        $b$,\
+        $c$.
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(`
+    <dl>
+      <dt>Nabla identities</dt>
+      <dd><code class="latex">a</code>,<br />
+        <code class="latex">b</code>,<br />
+        <code class="latex">c</code>.
+      </dd>
+    </dl>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});

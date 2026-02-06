@@ -47,23 +47,6 @@ export function createRehypePlugins(
   return plugins;
 }
 
-// export async function toHast(
-//   children: PhrasingContent[],
-//   ctx: Context,
-//   options: Partial<Options> = {},
-// ) {
-//   const processor = unified().use(
-//     createRehypeFragmentPlugins(ctx, options),
-//   );
-
-//   const root: Root = {
-//     type: 'root',
-//     children,
-//   };
-//   const hast = (await processor.run(root)) as Root;
-//   return hast.children as ElementContent[];
-// }
-
 function createRehypeFragmentPlugins(
   ctx: Context,
   _options: Partial<Options> = {},
@@ -72,7 +55,6 @@ function createRehypeFragmentPlugins(
     addDefaultAltText,
     missingMathsImageToSvg,
     addMathsRefsAndCount,
-    removeEmptyParagraphs,
 
     [replaceFootnoteRefDefs, ctx],
     [footNotesToSideNotes, ctx],
@@ -84,6 +66,7 @@ function createRehypeFragmentPlugins(
     //   properties: { className: 'link' },
     // },
     // ],
+    removeEmptyParagraphs,
 
     // should be last
     [mathTagToRefLabel, ctx],

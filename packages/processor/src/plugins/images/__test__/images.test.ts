@@ -638,3 +638,50 @@ test('images with no label or caption', async () => {
 
   expect(html).toBe(expectedHtml);
 });
+
+test('images with includegraphics*', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{graphicx}
+    \begin{document}
+
+    \begin{figure}
+      \includegraphics*[alt={Alpha}]{fig/ex1-2a.png}
+      \includegraphics*[alt={Bravo}]{fig/ex1-2b.png}
+      \includegraphics*[alt={Charlie}]{fig/ex1-2c.png}
+    \end{figure}
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ::: {.fig}
+
+    ![](fig/ex1-2a.png){alt="Alpha"}
+
+    ![](fig/ex1-2b.png){alt="Bravo"}
+
+    ![](fig/ex1-2c.png){alt="Charlie"}
+
+    :::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <figure>
+      <p><img src="fig/ex1-2a.png" alt="Alpha" /></p>
+      <p><img src="fig/ex1-2b.png" alt="Bravo" /></p>
+      <p><img src="fig/ex1-2c.png" alt="Charlie" /></p>
+      <figcaption><strong>Figure 1</strong></figcaption>
+    </figure>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
