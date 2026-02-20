@@ -16,6 +16,7 @@ import { mathTagToRefLabel } from '../../plugins/maths/math-tag-to-ref-label';
 import { missingMathsImageToSvg } from '../../plugins/missing-maths/missing-maths-img-to-svg';
 import { atReferenceToLink } from '../../plugins/refs-and-counts/at-reference-to-link';
 import { addCounts } from '../../plugins/refs-and-counts/hast-add-counts';
+import { exSolSolutionTitle } from '../../plugins/theorems-proofs/hast-exsol-solution-title';
 import { Context } from '../context';
 import { Options } from '../options';
 import { removeEmptyParagraphs } from './remove-empty-paragraphs';
@@ -72,6 +73,7 @@ function createRehypeFragmentPlugins(
     [mathTagToRefLabel, ctx],
     [addCounts, ctx],
     [atReferenceToLink, ctx], // depends on addCounts
+    [exSolSolutionTitle, ctx], // depends on addCounts
 
     // () => (tree: Root) => {
     //   // console.dir(tree, { depth: null });

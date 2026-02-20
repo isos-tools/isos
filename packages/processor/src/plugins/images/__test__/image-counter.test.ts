@@ -87,13 +87,22 @@ test('image with counter', async () => {
         <p><span class="title"><strong>Theorem 1.1.</strong></span> Some text</p>
       </div>
       <p><img src="image.pdf" alt="my alt text" /></p>
-      <figure><img src="image.pdf" alt="my alt text" />
+      <figure>
+        <div class="fig-content">
+          <p><img src="image.pdf" alt="my alt text" /></p>
+        </div>
         <figcaption><strong>Figure 1:</strong> My <strong>caption</strong></figcaption>
       </figure>
-      <figure id="fig-line"><img src="image.pdf" alt="my alt text" />
+      <figure id="fig-line">
+        <div class="fig-content">
+          <p><img src="image.pdf" alt="my alt text" /></p>
+        </div>
         <figcaption><strong>Figure 2:</strong> My <strong>caption</strong></figcaption>
       </figure>
-      <figure id="fig-line-2"><img src="image.pdf" alt="my other alt text" />
+      <figure id="fig-line-2">
+        <div class="fig-content">
+          <p><img src="image.pdf" alt="my other alt text" /></p>
+        </div>
         <figcaption><strong>Figure 3:</strong> My other <strong>caption</strong></figcaption>
       </figure>
       <p>Check out my <a href="#fig-line" class="ref">Figure 2</a> and <a href="#fig-line-2" class="ref">Figure 3</a> and <a href="#hi" class="ref">Section 1</a>.</p>

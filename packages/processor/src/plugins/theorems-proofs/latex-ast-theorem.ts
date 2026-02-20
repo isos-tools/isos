@@ -7,14 +7,13 @@ import { printRaw } from '@isos/unified-latex-util-print-raw';
 
 import { Context } from '../../input-to-markdown/context';
 
-type Handlers = Record<string, (node: Environment) => Macro>;
+type Handlers = Record<string, (node: Environment) => Macro | null>;
 
 export function createTheoremHandlers(ctx: Context) {
   const { custom, ...theorems } = ctx.frontmatter.theorems;
   // console.log(theorems);
   return Object.entries(theorems).reduce(
     (acc: Handlers, [name, theorem]) => {
-      // console.log(name, theorem);
       if (theorem?.type === 'theorem') {
         acc[name] = createTheorem;
       }
@@ -25,6 +24,7 @@ export function createTheoremHandlers(ctx: Context) {
 }
 
 function createTheorem(node: Environment): Macro {
+  // console.log('hey!');
   const name = extractName(node);
   const attributes: {
     className: string[];
@@ -33,6 +33,7 @@ function createTheorem(node: Environment): Macro {
     className: ['theorem'],
   };
 
+  // console.log(node);
   if (node.env && node.env !== 'theorem') {
     attributes.className.push(node.env);
   }
@@ -41,6 +42,7 @@ function createTheorem(node: Environment): Macro {
     attributes.name = name;
   }
 
+  // return null;
   // console.log(node.content);
 
   return htmlLike({
@@ -66,7 +68,7 @@ function extractName(node: Environment) {
   if (first && first.type === 'string' && first.content === '[') {
     const match = printRaw(node.content)
       .trim()
-      .match(/^\[(.*)\]/);
+      .match(/^\[(.*?)\]/);
 
     if (match !== null) {
       const idx = node.content.findIndex((o) => {

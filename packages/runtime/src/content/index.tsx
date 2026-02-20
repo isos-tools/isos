@@ -153,18 +153,21 @@ const ArticleWrapper = styled.div`
     //   width: calc(${constants.mobileLineWidthBase} * var(--lineWidth, 1));
     // }
 
-    font-size: calc(
-      ${constants.fontSize.base} *
-        var(--fontSize, ${constants.fontSize.initial})
-    );
-    line-height: calc(
-      ${constants.lineHeight.base} *
-        var(--lineHeight, ${constants.lineHeight.initial})
-    );
-    letter-spacing: calc(
-      ${constants.letterSpacing.base} *
-        var(--letterSpacing, ${constants.letterSpacing.initial})
-    );
+    &,
+    button {
+      font-size: calc(
+        ${constants.fontSize.base} *
+          var(--fontSize, ${constants.fontSize.initial})
+      );
+      line-height: calc(
+        ${constants.lineHeight.base} *
+          var(--lineHeight, ${constants.lineHeight.initial})
+      );
+      letter-spacing: calc(
+        ${constants.letterSpacing.base} *
+          var(--letterSpacing, ${constants.letterSpacing.initial})
+      );
+    }
 
     padding: 2em 0 3em;
     // margin: 0 auto;

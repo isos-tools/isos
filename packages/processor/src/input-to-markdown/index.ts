@@ -91,12 +91,17 @@ async function latexToMdAstProcessor(
 
   const mdAst = await createRemarkProcessor([
     [rehypeRemark, options.htmlAstToMdAstOptions()],
-    ...options.mdAstTransforms,
   ]).run(htmlAstTransformed as HastRoot);
 
   // console.dir(mdAst, { depth: null });
 
-  return mdAst as MDastRoot;
+  const mdAstTransformed = await unified()
+    .use(options.mdAstTransforms)
+    .run(mdAst as MDastRoot);
+
+  // console.dir(mdAstTransformed, { depth: null });
+
+  return mdAstTransformed as MDastRoot;
 }
 
 function markdownStringTransforms(

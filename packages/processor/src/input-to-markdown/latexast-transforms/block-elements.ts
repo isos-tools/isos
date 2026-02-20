@@ -49,6 +49,7 @@ export function insertParbreaksAroundBlockElements() {
 
 function shouldGetParBreaks(node: Node | Argument) {
   return (
+    isHeading(node) ||
     isDisplayMath(node) ||
     isEnumerate(node) ||
     isItemize(node) ||
@@ -57,6 +58,20 @@ function shouldGetParBreaks(node: Node | Argument) {
     isTable(node) ||
     isCallout(node)
   );
+}
+
+const headingMacros = [
+  'part',
+  'chapter',
+  'section',
+  'subsection',
+  'subsubsection',
+  'paragraph',
+  'subparagraph',
+];
+
+function isHeading(node: Node | Argument) {
+  return node.type === 'macro' && headingMacros.includes(node.content);
 }
 
 function isDisplayMath(node: Node | Argument) {

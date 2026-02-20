@@ -138,10 +138,11 @@ export function addCounts(ctx: Context) {
                   counts.push(theoremCounter.increment(countName));
                 }
 
-                const firstAboveZeroIdx = counts.findIndex((n) => n > 0);
                 const count =
                   countTheorem.type === 'float'
-                    ? formatCount(counts.slice(firstAboveZeroIdx))
+                    ? formatCount(
+                        counts.slice(counts.findIndex((n) => n > 0)),
+                      )
                     : formatCount(counts);
 
                 value = ` ${count}`;

@@ -88,7 +88,10 @@ test('image with formatted caption text', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
-    <figure><img src="image.png" alt="Image" />
+    <figure>
+      <div class="fig-content">
+        <p><img src="image.png" alt="Image" /></p>
+      </div>
       <figcaption><strong>Figure 1:</strong> <strong>caption</strong> text</figcaption>
     </figure>
   `);
@@ -114,7 +117,10 @@ test('image with formatted caption and alt text', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
-    <figure><img src="image.png" alt="alt text" />
+    <figure>
+      <div class="fig-content">
+        <p><img src="image.png" alt="alt text" /></p>
+      </div>
       <figcaption><strong>Figure 1:</strong> <strong>caption</strong> text</figcaption>
     </figure>
   `);
@@ -132,7 +138,10 @@ test('image with alt, title and caption text', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
-    <figure><img src="image.png" alt="alt text" />
+    <figure>
+      <div class="fig-content">
+        <p><img src="image.png" alt="alt text" /></p>
+      </div>
       <figcaption><strong>Figure 1:</strong> caption <em>text</em></figcaption>
     </figure>
   `);

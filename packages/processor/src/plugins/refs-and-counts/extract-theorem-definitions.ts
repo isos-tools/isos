@@ -53,8 +53,8 @@ export function extractTheoremDefinitions(ctx: Context) {
           };
         }
 
-        if (node.content === 'newhideabletheorem') {
-          const { name, ...theorem } = extractHideableTheorem(node, style);
+        if (node.content === 'newexsol') {
+          const { name, ...theorem } = extractExSol(node, style);
 
           theorems = {
             ...theorems,
@@ -103,54 +103,42 @@ function extractFramedTheorem(
   return theorem;
 }
 
-const defaultHideableOptions: Partial<Theorem> = {
-  hideable: 'clicktoshow',
-  framed: true,
-};
+function extractExSol(node: Macro, style: Theorem['style']): Theorem {
+  const _args = node.args || [];
+  const args = _args.map((arg: Argument) => ({
+    openMark: arg.openMark,
+    content: printRaw(arg.content),
+  }));
 
-function extractHideableTheorem(
-  node: Macro,
-  style: Theorem['style'],
-): Theorem {
-  const theorem = {
-    ...extractTheorem(node, style),
-    ...defaultHideableOptions,
+  const theorem: Theorem = {
+    style,
+    framed: true,
+    unnumbered: args[0].content === '*',
+    hideable: normaliseFlag(args[1].content),
+    name: args[2].content,
+    heading: args[3].content,
+    lowerTitle: args[4].content,
   };
 
-  const args = node.args || [];
-  if (args[1].openMark === '[') {
-    const params = parsePgf(args[1]);
-    if (params.hide === 'true' || params.emptybox === 'true') {
-      theorem.hideable = 'hide';
-    }
-    if (params.show === 'true') {
-      theorem.hideable = 'show';
-    }
-    if (params.isos) {
-      theorem.hideable = params.isos as Theorem['hideable'];
-    }
+  const match = args[5].content.match(/number within=(\S+)/);
 
-    if (params.framed === 'false') {
-      delete theorem.framed;
-    }
+  if (match !== null) {
+    theorem.numberWithin = match[1];
   }
 
   return theorem;
 }
 
-function parsePgf(arg: Argument) {
-  const str = printRaw(arg)
-    .trim()
-    .replace(/^\[\s*/, '')
-    .replace(/\s*\]$/, '');
-
-  return str.split(/\s*,\s*/).reduce((acc: Record<string, string>, s) => {
-    const [k, v] = s.split('=');
-    if (k) {
-      acc[k] = v ? v.replace(/^\{\s*/, '').replace(/\s*\}$/, '') : 'true';
-    }
-    return acc;
-  }, {});
+function normaliseFlag(flag: string) {
+  switch (flag) {
+    case 'emptybox':
+    case 'hide':
+      return 'hide';
+    case 'show':
+      return 'show';
+    default:
+      return 'clicktoshow';
+  }
 }
 
 // Theorem definitions are defined in section 3.4 of:

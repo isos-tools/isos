@@ -59,27 +59,29 @@ test('tables', async () => {
     <div class="definition theorem" id="thm-1">
       <p><span class="title"><strong>Theorem 1.</strong></span> Hi.</p>
       <figure>
-        <table>
-          <thead>
-            <tr>
-              <th style="text-align:center;">Date gilt matures</th>
-              <th style="text-align:center;">Coupon</th>
-              <th style="text-align:center;">Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="text-align:center;">7th December 2028</td>
-              <td style="text-align:center;"><code class="latex">6\%</code></td>
-              <td style="text-align:center;"><code class="latex">\pounds 120.66</code></td>
-            </tr>
-            <tr>
-              <td style="text-align:center;">7th June 2021</td>
-              <td style="text-align:center;"><code class="latex">8\%</code></td>
-              <td style="text-align:center;"><code class="latex">\pounds 134.70</code></td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="fig-content">
+          <table>
+            <thead>
+              <tr>
+                <th style="text-align:center;">Date gilt matures</th>
+                <th style="text-align:center;">Coupon</th>
+                <th style="text-align:center;">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align:center;">7th December 2028</td>
+                <td style="text-align:center;"><code class="latex">6\%</code></td>
+                <td style="text-align:center;"><code class="latex">\pounds 120.66</code></td>
+              </tr>
+              <tr>
+                <td style="text-align:center;">7th June 2021</td>
+                <td style="text-align:center;"><code class="latex">8\%</code></td>
+                <td style="text-align:center;"><code class="latex">\pounds 134.70</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <figcaption><strong>Figure 1</strong></figcaption>
       </figure>
       <p>Hello.</p>

@@ -164,7 +164,10 @@ test('mixed counts', async () => {
     <h3 id="bravo"><span class="count">0.1</span> Bravo</h3>
     <div class="remark solution" id="sol-1">
       <p><span class="title"><em>Solution 0.1.1</em>. </span>See <a href="#fig-ex-1" class="ref">Figure 1</a>.</p>
-      <figure id="fig-ex-1"><img src="ex1.png" alt="Image" />
+      <figure id="fig-ex-1">
+        <div class="fig-content">
+          <p><img src="ex1.png" alt="Image" /></p>
+        </div>
         <figcaption><strong>Figure 1:</strong> Example 1</figcaption>
       </figure>
     </div>
@@ -193,7 +196,10 @@ test('mixed counts', async () => {
     <h2 id="delta"><span class="count">1</span> Delta</h2>
     <div class="remark solution" id="sol-2">
       <p><span class="title"><em>Solution 1.0.1</em>. </span>See <a href="#fig-ex-3" class="ref">Figure 1.1</a>.</p>
-      <figure id="fig-ex-3"><img src="ex3.png" alt="Image" />
+      <figure id="fig-ex-3">
+        <div class="fig-content">
+          <p><img src="ex3.png" alt="Image" /></p>
+        </div>
         <figcaption><strong>Figure 1.1:</strong> Example 3</figcaption>
       </figure>
     </div>
@@ -220,7 +226,10 @@ test('mixed counts', async () => {
     <p>See <a href="#tbl-letters-2" class="ref">Table 1.1</a>.</p>
     <div class="remark solution" id="sol-3">
       <p><span class="title"><em>Solution 1.0.2</em>. </span>See <a href="#fig-ex-4" class="ref">Figure 1.2</a>.</p>
-      <figure id="fig-ex-4"><img src="fig/ex4.png" alt="Image" />
+      <figure id="fig-ex-4">
+        <div class="fig-content">
+          <p><img src="fig/ex4.png" alt="Image" /></p>
+        </div>
         <figcaption><strong>Figure 1.2:</strong> Example 4</figcaption>
       </figure>
     </div>

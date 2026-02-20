@@ -14,6 +14,7 @@ import { pandocImplicitFigures } from '../../plugins/images/pandoc-implicit-figu
 import { mathMetaToId } from '../../plugins/maths/math-meta-to-id';
 import { headingSections } from '../../plugins/sections/heading-sections';
 import { tableCaptionToFigure } from '../../plugins/tables/table-caption-to-figure';
+import { exSolSolutionDirective } from '../../plugins/theorems-proofs/clicktoshow-directive';
 import { theorems } from '../../plugins/theorems-proofs/mdast-theorems';
 import { warn } from '../../plugins/warn/warn';
 import { Context } from '../context';
@@ -46,6 +47,7 @@ export function createMdastTransforms(
     htmlToWarn,
     framed,
     setHeadingCounterToDiv,
+    exSolSolutionDirective,
     [divSyntax, ctx],
     [footnoteReference, ctx],
     [headings, ctx], // headingSections depends on this

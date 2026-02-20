@@ -153,7 +153,7 @@ const ViewOptionsForm = styled.form`
 `;
 
 const Fieldset = styled.fieldset`
-  padding: 0 0.75em 0 ${actions.x};
+  padding: 0 ${actions.x};
   border: 0;
   margin-bottom: 2em;
 `;

@@ -88,24 +88,26 @@ test('syntax bug', async () => {
       <h2><span class="count">1</span> Introduction</h2>
       <figure id="tbl-table">
         <figcaption><strong>Table 1:</strong> An <em>image</em> treated like a table</figcaption>
-        <img src="table.png" alt="Image" />
+        <div class="fig-content"><img src="table.png" alt="Image" /></div>
       </figure>
       <figure id="tbl-chair">
         <figcaption><strong>Table 2:</strong> A <em>table</em> treated like a table</figcaption>
-        <table>
-          <thead>
-            <tr>
-              <th>A</th>
-              <th>B</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>C</td>
-              <td>D</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="fig-content">
+          <table>
+            <thead>
+              <tr>
+                <th>A</th>
+                <th>B</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>C</td>
+                <td>D</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </figure>
       <p>See <a href="#sec-introduction" class="ref">Section 1</a> and <a href="#tbl-table" class="ref">Table 1</a> and <a href="#tbl-chair" class="ref">Table 2</a>.</p>
     </section>

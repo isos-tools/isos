@@ -22,6 +22,7 @@ import {
   codeToTableCaption,
   tableCaptionToCode,
 } from '../plugins/tables/formatted-table-caption';
+import { createExSolSeparator } from '../plugins/theorems-proofs/create-exsol-separator';
 import { createTheoremHandlers } from '../plugins/theorems-proofs/latex-ast-theorem';
 import { Context } from './context';
 import { createHastTransforms } from './hast-transforms';
@@ -67,9 +68,11 @@ export const latexAstFromStringOptions = {
     sout: { signature: 'm' },
     mintinline: { signature: 'm m' },
     scalerel: { signature: 'm m' },
+    tag: { signature: 'm' },
 
     newframedtheorem: { signature: 'sO{}O{}momo' },
-    newhideabletheorem: { signature: 'sO{}O{}momo' },
+    newexsol: { signature: 'sO{}mmmmO{}' },
+    // tcblower: { breakAround: true },
     counterwithin: { signature: 'm m' },
 
     footnote: { signature: 'o o m' },
@@ -152,6 +155,7 @@ function createLatexToHastHandlers(ctx: Context): LatexConvertOptions {
     },
     macroReplacements: {
       includegraphics: createImage,
+      tcblower: createExSolSeparator,
     },
   };
 }

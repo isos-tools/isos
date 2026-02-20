@@ -46,34 +46,38 @@ function Window({ update }: Props) {
       let downloaded = 0;
       let contentLength: number | null = null;
 
-      await update.downloadAndInstall((event) => {
-        switch (event.event) {
-          case 'Started':
-            if (typeof event.data.contentLength === 'number') {
-              contentLength = event.data.contentLength;
-              console.log(
-                `started downloading ${event.data.contentLength} bytes`,
-              );
-            }
-            break;
-          case 'Progress':
-            downloaded += event.data.chunkLength;
-            if (typeof contentLength === 'number') {
-              setProgress((downloaded / contentLength) * 100);
-              console.log(
-                `downloaded ${downloaded} from ${contentLength}`,
-              );
-            }
-            break;
-          case 'Finished':
-            setProgress(100);
-            console.log('download finished');
-            break;
-        }
-      });
+      try {
+        await update.downloadAndInstall((event) => {
+          switch (event.event) {
+            case 'Started':
+              if (typeof event.data.contentLength === 'number') {
+                contentLength = event.data.contentLength;
+                console.log(
+                  `started downloading ${event.data.contentLength} bytes`,
+                );
+              }
+              break;
+            case 'Progress':
+              downloaded += event.data.chunkLength;
+              if (typeof contentLength === 'number') {
+                setProgress((downloaded / contentLength) * 100);
+                console.log(
+                  `downloaded ${downloaded} from ${contentLength}`,
+                );
+              }
+              break;
+            case 'Finished':
+              setProgress(100);
+              console.log('download finished');
+              break;
+          }
+        });
 
-      console.log('update installed');
-      await relaunch();
+        console.log('update installed');
+        await relaunch();
+      } catch (err) {
+        setError(String(err));
+      }
     })();
   }, [update]);
 

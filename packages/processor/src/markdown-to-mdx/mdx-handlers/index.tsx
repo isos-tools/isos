@@ -8,6 +8,7 @@ import { CalloutIcon } from '../../plugins/callout/mdx-callout-icon';
 // import { Authors } from '../../plugins/cover/mdx-authors';
 import { OrcidLink } from '../../plugins/cover/orcid-link';
 import { Maths } from '../../plugins/maths/mdx-handlers/Maths';
+import { ClickToShowTheorem } from '../../plugins/theorems-proofs/mdx-clicktoshow';
 import { WarnSpan } from '../../plugins/warn/mdx-warn';
 import { Options } from '../options';
 import { MdxState } from './mdx-state';
@@ -49,9 +50,12 @@ export function createRunOptions(
         }
       },
       div(props) {
+        // console.log(props);
         const className = String(props.class || '');
         if (className.includes('task')) {
           return <Task {...props} />;
+        } else if (className.includes('exsol-solution')) {
+          return <ClickToShowTheorem {...props} />;
         } else {
           return <div {...props} />;
         }

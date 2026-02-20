@@ -85,7 +85,8 @@ article {
     margin-bottom: 0;
   }
 
-  h4 {
+  h4, h5, h6 {
+    font-size: 1em;
     margin: 2em 0 0.2em;
   }
 
@@ -297,6 +298,13 @@ article {
 
   }
 
+  .maths {
+    svg {
+      max-width: 100%;
+      overflow: visible;
+    }
+  }
+
   code.maths {
     .mathjax-error {
       display: inline-block;
@@ -318,18 +326,13 @@ article {
     }
   }
 
-  // .maths {
-  //   svg {
-  //     overflow: visible;
-  //   }
-  // }
-
   p.maths {
     // padding-left: 1em;
     text-align: center;
     // overflow: auto;
     svg {
       max-width: 100%;
+      // overflow: visible;
     }
 
     .eq-tag, .eq-count {
@@ -400,6 +403,24 @@ article {
     }
     p:last-child {
       margin-bottom: 0;
+    }
+
+    hr {
+      border: dashed hsl(from var(--textColor) h s calc(l - 70));
+      border-width: 2px 0 0 0;
+      color: transparent;
+      margin-top: -0.5em;
+    }
+
+    button.clicktoshow {
+      font-weight: bold;
+      line-height: 1;
+      padding: 0.5em 0.5em 0.4em 0.5em;
+      cursor: pointer;
+      border-radius: 0.4em;
+      border: 0;
+      background: var(--textColor);
+      color: var(--bg);
     }
   }
 

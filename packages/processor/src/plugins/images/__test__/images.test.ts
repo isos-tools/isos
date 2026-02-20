@@ -93,7 +93,10 @@ test('image with caption', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
-    <figure><img src="image.png" alt="Image" />
+    <figure>
+      <div class="fig-content">
+        <p><img src="image.png" alt="Image" /></p>
+      </div>
       <figcaption><strong>Figure 1:</strong> My <strong>caption</strong> text</figcaption>
     </figure>
   `);
@@ -164,7 +167,10 @@ test('image with alt text and caption', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
-    <figure><img src="image.png" alt="My alt text" />
+    <figure>
+      <div class="fig-content">
+        <p><img src="image.png" alt="My alt text" /></p>
+      </div>
       <figcaption><strong>Figure 1:</strong> My <strong>caption</strong> text</figcaption>
     </figure>
   `);
@@ -207,7 +213,10 @@ test('image with alt text, caption and label', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
-    <figure id="fig-logo"><img src="image.png" alt="My alt text" />
+    <figure id="fig-logo">
+      <div class="fig-content">
+        <p><img src="image.png" alt="My alt text" /></p>
+      </div>
       <figcaption><strong>Figure 1:</strong> My <strong>caption</strong> text</figcaption>
     </figure>
     <p>Refer to <a href="#fig-logo" class="ref">Figure 1</a>.</p>
@@ -250,7 +259,10 @@ test('image with maths in the caption and label', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <figure id="fig-f-x-y"><img src="../fig/3ddom.png" alt="Image" />
+    <figure id="fig-f-x-y">
+      <div class="fig-content">
+        <p><img src="../fig/3ddom.png" alt="Image" /></p>
+      </div>
       <figcaption><strong>Figure 1:</strong> The graph of <code class="latex">f\colon D\to\mathbb{R}</code>.</figcaption>
     </figure>
     <p><a href="#fig-f-x-y" class="ref">Figure 1</a> illustrates the graph of a function of two variables.</p>
@@ -312,8 +324,10 @@ test('figure with image and text', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <figure id="fig-f-x-y">
-      <p><img src="image.png" alt="Image" /></p>
-      <p><a href="https://moodle.gla.ac.uk" target="_blank">Interactive plot <code class="latex">\rightarrow</code></a></p>
+      <div class="fig-content">
+        <p><img src="image.png" alt="Image" /></p>
+        <p><a href="https://moodle.gla.ac.uk" target="_blank">Interactive plot <code class="latex">\rightarrow</code></a></p>
+      </div>
       <figcaption><strong>Figure 1:</strong> The graph of <code class="latex">f\colon D\to\mathbb{R}</code>.</figcaption>
     </figure>
     <p><a href="#fig-f-x-y" class="ref">Figure 1</a> illustrates the graph of a function of two variables.</p>
@@ -358,8 +372,10 @@ test('figure with two images with alt text and caption', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <figure>
-      <p><img src="image.png" alt="My alt text" /></p>
-      <p><img src="image2.png" alt="My alt text2" /></p>
+      <div class="fig-content">
+        <p><img src="image.png" alt="My alt text" /></p>
+        <p><img src="image2.png" alt="My alt text2" /></p>
+      </div>
       <figcaption><strong>Figure 1:</strong> My <strong>caption</strong> text</figcaption>
     </figure>
   `);
@@ -401,8 +417,10 @@ test('figure with two images with alt text, caption and label', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <figure id="fig-logo">
-      <p><img src="image.png" alt="My alt text" /></p>
-      <p><img src="image2.png" alt="My alt text2" /></p>
+      <div class="fig-content">
+        <p><img src="image.png" alt="My alt text" /></p>
+        <p><img src="image2.png" alt="My alt text2" /></p>
+      </div>
       <figcaption><strong>Figure 1:</strong> My <strong>caption</strong> text</figcaption>
     </figure>
   `);
@@ -440,7 +458,10 @@ test('figure with only label', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <figure id="fig-sphere"><img src="fig/ex1-1.png" alt="Image" />
+    <figure id="fig-sphere">
+      <div class="fig-content">
+        <p><img src="fig/ex1-1.png" alt="Image" /></p>
+      </div>
       <figcaption><strong>Figure 1</strong></figcaption>
     </figure>
     <p>as shown in <a href="#fig-sphere" class="ref">Figure 1</a>.</p>
@@ -530,7 +551,10 @@ test('figure inside theorem', async () => {
   const expectedHtml = unindentStringAndTrim(String.raw`
     <div class="remark solution" id="sol-1">
       <p><span class="title"><em>Solution 1</em>. </span>as shown in <a href="#fig-sphere" class="ref">Figure 1</a>.</p>
-      <figure id="fig-sphere"><img src="fig/ex1-1.png" alt="Image" />
+      <figure id="fig-sphere">
+        <div class="fig-content">
+          <p><img src="fig/ex1-1.png" alt="Image" /></p>
+        </div>
         <figcaption><strong>Figure 1</strong></figcaption>
       </figure>
     </div>
@@ -629,9 +653,11 @@ test('images with no label or caption', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <figure>
-      <p><img src="fig/ex1-2a.png" alt="Image" /></p>
-      <p><img src="fig/ex1-2b.png" alt="Image" /></p>
-      <p><img src="fig/ex1-2c.png" alt="Image" /></p>
+      <div class="fig-content">
+        <p><img src="fig/ex1-2a.png" alt="Image" /></p>
+        <p><img src="fig/ex1-2b.png" alt="Image" /></p>
+        <p><img src="fig/ex1-2c.png" alt="Image" /></p>
+      </div>
       <figcaption><strong>Figure 1</strong></figcaption>
     </figure>
   `);
@@ -676,9 +702,11 @@ test('images with includegraphics*', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <figure>
-      <p><img src="fig/ex1-2a.png" alt="Alpha" /></p>
-      <p><img src="fig/ex1-2b.png" alt="Bravo" /></p>
-      <p><img src="fig/ex1-2c.png" alt="Charlie" /></p>
+      <div class="fig-content">
+        <p><img src="fig/ex1-2a.png" alt="Alpha" /></p>
+        <p><img src="fig/ex1-2b.png" alt="Bravo" /></p>
+        <p><img src="fig/ex1-2c.png" alt="Charlie" /></p>
+      </div>
       <figcaption><strong>Figure 1</strong></figcaption>
     </figure>
   `);

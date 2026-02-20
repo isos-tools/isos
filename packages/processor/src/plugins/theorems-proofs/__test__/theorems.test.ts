@@ -1507,3 +1507,106 @@ test('syntax bug', async () => {
 
   expect(html).toBe(expectedHtml);
 });
+
+test('syntax bug', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{amsthm}
+    \theoremstyle{definition}
+    \newtheorem{thm}{Theorem}[section]
+    \begin{document}
+
+    \begin{thm}[Clairaut's Theroem] abc [Roughly speaking] Then
+    \end{thm}
+
+    \end{document}
+  `;
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    ---
+    theorems:
+      custom:
+        - name: thm
+          abbr: thm
+          style: definition
+          heading: Theorem
+          numberWithin: section
+          unnumbered: false
+          type: theorem
+    ---
+
+    ::: {#thm-1 name="Clairaut's Theroem"}
+    abc \[Roughly speaking] Then
+    :::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <div class="definition theorem" id="thm-1">
+      <p><span class="title"><strong>Theorem 1 (Clairaut's Theroem).</strong></span> abc [Roughly speaking] Then</p>
+    </div>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('syntax bug', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{amsthm}
+    \theoremstyle{definition}
+    \newtheorem{theorem}{Theorem}[section]
+    \begin{document}
+
+    \begin{theorem}
+      a
+      \subsection{Remark}
+      b
+    \end{theorem}
+
+    \end{document}
+  `;
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    ---
+    theorems:
+      theorem:
+        numberWithin: h2
+    ---
+
+    ::: {#thm-1}
+    a
+
+    ### Remark
+
+    b
+    :::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <div class="definition theorem" id="thm-1">
+      <p><span class="title"><strong>Theorem 0.1.</strong></span> a</p>
+      <h3 id="remark"><span class="count">0.1</span> Remark</h3>
+      <p>b</p>
+    </div>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});

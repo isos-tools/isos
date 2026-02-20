@@ -3,7 +3,7 @@ import { getArgsContent } from '@unified-latex/unified-latex-util-arguments';
 import { unifiedLatexFromString } from '@unified-latex/unified-latex-util-parse';
 import { unifiedLatexStringCompiler } from '@unified-latex/unified-latex-util-to-string';
 import { visit } from '@unified-latex/unified-latex-util-visit';
-import { dirname, join, parse, resolve } from 'pathe';
+import { dirname, parse, resolve } from 'pathe';
 import { unified } from 'unified';
 
 import { Fs } from '@isos/fs/types';

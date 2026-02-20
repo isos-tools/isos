@@ -158,6 +158,12 @@ function spanHandler(
       return result;
     }
 
+    // if (className.includes('macro-tcblower')) {
+    //   const result: ThematicBreak = { type: 'thematicBreak' };
+    //   state.patch(node, result);
+    //   return result;
+    // }
+
     // if (className.includes('macro-fancysection')) {
     //   const result = createFancySection(state, node);
     //   state.patch(node, result);
@@ -220,7 +226,7 @@ function divHandler(ctx: Context, state: State, node: Element) {
       const theorem = ctx.frontmatter.theorems[theoremType];
 
       if (theorem && theorem.type === 'theorem') {
-        const result = createTheorem(state, node, theoremType);
+        const result = createTheorem(state, node, theoremType, ctx);
         state.patch(node, result);
         return result;
       }

@@ -4,7 +4,7 @@ import { useContext, useState } from 'preact/hooks';
 
 import { RenderMDX, markdownToTOC } from '@isos/processor';
 
-import { scrollbarSize } from '../constants';
+// import { scrollbarSize } from '../constants';
 import { mdxState } from '../mdx-state';
 import { ViewOptionsContext } from './view-options/state';
 
@@ -44,7 +44,7 @@ const TableOfContentsWrapper = styled.div`
 
   ol {
     margin: 0;
-    padding: 0 calc(0.7em - ${scrollbarSize}) 2em 0.7em;
+    padding: 0 0.7em 2em 0.7em;
   }
 
   li {

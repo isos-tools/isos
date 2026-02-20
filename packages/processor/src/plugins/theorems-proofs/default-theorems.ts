@@ -12,6 +12,7 @@ export type Theorem = {
   unnumbered?: boolean;
   framed?: boolean;
   hideable?: 'show' | 'hide' | 'clicktoshow';
+  lowerTitle?: string;
 };
 
 // https://quarto.org/docs/authoring/cross-references.html#theorems-and-proofs

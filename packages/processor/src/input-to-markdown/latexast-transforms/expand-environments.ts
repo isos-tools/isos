@@ -19,7 +19,10 @@ export function expandEnvironments() {
       if (node.type === 'environment' && environments[node.env]) {
         const { begin, end } = environments[node.env];
         const body = printRaw(node.content);
-        const tex = [begin, body, end].filter(Boolean).join('\n');
+        const tex = [begin, body, end]
+          .filter(Boolean)
+          .join(String.raw`\\` + '\n');
+        // console.log(tex);
         const parsed = processor.parse(tex) as Ast.Root;
         node.content = parsed.content;
       }

@@ -10,6 +10,7 @@ export async function optimiseBitmap(
 
   // resize
   const { width, height } = image.bitmap;
+  // console.log({ width, height });
   const maxSide = width >= height ? 'width' : 'height';
   if (image.bitmap[maxSide] > maxSize) {
     const side = maxSide.slice(0, 1) as 'w' | 'h';
@@ -31,3 +32,12 @@ export async function optimiseBitmap(
   // TODO: try window.createImageBitmap()
   // https://developer.mozilla.org/en-US/docs/Web/API/Window/createImageBitmap
 }
+
+// function scaleSource(sw: number, sh: number, dw: number, dh: number) {
+//   const hRatio = dw / sw;
+//   const vRatio = dh / sh;
+//   const ratio = Math.max(hRatio, vRatio);
+//   const x = (sw - dw / ratio) / 2;
+//   const y = (sh - dh / ratio) / 2;
+//   return { x, y, w: sw - x * 2, h: sh - y * 2, ratio };
+// }

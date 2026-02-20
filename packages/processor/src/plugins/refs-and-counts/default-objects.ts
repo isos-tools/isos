@@ -10,6 +10,7 @@ export type RefObject = {
   unnumbered?: boolean;
   framed?: boolean;
   hideable?: 'show' | 'hide' | 'clicktoshow';
+  lowerTitle?: string;
 };
 
 export const defaultObjects: RefObject[] = [
