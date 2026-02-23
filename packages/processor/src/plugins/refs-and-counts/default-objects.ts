@@ -1,5 +1,5 @@
 export type RefObject = {
-  type: 'theorem' | 'float' | 'equation';
+  type: 'theorem' | 'float' | 'equation' | 'appendix';
   name: string;
   heading: string;
   style?: 'plain' | 'definition' | 'remark';
@@ -11,6 +11,7 @@ export type RefObject = {
   framed?: boolean;
   hideable?: 'show' | 'hide' | 'clicktoshow';
   lowerTitle?: string;
+  increment?: 'alpha';
 };
 
 export const defaultObjects: RefObject[] = [
@@ -133,6 +134,15 @@ export const defaultObjects: RefObject[] = [
     heading: 'Section',
     abbr: 'sec',
     unnumbered: false,
+  },
+  // appendix
+  {
+    type: 'appendix',
+    name: 'appendix',
+    heading: 'Appendix',
+    abbr: 'app',
+    unnumbered: false,
+    increment: 'alpha',
   },
   // TODO: listing
   // https://quarto.org/docs/authoring/cross-references-divs.html#listings

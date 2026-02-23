@@ -4,6 +4,7 @@ import { visit } from 'unist-util-visit';
 
 import { Context } from '../../markdown-to-mdx/context';
 import { createRemarkProcessor } from '../../remark-processor';
+import { formatAppendixCount } from '../headings/format-appendix-count';
 import { createHeadingCounter } from '../headings/heading-counter';
 import { createTheoremCounter } from '../theorems-proofs/theorem-counter';
 import { formatCount } from './format-count';
@@ -15,6 +16,7 @@ export function addCounts(ctx: Context) {
   return (tree: Root) => {
     const theoremCounter = createTheoremCounter();
     const headingCounter = createHeadingCounter();
+    const appendixCounter = createHeadingCounter();
     const theoremStore: Record<string, string> = {};
 
     // console.dir(tree, { depth: null });
@@ -43,11 +45,32 @@ export function addCounts(ctx: Context) {
 
         if (Array.isArray(className)) {
           if (className[0] === 'heading-count') {
-            // Count headings
-
             if (className.includes('unnumbered')) {
               Object.assign(node, { type: 'text', value: '' });
+            } else if (node.properties['data-appendix'] === true) {
+              // Special case for appendices
+              const headingDepth = Number(String(className[1]).slice(-1));
+              appendixCounter.increment(headingDepth);
+              const counts = appendixCounter.getCounts(headingDepth);
+              const value = formatAppendixCount(counts);
+
+              const _id = node.properties['data-id'];
+              if (_id) {
+                const type = headingDepth === 2 ? 'appendix' : 'section';
+                const ctxObj = ctx.frontmatter.theorems[type];
+                const id = String(_id);
+                const label = `${ctxObj.heading} ${value}`;
+                ctx.frontmatter.refMap[id] = { id, label };
+              }
+
+              Object.assign(node, {
+                properties: {
+                  className: 'count',
+                },
+                children: [{ type: 'text', value }],
+              });
             } else {
+              // Count headings
               const headingDepth = Number(String(className[1]).slice(-1));
               headingCounter.increment(headingDepth);
 

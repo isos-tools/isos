@@ -7,6 +7,7 @@ import { divSyntax } from '../../plugins/div-syntax/mdx-divs';
 import { dashesToEndashEmdash } from '../../plugins/endash-emdash';
 import { footnoteReference } from '../../plugins/footnotes/footnote-reference';
 import { framed } from '../../plugins/framed/create-framed';
+import { appendices } from '../../plugins/headings/mdast-appendices';
 import { headings } from '../../plugins/headings/mdx-headings';
 import { setHeadingCounterToDiv } from '../../plugins/headings/set-counter-directive-to-div';
 import { imageAttributes } from '../../plugins/images/image-attributes';
@@ -48,6 +49,7 @@ export function createMdastTransforms(
     framed,
     setHeadingCounterToDiv,
     exSolSolutionDirective,
+    appendices,
     [divSyntax, ctx],
     [footnoteReference, ctx],
     [headings, ctx], // headingSections depends on this

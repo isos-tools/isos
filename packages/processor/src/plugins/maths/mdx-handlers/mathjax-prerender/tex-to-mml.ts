@@ -34,6 +34,7 @@ const tex = new TeX({
   packages,
   macros: {
     pounds: '\\textsterling',
+    bm: ['{\\boldsymbol #1}', 1],
   },
 });
 
@@ -42,10 +43,14 @@ const mmlDoc = mathjax.document('', {
 });
 
 export function texToMml(latex: string) {
-  // https://docs.mathjax.org/en/latest/advanced/typeset.html
-  // multiply-defined labels
-  tex.reset();
+  try {
+    // https://docs.mathjax.org/en/latest/advanced/typeset.html
+    // multiply-defined labels
+    tex.reset();
 
-  const mmlNode = mmlDoc.convert(latex, { end: STATE.CONVERT });
-  return visitor.visitTree(mmlNode);
+    const mmlNode = mmlDoc.convert(latex, { end: STATE.CONVERT });
+    return visitor.visitTree(mmlNode);
+  } catch (err) {
+    return '';
+  }
 }

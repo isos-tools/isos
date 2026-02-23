@@ -11,6 +11,7 @@ import '@mathjax/mathjax-newcm-font/js/svg/dynamic/calligraphic.js';
 import '@mathjax/mathjax-newcm-font/js/svg/dynamic/double-struck.js';
 import '@mathjax/mathjax-newcm-font/js/svg/dynamic/sans-serif.js';
 import '@mathjax/mathjax-newcm-font/js/svg/dynamic/shapes.js';
+import '@mathjax/mathjax-newcm-font/js/svg/dynamic/fraktur.js';
 
 import { MathJaxFiraFont } from '@mathjax/mathjax-fira-font/js/svg.js';
 import '@mathjax/mathjax-fira-font/js/svg/dynamic/arrows.js';
@@ -18,6 +19,7 @@ import '@mathjax/mathjax-fira-font/js/svg/dynamic/calligraphic.js';
 import '@mathjax/mathjax-fira-font/js/svg/dynamic/double-struck.js';
 import '@mathjax/mathjax-fira-font/js/svg/dynamic/sans-serif.js';
 import '@mathjax/mathjax-fira-font/js/svg/dynamic/shapes.js';
+import '@mathjax/mathjax-fira-font/js/svg/dynamic/fraktur.js';
 
 import { LayoutOptions } from '.';
 import { MathsFont, MathsState } from '../../mdx-state';
@@ -38,6 +40,7 @@ const packages = [
   'double-struck',
   'sans-serif',
   'shapes',
+  'fraktur',
 ];
 
 packages.forEach((fontPackage) => {
@@ -61,30 +64,37 @@ export function mmlToSvg(
   options: MathsState,
   layoutOptions: LayoutOptions,
 ) {
-  htmlDoc.outputJax = fonts[options.mathsFontName.value];
-  htmlDoc.outputJax.setAdaptor(htmlDoc.adaptor);
+  try {
+    htmlDoc.outputJax = fonts[options.mathsFontName.value];
+    htmlDoc.outputJax.setAdaptor(htmlDoc.adaptor);
 
-  const htmlNode = htmlDoc.convert(mml, {
-    // https://github.com/mathjax/MathJax/issues/3434
-    containerWidth: mml.includes('\\begin{multiline}')
-      ? layoutOptions.containerWidth
-      : undefined,
-  });
-  const svg = htmlNode.children[0];
+    const htmlNode = htmlDoc.convert(mml, {
+      // https://github.com/mathjax/MathJax/issues/3434
+      containerWidth: mml.includes('\\begin{multiline}')
+        ? layoutOptions.containerWidth
+        : undefined,
+    });
+    const svg = htmlNode.children[0];
 
-  const html = adaptor.outerHTML(svg);
+    const html = adaptor.outerHTML(svg);
 
-  const match = html.match(/data-mjx-error="(.*?)"/);
-  if (match !== null) {
-    console.log('mathjax error:', match[1]);
+    const match = html.match(/data-mjx-error="(.*?)"/);
+    if (match !== null) {
+      console.log('mathjax error:', match[1]);
+      return {
+        error: true,
+        html: `mathjax error: ${match[1]}`,
+      };
+    }
+
+    return {
+      error: false,
+      html,
+    };
+  } catch (err) {
     return {
       error: true,
-      html: `mathjax error: ${match[1]}`,
+      html: `mathjax error: ${String(err)}`,
     };
   }
-
-  return {
-    error: false,
-    html,
-  };
 }

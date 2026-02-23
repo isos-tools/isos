@@ -9,16 +9,16 @@ export function createHeadingCounter(): HeadingCounter {
   const count = [0, 0, 0, 0, 0, 0];
   let lastDepth = 0;
   return {
-    get(depth: number) {
+    get(depth) {
       return count[depth - 1];
     },
-    getCounts(depth: number) {
+    getCounts(depth) {
       return count.slice(1, depth);
     },
-    setCount(depth: number, value: number) {
+    setCount(depth, value) {
       count[depth - 1] = value - 1;
     },
-    increment(depth: number) {
+    increment(depth) {
       ++count[depth - 1];
 
       if (depth < lastDepth) {

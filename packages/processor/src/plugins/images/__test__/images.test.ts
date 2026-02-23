@@ -713,3 +713,45 @@ test('images with includegraphics*', async () => {
 
   expect(html).toBe(expectedHtml);
 });
+
+test('image with references in caption', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{graphicx}
+    \usepackage{amsmath}
+
+    \begin{document}
+
+    \begin{figure}
+    \centerline{
+    \includegraphics{img.pdf}}
+    \caption{\label{fig:a_b} a \cref{eq:a_b} b \cref{ex1:a_b}.}
+    \end{figure}
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ![a @eq-a-b b @ex-1-a-b.](img.pdf){#fig-a-b}
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <figure id="fig-a-b">
+      <div class="fig-content">
+        <p><img src="img.pdf" alt="Image" /></p>
+      </div>
+      <figcaption><strong>Figure 1:</strong> a <span class="warn"><strong>unknown ref:</strong> <code>eq-a-b</code></span> b <span class="warn"><strong>unknown ref:</strong> <code>ex-1-a-b</code></span>.</figcaption>
+    </figure>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});

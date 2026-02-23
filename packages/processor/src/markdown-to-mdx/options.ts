@@ -51,7 +51,11 @@ export function createDefaultOptions(
       tableCaptionToDirective,
     ],
     mdAstTransforms: createMdastTransforms(ctx, { noSections }),
-    htmlAstTransforms: createRehypePlugins(ctx, { noWrapper, noFooter }),
+    htmlAstTransforms: createRehypePlugins(ctx, {
+      noWrapper,
+      noFooter,
+      noSections,
+    }),
     mdxArticleRunOptions: createRunOptions(mdxState, { noIcons }),
     mdxTOCRunOptions: createSidebarRunOptions(mdxState),
   };

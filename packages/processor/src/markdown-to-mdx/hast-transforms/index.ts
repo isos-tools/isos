@@ -10,6 +10,7 @@ import { defListHastHandlers } from '../../plugins/definition-list';
 import { addFooter } from '../../plugins/footer/add-footer';
 import { footNotesToSideNotes } from '../../plugins/footnotes/footnotes-to-sidenotes';
 import { replaceFootnoteRefDefs } from '../../plugins/footnotes/replace-ref-def';
+import { appendices } from '../../plugins/headings/hast-appendices';
 import { addDefaultAltText } from '../../plugins/images/default-image-alt';
 import { addMathsRefsAndCount } from '../../plugins/maths/add-maths-refs-and-count';
 import { mathTagToRefLabel } from '../../plugins/maths/math-tag-to-ref-label';
@@ -34,8 +35,9 @@ export const processorOptions: ProcessorOptions = {
 
 export function createRehypePlugins(
   ctx: Context,
-  options: Pick<Options, 'noWrapper' | 'noFooter'>,
+  options: Pick<Options, 'noWrapper' | 'noFooter' | 'noSections'>,
 ) {
+  // console.log(options);
   const plugins = createRehypeFragmentPlugins(ctx, options);
 
   if (!options.noFooter) {
@@ -50,7 +52,7 @@ export function createRehypePlugins(
 
 function createRehypeFragmentPlugins(
   ctx: Context,
-  _options: Partial<Options> = {},
+  options: Partial<Options> = {},
 ): PluggableList {
   return [
     addDefaultAltText,
@@ -68,6 +70,7 @@ function createRehypeFragmentPlugins(
     // },
     // ],
     removeEmptyParagraphs,
+    [appendices, ctx, options.noSections],
 
     // should be last
     [mathTagToRefLabel, ctx],

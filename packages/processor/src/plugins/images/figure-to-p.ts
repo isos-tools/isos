@@ -149,12 +149,26 @@ function convertToMarkdown(elem: Element) {
   const handlers: Record<string, Handle> = {
     span(state: State, node: Element) {
       const { className } = node.properties;
+      // maths
       if (Array.isArray(className)) {
         if (className.includes('inline-math')) {
           const math = node.children[0] as Text;
           const result: InlineMath = {
             type: 'inlineMath',
             value: math.value,
+          };
+          state.patch(node, result);
+          return result;
+        }
+        // references
+        if (
+          className.includes('macro-cref') ||
+          className.includes('macro-autoref')
+        ) {
+          const id = kebabCase(toString(node));
+          const result: Text = {
+            type: 'text',
+            value: id ? `@${id}` : '',
           };
           state.patch(node, result);
           return result;

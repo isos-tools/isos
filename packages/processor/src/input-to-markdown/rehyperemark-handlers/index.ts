@@ -14,6 +14,7 @@ import {
   createFootnoteText,
 } from '../../plugins/footnotes/footnote';
 import { createFramed } from '../../plugins/framed/framed';
+import { createAppendices } from '../../plugins/headings/rehype-appendices';
 import { createSetCounter } from '../../plugins/headings/set-counter-to-directive';
 import { createFigure } from '../../plugins/images/create-figure';
 import { createInlineMaths, createMaths } from '../../plugins/maths/maths';
@@ -256,6 +257,12 @@ function divHandler(ctx: Context, state: State, node: Element) {
         // console.log(result);
         state.patch(node, result);
         // console.log(state);
+        return result;
+      }
+
+      if (environmentName === 'appendices') {
+        const result = createAppendices(state, node);
+        state.patch(node, result);
         return result;
       }
 
