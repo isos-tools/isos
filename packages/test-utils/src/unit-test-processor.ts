@@ -72,6 +72,7 @@ async function markdownToHtml(
   md: string,
   { state, ...options }: Partial<Opts> = {},
 ) {
+  // input-to-markdown
   const prepared = unindentStringAndTrim(md);
   const fileCache = createFileCache(fs);
   const ctx = createInputToMarkdownTestContext(
@@ -84,6 +85,8 @@ async function markdownToHtml(
     ...options,
   });
   const markdown = await inputToMarkdown(ctx.content, opts);
+
+  // markdown-to-jsx
   const mdxState = createMdxState();
   const { mathsAsTex, syntaxHighlight } = state?.maths || {};
 
@@ -98,8 +101,9 @@ async function markdownToHtml(
     ...options,
   });
   const component = await markdownToArticle(markdown, htmlOptions);
-  // @ts-expect-error
-  const element = createElement(component.default);
+
+  // jsx-to-html
+  const element = createElement(component.default, {});
   const str = renderToString(element);
   return formatHtml(str);
 }

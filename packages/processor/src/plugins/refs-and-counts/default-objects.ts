@@ -110,6 +110,7 @@ export const defaultObjects: RefObject[] = [
     heading: 'Equation',
     abbr: 'eq',
     unnumbered: false,
+    numberWithin: 'chapter',
   },
   // floats
   {

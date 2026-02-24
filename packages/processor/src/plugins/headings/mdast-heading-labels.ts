@@ -1,5 +1,6 @@
 import kebabCase from 'lodash.kebabcase';
-import { Root, Text } from 'mdast';
+import { Root, RootContent, Text } from 'mdast';
+import { TextDirective } from 'mdast-util-directive';
 import { visit } from 'unist-util-visit';
 
 import {
@@ -11,26 +12,16 @@ import {
 export function headingLabels() {
   return (tree: Root) => {
     // console.dir(tree, { depth: null });
-    visit(tree, 'heading', (node, idx, parent) => {
+    visit(tree, 'heading', (node, idx = 0, parent) => {
       const parentChildren = parent?.children || [];
-      const nextIdx = (idx || 0) + 1;
-      const nextSibling = parentChildren[nextIdx];
-      if (!nextSibling || nextSibling.type !== 'paragraph') {
-        return;
-      }
+      const label = getLabel(parentChildren, idx + 1);
 
-      const nextSiblingChildren = nextSibling.children || [];
-      const firstChild = nextSiblingChildren[0];
-      if (
-        !firstChild ||
-        firstChild.type !== 'textDirective' ||
-        firstChild.name !== 'label'
-      ) {
+      if (label === null) {
         return;
       }
 
       // extract id
-      const text = firstChild.children[0] as Text;
+      const text = label.children[0] as Text;
       const id = kebabCase(text.value);
 
       // append to heading text
@@ -49,9 +40,38 @@ export function headingLabels() {
           value: ` ${serialiseAttributes({ id })}`,
         });
       }
-
-      // remove label node
-      parentChildren.splice(nextIdx, 1);
     });
   };
+}
+
+function getLabel(
+  children: RootContent[],
+  idx: number,
+): TextDirective | null {
+  let label = null;
+
+  if (children.length > 0) {
+    const nIdx = children.slice(idx).findIndex((o) => o.type !== 'text');
+    if (nIdx !== -1) {
+      const first = children[idx + nIdx];
+
+      if (first.type === 'textDirective' && first.name === 'label') {
+        label = first;
+        children.splice(idx + nIdx, 1);
+      }
+
+      if (first.type === 'paragraph') {
+        const pIdx = first.children.findIndex((o) => o.type !== 'text');
+        if (pIdx !== -1) {
+          const pFirst = first.children[pIdx];
+          if (pFirst.type === 'textDirective' && pFirst.name === 'label') {
+            label = pFirst;
+            first.children.splice(pIdx, 1);
+          }
+        }
+      }
+    }
+  }
+
+  return label;
 }

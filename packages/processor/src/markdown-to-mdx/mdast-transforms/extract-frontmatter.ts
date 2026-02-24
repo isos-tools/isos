@@ -59,20 +59,6 @@ export function extractFrontmatter(ctx: Context) {
           {},
         );
 
-        // convert section to heading in theorem.numberWithin
-        const { documentClass, hasPart } = ctx.frontmatter;
-        const depths = createHeadingDepths(documentClass, hasPart);
-        Object.entries(ctx.frontmatter.theorems).forEach(
-          ([name, theorem]) => {
-            if (!Array.isArray(theorem)) {
-              if (theorem.numberWithin) {
-                const thm = ctx.frontmatter.theorems[name];
-                thm.numberWithin = depths[theorem.numberWithin];
-              }
-            }
-          },
-        );
-
         ctx.frontmatter.theorems = merge(
           ctx.frontmatter.theorems,
           theorems || {},
@@ -85,5 +71,17 @@ export function extractFrontmatter(ctx: Context) {
 
       // console.log(ctx.frontmatter);
     }
+
+    // convert section to heading in theorem.numberWithin
+    const { documentClass, hasPart } = ctx.frontmatter;
+    const depths = createHeadingDepths(documentClass, hasPart);
+    Object.entries(ctx.frontmatter.theorems).forEach(([name, theorem]) => {
+      if (!Array.isArray(theorem)) {
+        if (theorem.numberWithin) {
+          const thm = ctx.frontmatter.theorems[name];
+          thm.numberWithin = depths[theorem.numberWithin];
+        }
+      }
+    });
   };
 }

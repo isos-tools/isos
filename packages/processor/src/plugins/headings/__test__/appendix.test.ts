@@ -190,7 +190,6 @@ test('appendix with labels and references', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
-  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
     ## The 1st section {#alpha}
@@ -199,9 +198,7 @@ test('appendix with labels and references', async () => {
 
     :::appendices
 
-    ## The 1st appendix
-
-    :label[bravo]
+    ## The 1st appendix {#bravo}
 
     ## The 2nd appendix
 
@@ -211,48 +208,18 @@ test('appendix with labels and references', async () => {
 
     ## The 3rd appendix
 
-    ## The 4th appendix
+    ## The 4th appendix {#charlie}
 
-    :label[charlie]
+    ### The subsection {#delta}
 
-    ### The subsection
-
-    :label[delta]
     :::
 
     ## The 2nd section {#echo}
   `);
 
-  // TODO this is neater
-  // const expectedMarkdown = unindentStringAndTrim(`
-  //   ## The 1st section {#alpha}
-
-  //   @alpha, @bravo, @charlie, @delta and @echo.
-
-  //   :::appendices
-
-  //   ## The 1st appendix {#bravo}
-
-  //   ## The 2nd appendix
-
-  //   :::
-
-  //   :::appendices
-
-  //   ## The 3rd appendix
-
-  //   ## The 4th appendix {#charlie}
-
-  //   ### The subsection {#delta}
-
-  //   :::
-
-  //   ## The 2nd section {#echo}
-  // `);
-
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(markdown);
+  const html = await testProcessor.md(expectedMarkdown);
   // console.log(html);
   // return;
 

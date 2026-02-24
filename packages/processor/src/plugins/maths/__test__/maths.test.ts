@@ -481,3 +481,96 @@ test('maths equations with labels and tags', async () => {
   // const quartoHtml = await markdownToQuartoHtml(markdown);
   // console.log(quartoHtml);
 });
+
+test('maths equation in book documentclass', async () => {
+  const latex = String.raw`
+    \documentclass{book}
+    \begin{document}
+    \chapter{Differential systems}
+    \begin{equation}
+    x_0
+    \end{equation}
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    ---
+    documentClass: book
+    ---
+
+    ## Differential systems
+
+    $$
+    \begin{equation}x_{0}\end{equation}
+    $$
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <h2 id="differential-systems"><span class="count">1</span> Differential systems</h2>
+    <p class="maths env-equation"><code class="latex">\begin{equation}x_{0}\end{equation}</code><span class="eq-count">(1.1)</span></p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+
+  // const quartoHtml = await markdownToQuartoHtml(markdown);
+  // console.log(quartoHtml);
+});
+
+test.only('maths equation in book documentclass', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+
+    \begin{document}
+
+    We set $\dot{x}=y$, so that the ODE above can be rewritten as follows
+    \begin{eqnarray*}
+    \dot{x} & = & y\\
+    \dot{y} & = & -\nu y-\omega ^2 x.
+    \end{eqnarray*}
+    Hence $ \ddot{x} + \nu \dot{x} + \omega^2x = 0$ can be written as
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  console.log(markdown);
+  return;
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    ---
+    documentClass: book
+    ---
+
+    ## Differential systems
+
+    $$
+    \begin{equation}x_{0}\end{equation}
+    $$
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <h2 id="differential-systems"><span class="count">1</span> Differential systems</h2>
+    <p class="maths env-equation"><code class="latex">\begin{equation}x_{0}\end{equation}</code><span class="eq-count">(1.1)</span></p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+
+  // const quartoHtml = await markdownToQuartoHtml(markdown);
+  // console.log(quartoHtml);
+});
