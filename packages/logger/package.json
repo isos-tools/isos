@@ -5,6 +5,6 @@
   "main": "src/index.ts",
   "packageManager": "pnpm@10.18.3",
   "dependencies": {
-    "roarr": "^7.21.1"
+    "roarr": "^7.21.4"
   }
 }

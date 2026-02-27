@@ -10,7 +10,7 @@
     "bundle": "NODE_ENV=test vite-node src/create-test-bundle.ts"
   },
   "devDependencies": {
-    "vite-node": "^3.0.9"
+    "vite-node": "^5.3.0"
   },
   "dependencies": {
     "@isos/fs": "workspace:*",

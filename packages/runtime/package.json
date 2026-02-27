@@ -16,24 +16,24 @@
   },
   "dependencies": {
     "@isos/processor": "workspace:*",
-    "@preact/signals": "^2.0.1",
+    "@preact/signals": "^2.8.1",
     "classnames": "^2.5.1",
     "fscreen": "^1.2.0",
     "lodash.startcase": "^4.4.0",
-    "preact": "^10.26.9"
+    "preact": "^10.28.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.26.10",
-    "@babel/plugin-transform-react-jsx": "^7.23.4",
-    "@babel/preset-env": "^7.26.8",
+    "@babel/core": "^7.29.0",
+    "@babel/plugin-transform-react-jsx": "^7.28.6",
+    "@babel/preset-env": "^7.29.0",
     "@babel/preset-typescript": "^7.26.0",
-    "@linaria/react": "^6.3.0",
-    "@preact/preset-vite": "^2.10.2",
-    "@rollup/plugin-alias": "^5.1.1",
-    "@rollup/plugin-commonjs": "^28.0.2",
+    "@linaria/react": "^7.0.1",
+    "@preact/preset-vite": "^2.10.3",
+    "@rollup/plugin-alias": "^6.0.0",
+    "@rollup/plugin-commonjs": "^29.0.0",
     "@types/fscreen": "^1.0.4",
     "@types/lodash.startcase": "^4.4.9",
-    "@wyw-in-js/vite": "^0.7.0",
+    "@wyw-in-js/vite": "^1.0.6",
     "vite-plugin-prismjs": "^0.0.11",
     "vite-plugin-svgr": "^4.5.0"
   }
