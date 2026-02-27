@@ -40,7 +40,10 @@ function MathsInline({ expr, className, maths }: MathsProps) {
   const [braille, setBraille] = useState<string>();
 
   const mml = useMemo(() => texToMml(formatLaTeX(expr)), [expr]);
-  const svg = useMemo(() => mmlToSvg(mml, maths, {}), [mml]);
+  const svg = useMemo(
+    () => mmlToSvg(mml, maths, {}),
+    [mml, maths.mathsFontName.value],
+  );
 
   useEffect(() => {
     (async () => {
@@ -90,6 +93,7 @@ function MathsDisplay({
     inSidenote,
     article.marginWidth.value,
     article.mainWidth.value,
+    maths.mathsFontName.value,
   ]);
 
   useEffect(() => {

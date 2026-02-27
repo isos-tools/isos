@@ -526,36 +526,34 @@ test('maths equation in book documentclass', async () => {
   // console.log(quartoHtml);
 });
 
-test.only('maths equation in book documentclass', async () => {
+test('maths eqnarray', async () => {
   const latex = String.raw`
     \documentclass{article}
 
     \begin{document}
 
-    We set $\dot{x}=y$, so that the ODE above can be rewritten as follows
+    $$
+    x^2 - 5 x + 6 = 0
+    $$
+
     \begin{eqnarray*}
     \dot{x} & = & y\\
     \dot{y} & = & -\nu y-\omega ^2 x.
     \end{eqnarray*}
-    Hence $ \ddot{x} + \nu \dot{x} + \omega^2x = 0$ can be written as
 
     \end{document}
   `;
 
   const markdown = await testProcessor.latex(latex);
-  console.log(markdown);
-  return;
+  // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
-    ---
-    documentClass: book
-    ---
-
-    ## Differential systems
-
     $$
-    \begin{equation}x_{0}\end{equation}
+    x^{2} - 5 x + 6 = 0
     $$
+
+    :warn[**unhandled environment: eqnarray\***]
   `);
 
   expect(markdown).toBe(expectedMarkdown);
@@ -565,8 +563,8 @@ test.only('maths equation in book documentclass', async () => {
   // return;
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <h2 id="differential-systems"><span class="count">1</span> Differential systems</h2>
-    <p class="maths env-equation"><code class="latex">\begin{equation}x_{0}\end{equation}</code><span class="eq-count">(1.1)</span></p>
+    <p class="maths"><code class="latex">x^{2} - 5 x + 6 = 0</code></p>
+    <p> <span class="warn"><strong>unhandled environment: eqnarray*</strong></span></p>
   `);
 
   expect(html).toBe(expectedHtml);

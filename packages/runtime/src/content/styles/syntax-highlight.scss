@@ -8,13 +8,17 @@ p.maths {
   }
   code.latex {
     display: block;
+    padding: 0.8em 1em;
+  }
+  .eq-count {
+    margin-left: 1em;
   }
 }
 
 code:not(.maths) {
   display: inline-block;
   @include fonts.monospace-slab;
-  background: hsl(from var(--textColor) h s calc(l - 75));
+  line-height: 1.5;
   // font-size: 0.9em;
   padding: 0 0.4em;
   border-radius: 0.3em;
@@ -22,8 +26,8 @@ code:not(.maths) {
 }
 
 code.latex {
-  font-weight: bold;
-  // font-size: 0.8em;
+  font-weight: 600;
+  font-size: 0.9em;
   // line-height: 1;
   font-style: normal;
   // display: inline-block;
@@ -35,7 +39,10 @@ code.latex {
   // bottom: 0.1em;
 }
 
-// https://github.com/PrismJS/prism/blob/master/themes/prism-dark.css
+code:not(.maths) {
+  background: hsl(from var(--bg) h s calc(l - 7));
+  color: color-mix(in srgb, var(--textColor), transparent 20%);
+}
 
 .token.comment,
 .token.prolog,
@@ -67,7 +74,7 @@ code.latex {
 .token.char,
 .token.builtin,
 .token.inserted {
-  color: hsl(75, 70%, 60%);
+  color: hsl(75, 90%, 30%);
 }
 
 .token.operator,
@@ -75,19 +82,16 @@ code.latex {
 .token.url,
 .language-css .token.string,
 .style .token.string,
-.token.variable {
-  color: hsl(40, 90%, 60%);
+.token.variable,
+.token.regex,
+.token.important {
+  color: hsl(40, 90%, 45%);
 }
 
 .token.atrule,
 .token.attr-value,
 .token.keyword {
-  color: hsl(350, 40%, 70%);
-}
-
-.token.regex,
-.token.important {
-  color: #e90;
+  color: hsl(350, 40%, 60%);
 }
 
 .token.important,
@@ -104,4 +108,52 @@ code.latex {
 
 .token.deleted {
   color: red;
+}
+
+.dark-mode {
+  code:not(.maths) {
+    background: hsl(from var(--bg) h s calc(l + 7));
+  }
+
+  // .token.comment,
+  // .token.prolog,
+  // .token.doctype,
+  // .token.cdata {
+  //   color: hsl(30, 20%, 50%);
+  // }
+
+  // .token.property,
+  // .token.tag,
+  // .token.boolean,
+  // .token.number,
+  // .token.constant,
+  // .token.symbol {
+  //   color: hsl(350, 40%, 70%);
+  // }
+
+  .token.selector,
+  .token.attr-name,
+  .token.string,
+  .token.char,
+  .token.builtin,
+  .token.inserted {
+    color: hsl(75, 70%, 40%);
+  }
+
+  // .token.operator,
+  // .token.entity,
+  // .token.url,
+  // .language-css .token.string,
+  // .style .token.string,
+  // .token.variable,
+  // .token.regex,
+  // .token.important {
+  //   color: hsl(40, 90%, 60%);
+  // }
+
+  // .token.atrule,
+  // .token.attr-value,
+  // .token.keyword {
+  //   color: hsl(350, 40%, 70%);
+  // }
 }

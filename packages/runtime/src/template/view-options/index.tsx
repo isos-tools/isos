@@ -119,7 +119,7 @@ export function ViewOptions() {
             mdxState.maths.mathsAsTex.value = val;
           }}
         />
-        <Checkbox
+        {/* <Checkbox
           label="Set Aria label to braille"
           value={mdxState.maths.ariaMode.value === 'braille-only'}
           onChange={(brailleOnly) => {
@@ -127,7 +127,7 @@ export function ViewOptions() {
               ? 'braille-only'
               : 'both';
           }}
-        />
+        /> */}
         <Select
           name="bgColor"
           label="Braille locale"

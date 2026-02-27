@@ -79,7 +79,9 @@ export function extractFrontmatter(ctx: Context) {
       if (!Array.isArray(theorem)) {
         if (theorem.numberWithin) {
           const thm = ctx.frontmatter.theorems[name];
-          thm.numberWithin = depths[theorem.numberWithin];
+          if (depths[theorem.numberWithin]) {
+            thm.numberWithin = depths[theorem.numberWithin];
+          }
         }
       }
     });

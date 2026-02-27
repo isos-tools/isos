@@ -22,7 +22,7 @@ import { createReference } from '../../plugins/refs-and-counts/reference';
 import { rehypeRemarkDel } from '../../plugins/strikethrough/rehypre-remark-del';
 import { superSubHandlers } from '../../plugins/super-sub';
 import { createTheorem } from '../../plugins/theorems-proofs/rehype-remark-theorem';
-// import { createWarn } from '../../plugins/warn/mdast-warn';
+import { createWarn } from '../../plugins/warn/mdast-warn';
 import { Context } from '../context';
 // import { createFancySection, createFancyTitle } from './fancy';
 import { createLabel } from './label';
@@ -196,17 +196,18 @@ function spanHandler(
       return state.all(node);
     }
 
-    // unhandled
-    // const macroName = className.find((str) =>
-    //   String(str).startsWith('macro-'),
-    // ) as string;
+    // unsupported
+    const macroName = className.find((str) =>
+      String(str).startsWith('macro-'),
+    ) as string;
 
-    // if (macroName) {
-    //   const name = macroName.slice(6);
-    //   const result = createWarn(node, 'macro', name);
-    //   state.patch(node, result);
-    //   return result;
-    // }
+    const unsupported = ['ref', 'eqref'];
+    if (unsupported.includes(macroName)) {
+      const name = macroName.slice(6);
+      const result = createWarn('macro', name);
+      state.patch(node, result);
+      return result;
+    }
   }
 
   return state.all(node);
@@ -269,6 +270,14 @@ function divHandler(ctx: Context, state: State, node: Element) {
       // do nothing
       if (environmentName === 'table') {
         return state.all(node);
+      }
+
+      // unsupported
+      const unsupported = ['eqnarray', 'eqnarray*', 'tikzpicture'];
+      if (unsupported.includes(environmentName)) {
+        const result = createWarn('environment', environmentName);
+        state.patch(node, result);
+        return result;
       }
 
       // unhandled

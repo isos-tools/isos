@@ -3,7 +3,7 @@ import { defaultObjects } from '../refs-and-counts/default-objects';
 export type Theorem = {
   name: string;
   heading: string;
-  type?: 'theorem' | 'float' | 'equation';
+  type?: 'theorem' | 'float' | 'equation' | 'appendix';
   style?: 'plain' | 'definition' | 'remark';
   abbr?: string;
   numberWithin?: string;
