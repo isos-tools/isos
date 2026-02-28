@@ -1,134 +1,132 @@
 name: 'publish'
 
-on: 'push'
-
-# on:
-#   workflow_run:
-#     branches: [main]
-#     workflows: ['test']
-#     types: [completed]
+on:
+  workflow_run:
+    branches: [main]
+    workflows: ['test']
+    types: [completed]
 
 env:
   tauriDir: ./packages/tauri/src-tauri
 
 jobs:
-  # version-check:
-  #   runs-on: ubuntu-latest
-  #   outputs:
-  #     version: ${{ steps.check.outputs.version}}
-  #     has-version-change: ${{ steps.check.outputs.has-version-change }}
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
-  #       with:
-  #         ref: main
-  #     - id: check
-  #       uses: ./.github/actions/version-check
-  #       env:
-  #         GH_TOKEN: ${{ github.token }}
+  version-check:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.check.outputs.version}}
+      has-version-change: ${{ steps.check.outputs.has-version-change }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - id: check
+        uses: ./.github/actions/version-check
+        env:
+          GH_TOKEN: ${{ github.token }}
 
-  # create-release:
-  #   needs: version-check
-  #   if: needs.version-check.outputs.has-version-change == 'true'
-  #   runs-on: ubuntu-latest
-  #   outputs:
-  #     release-id: ${{ steps.create-release.outputs.result }}
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: actions/setup-node@v4
-  #       with:
-  #         node-version: lts/*
-  #     - id: create-release
-  #       uses: actions/github-script@v7
-  #       with:
-  #         script: |
-  #           const { data } = await github.rest.repos.createRelease({
-  #             owner: context.repo.owner,
-  #             repo: context.repo.repo,
-  #             tag_name: `v${{ needs.version-check.outputs.version }}`,
-  #             name: `ISOS v${{ needs.version-check.outputs.version }}`,
-  #             draft: true,
-  #             prerelease: false,
-  #             generate_release_notes: true
-  #           })
-  #           return data.id
+  create-release:
+    needs: version-check
+    if: needs.version-check.outputs.has-version-change == 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      release-id: ${{ steps.create-release.outputs.result }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - id: create-release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data } = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: `v${{ needs.version-check.outputs.version }}`,
+              name: `ISOS v${{ needs.version-check.outputs.version }}`,
+              draft: true,
+              prerelease: false,
+              generate_release_notes: true
+            })
+            return data.id
 
-  # build-tauri:
-  #   needs: create-release
-  #   permissions:
-  #     contents: write
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       include:
-  #         - platform: 'macos-latest'
-  #           args: '--target aarch64-apple-darwin'
-  #         - platform: 'macos-latest'
-  #           args: '--target x86_64-apple-darwin'
-  #         - platform: 'ubuntu-latest'
-  #           args: ''
-  #         - platform: 'windows-latest'
-  #           args: ''
+  build-tauri:
+    needs: create-release
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: 'macos-latest'
+            args: '--target aarch64-apple-darwin'
+          - platform: 'macos-latest'
+            args: '--target x86_64-apple-darwin'
+          - platform: 'ubuntu-latest'
+            args: ''
+          - platform: 'windows-latest'
+            args: ''
 
-  #   runs-on: ${{ matrix.platform }}
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: pnpm/action-setup@v4
-  #     - uses: actions/setup-node@v4
-  #       with:
-  #         node-version: lts/*
-  #     - name: install Rust stable
-  #       uses: dtolnay/rust-toolchain@stable
-  #       with:
-  #         targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
-  #     - name: Rust cache
-  #       uses: swatinem/rust-cache@v2
-  #       with:
-  #         workspaces: '${{ env.tauriDir }} -> target'
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: '${{ env.tauriDir }} -> target'
 
-  #     - name: install dependencies (ubuntu only)
-  #       if: matrix.platform == 'ubuntu-latest'
-  #       run: |
-  #         sudo apt-get update
-  #         sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+      - name: install dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
 
-  #     - name: install dependencies (windows only)
-  #       if: matrix.platform == 'windows-latest'
-  #       shell: bash
-  #       env:
-  #         WINDOWS_SIGN_COMMAND: trusted-signing-cli -e ${{ secrets.AZURE_ACCOUNT_URI }} -a ${{ secrets.AZURE_CODE_SIGNING_NAME }} -c ${{ secrets.AZURE_CERT_PROFILE_NAME }} %1
-  #       run: |
-  #         cd "$GITHUB_WORKSPACE"
-  #         cat '${{ env.tauriDir }}/tauri.conf.json' | jq '.bundle .windows += {"signCommand": env.WINDOWS_SIGN_COMMAND}' > '${{ env.tauriDir }}/temp.json' && mv '${{ env.tauriDir }}/temp.json' '${{ env.tauriDir }}/tauri.conf.json'
-  #         cargo install trusted-signing-cli
+      - name: install dependencies (windows only)
+        if: matrix.platform == 'windows-latest'
+        shell: bash
+        env:
+          WINDOWS_SIGN_COMMAND: trusted-signing-cli -e ${{ secrets.AZURE_ACCOUNT_URI }} -a ${{ secrets.AZURE_CODE_SIGNING_NAME }} -c ${{ secrets.AZURE_CERT_PROFILE_NAME }} %1
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          cat '${{ env.tauriDir }}/tauri.conf.json' | jq '.bundle .windows += {"signCommand": env.WINDOWS_SIGN_COMMAND}' > '${{ env.tauriDir }}/temp.json' && mv '${{ env.tauriDir }}/temp.json' '${{ env.tauriDir }}/tauri.conf.json'
+          cargo install trusted-signing-cli
 
-  #     - name: install frontend dependencies
-  #       run: pnpm install
+      - name: install frontend dependencies
+        run: pnpm install
 
-  #     - name: build runtime package
-  #       run: pnpm --filter @isos/runtime run build
+      - name: build runtime package
+        run: pnpm --filter @isos/runtime run build
 
-  #     - uses: tauri-apps/tauri-action@v0
-  #       id: build-tauri-app
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
-  #         APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
-  #         APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-  #         APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
-  #         APPLE_ID: ${{ secrets.APPLE_ID }}
-  #         APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
-  #         APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-  #         AZURE_CLIENT_ID: ${{ matrix.platform == 'windows-latest' && secrets.AZURE_CLIENT_ID }}
-  #         AZURE_CLIENT_SECRET: ${{ matrix.platform == 'windows-latest' && secrets.AZURE_CLIENT_SECRET }}
-  #         AZURE_TENANT_ID: ${{ matrix.platform == 'windows-latest' && secrets.AZURE_TENANT_ID }}
-  #       with:
-  #         releaseId: ${{ needs.create-release.outputs.release-id }}
-  #         projectPath: ${{ env.tauriDir }}
-  #         args: ${{ matrix.args }}
+      - uses: tauri-apps/tauri-action@v0
+        id: build-tauri-app
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          AZURE_CLIENT_ID: ${{ matrix.platform == 'windows-latest' && secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ matrix.platform == 'windows-latest' && secrets.AZURE_CLIENT_SECRET }}
+          AZURE_TENANT_ID: ${{ matrix.platform == 'windows-latest' && secrets.AZURE_TENANT_ID }}
+        with:
+          releaseId: ${{ needs.create-release.outputs.release-id }}
+          projectPath: ${{ env.tauriDir }}
+          args: ${{ matrix.args }}
 
   post-release:
-    # needs: [create-release, build-tauri]
+    needs: [create-release, build-tauri]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -139,4 +137,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          # RELEASE_ID: ${{ needs.create-release.outputs.release-id }}
+          RELEASE_ID: ${{ needs.create-release.outputs.release-id }}

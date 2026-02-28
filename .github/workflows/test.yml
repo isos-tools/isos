@@ -1,61 +1,61 @@
-# name: 'test'
+name: 'test'
 
-# on: 'push'
+on: 'push'
 
-# jobs:
-#   unit-test:
-#     runs-on: ubuntu-latest
-#     strategy:
-#       matrix:
-#         node-version: [24]
-#     steps:
-#       - uses: actions/checkout@v5
-#       - name: Install pnpm
-#         uses: pnpm/action-setup@v4
-#       - name: Use Node.js ${{ matrix.node-version }}
-#         uses: actions/setup-node@v5
-#         with:
-#           node-version: ${{ matrix.node-version }}
-#           cache: 'pnpm'
-#       - name: Install dependencies
-#         run: pnpm install
-#       - name: Run unit tests
-#         run: pnpm run test
+jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [24]
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Run unit tests
+        run: pnpm run test
 
-#   e2e-test:
-#     runs-on: ubuntu-latest
-#     strategy:
-#       matrix:
-#         browser: [chromium, firefox, webkit]
-#     steps:
-#       - uses: actions/checkout@v5
-#       - name: Install pnpm
-#         uses: pnpm/action-setup@v4
-#       - name: Install dependencies
-#         run: pnpm install
-#       - name: Build runtime dependencies
-#         run: pnpm --filter @isos/runtime run build
-#       # - name: Get installed Playwright version
-#       #   id: playwright-v
-#       #   uses: CumulusDS/get-yaml-paths-action@v1.0.1
-#       #   with:
-#       #     file: pnpm-lock.yaml
-#       #     v: 'importers.".".devDependencies."@playwright/test".version'
-#       # - uses: actions/cache@v3
-#       #   id: playwright-cache
-#       #   with:
-#       #     path: ~/.cache/ms-playwright
-#       #     key: ${{ runner.os }}-${{ matrix.browser }}-playwright-${{ steps.playwright-v.outputs.v }}
-#       - name: Install playwright browser
-#         run: npx playwright install --with-deps
-#       #   if: steps.playwright-cache.outputs.cache-hit != 'true'
-#       # - run: npx playwright install-deps
-#       #   if: steps.playwright-cache.outputs.cache-hit != 'true'
-#       - name: Run Playwright tests
-#         run: PLAYWRIGHT_HTML_OUTPUT_DIR=./playwright-report/${{ github.sha }}/${{ matrix.browser }} npx playwright test --project=${{ matrix.browser }}
-#       - uses: actions/upload-artifact@v4
-#         if: ${{ failure() }}
-#         with:
-#           name: playwright-report-${{ github.sha }}-${{ matrix.browser }}
-#           path: ./playwright-report/${{ github.sha }}/${{ matrix.browser }}
-#           retention-days: 14
+  e2e-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build runtime dependencies
+        run: pnpm --filter @isos/runtime run build
+      # - name: Get installed Playwright version
+      #   id: playwright-v
+      #   uses: CumulusDS/get-yaml-paths-action@v1.0.1
+      #   with:
+      #     file: pnpm-lock.yaml
+      #     v: 'importers.".".devDependencies."@playwright/test".version'
+      # - uses: actions/cache@v3
+      #   id: playwright-cache
+      #   with:
+      #     path: ~/.cache/ms-playwright
+      #     key: ${{ runner.os }}-${{ matrix.browser }}-playwright-${{ steps.playwright-v.outputs.v }}
+      - name: Install playwright browser
+        run: npx playwright install --with-deps
+      #   if: steps.playwright-cache.outputs.cache-hit != 'true'
+      # - run: npx playwright install-deps
+      #   if: steps.playwright-cache.outputs.cache-hit != 'true'
+      - name: Run Playwright tests
+        run: PLAYWRIGHT_HTML_OUTPUT_DIR=./playwright-report/${{ github.sha }}/${{ matrix.browser }} npx playwright test --project=${{ matrix.browser }}
+      - uses: actions/upload-artifact@v4
+        if: ${{ failure() }}
+        with:
+          name: playwright-report-${{ github.sha }}-${{ matrix.browser }}
+          path: ./playwright-report/${{ github.sha }}/${{ matrix.browser }}
+          retention-days: 14

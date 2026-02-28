@@ -1,49 +1,49 @@
-# name: 'publish-docs'
+name: 'publish-docs'
 
-# on:
-#   workflow_run:
-#     branches: [main]
-#     workflows: ['test']
-#     types: [completed]
+on:
+  workflow_run:
+    branches: [main]
+    workflows: ['test']
+    types: [completed]
 
-# jobs:
-#   docs-version-check:
-#     runs-on: ubuntu-latest
-#     outputs:
-#       version: ${{ steps.check.outputs.version}}
-#       has-version-change: ${{ steps.check.outputs.has-version-change }}
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v4
-#         with:
-#           ref: main
-#       - id: check
-#         uses: ./.github/actions/version-check
-#         with:
-#           dir: docs
-#         env:
-#           GH_TOKEN: ${{ github.token }}
+jobs:
+  docs-version-check:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.check.outputs.version}}
+      has-version-change: ${{ steps.check.outputs.has-version-change }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - id: check
+        uses: ./.github/actions/version-check
+        with:
+          dir: docs
+        env:
+          GH_TOKEN: ${{ github.token }}
 
-#   publish-docs:
-#     needs: docs-version-check
-#     if: needs.docs-version-check.outputs.has-version-change == 'true'
-#     runs-on: ubuntu-latest
-#     permissions:
-#       pages: write
-#       id-token: write
-#     environment:
-#       name: github-pages
-#       url: ${{ steps.deployment.outputs.page_url }}
-#     steps:
-#       - uses: actions/checkout@v4
-#       - uses: pnpm/action-setup@v4
-#       - uses: actions/setup-node@v4
-#         with:
-#           node-version: lts/*
-#       - run: pnpm install
-#       - run: pnpm --filter @isos/docs run build
-#       - uses: actions/upload-pages-artifact@v3
-#         with:
-#           path: ./docs/dist
-#       - id: deployment
-#         uses: actions/deploy-pages@v4
+  publish-docs:
+    needs: docs-version-check
+    if: needs.docs-version-check.outputs.has-version-change == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - run: pnpm install
+      - run: pnpm --filter @isos/docs run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./docs/dist
+      - id: deployment
+        uses: actions/deploy-pages@v4
