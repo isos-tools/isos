@@ -21,7 +21,11 @@ async function run() {
     const releaseId = Number('291437629');
     // const releaseId = Number(process.env.RELEASE_ID);
 
+    console.log('hello!');
+
     const octokit = getOctokit(token);
+
+    console.log('octokit!', octokit);
 
     const releaseAssets = await octokit.request(
       `GET /repos/${owner}/${repo}/releases/${releaseId}/assets`,
