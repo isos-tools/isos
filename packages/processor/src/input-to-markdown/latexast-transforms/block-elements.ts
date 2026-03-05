@@ -12,6 +12,7 @@ const parBreak: Parbreak = {
 
 export function insertParbreaksAroundBlockElements() {
   return (tree: Root) => {
+    // console.dir(tree, { depth: null });
     visit(tree, (node, info) => {
       if (shouldGetParBreaks(node)) {
         const parent = (info.parents[0] || {}) as Root;
@@ -53,6 +54,7 @@ function shouldGetParBreaks(node: Node | Argument) {
     isDisplayMath(node) ||
     isEnumerate(node) ||
     isItemize(node) ||
+    isDescriptionList(node) ||
     isFigure(node) ||
     isImage(node) ||
     isTable(node) ||
@@ -84,6 +86,10 @@ function isEnumerate(node: Node | Argument) {
 
 function isItemize(node: Node | Argument) {
   return node.type === 'environment' && node.env === 'itemize';
+}
+
+function isDescriptionList(node: Node | Argument) {
+  return node.type === 'environment' && node.env === 'description';
 }
 
 function isFigure(node: Node | Argument) {

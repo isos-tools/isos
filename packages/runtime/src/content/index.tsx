@@ -120,30 +120,28 @@ const ArticleWrapper = styled.div`
     // }
 
     &.has-sidenotes {
-      section,
-      header,
-      footer {
+      & > section,
+      & > header,
+      & > footer {
         margin-right: calc(
           ${constants.sideNoteWidth} + ${constants.sideNoteGap}
         );
+      }
+      .sidenote {
+        .sidenote-content {
+          width: ${constants.sideNoteWidth};
+          margin-right: calc(
+            -${constants.sideNoteWidth} - ${constants.sideNoteGap}
+          );
+        }
+      }
 
+      .framed {
         .sidenote {
           .sidenote-content {
-            width: ${constants.sideNoteWidth};
             margin-right: calc(
-              -${constants.sideNoteWidth} - ${constants.sideNoteGap}
+              -${constants.sideNoteWidth} - ${constants.sideNoteGap} - 2rem
             );
-          }
-        }
-
-        .framed {
-          .sidenote {
-            .sidenote-content {
-              margin-right: calc(
-                -${constants.sideNoteWidth} - ${constants.sideNoteGap} -
-                  2rem
-              );
-            }
           }
         }
       }

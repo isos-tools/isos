@@ -86,6 +86,123 @@ test('enumerate to ol with setcounter', async () => {
   expect(html).toBe(expectedHtml);
 });
 
+test.skip('enumerate to ol with styling', async () => {
+  const latex = String.raw`
+    \begin{enumerate}[label=\alph*.]\label{hello}
+    \item Alpha
+    \item Bravo
+    \item Charlie
+    \end{enumerate}
+    In addition:
+    \begin{enumerate}[label=(\alph*)]
+    \setcounter{enumi}{3}
+    \item Delta
+    \end{enumerate}
+  `;
+  const markdown = await testProcessor.latex(latex);
+  console.log(markdown);
+  // return;
+
+  // const expectedMarkdown = unindentStringAndTrim(`
+  //   1. Alpha
+
+  //   2. Bravo
+
+  //   3. Charlie
+
+  //   In addition:
+
+  //   a) Delta
+  // `);
+
+  // // expect(markdown).toBe(expectedMarkdown);
+
+  // const html = await testProcessor.md(expectedMarkdown);
+  // console.log(html);
+  // return;
+
+  // const expectedHtml = unindentStringAndTrim(`
+  //   <p>Let.</p>
+  //   <ol start="8">
+  //     <li>
+  //       <p>one</p>
+  //     </li>
+  //     <li>
+  //       <p>two</p>
+  //     </li>
+  //   </ol>
+  //   <p>me.</p>
+  // `);
+
+  // expect(html).toBe(expectedHtml);
+});
+
+test.skip('enumerate to ol with labels', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{enumitem}
+    \usepackage{hyperref}
+    \usepackage[noabbrev, capitalise, nameinlink]{cleveref}
+
+    \begin{document}
+
+    \section{Section}
+    The following:
+    \begin{enumerate}
+      \item
+        \begin{enumerate}
+          \item
+          \begin{enumerate}
+            \item
+            \begin{enumerate}
+              \item \label{hello} More
+            \end{enumerate}
+          \end{enumerate}
+        \end{enumerate}
+    \end{enumerate}
+
+    Refer to \ref{hello}.
+
+    \end{document}
+  `;
+  const markdown = await testProcessor.latex(latex);
+  console.log(markdown);
+  // return;
+
+  // const expectedMarkdown = unindentStringAndTrim(`
+  //   1. Alpha
+
+  //   2. Bravo
+
+  //   3. Charlie
+
+  //   In addition:
+
+  //   a) Delta
+  // `);
+
+  // // expect(markdown).toBe(expectedMarkdown);
+
+  // const html = await testProcessor.md(expectedMarkdown);
+  // console.log(html);
+  // return;
+
+  // const expectedHtml = unindentStringAndTrim(`
+  //   <p>Let.</p>
+  //   <ol start="8">
+  //     <li>
+  //       <p>one</p>
+  //     </li>
+  //     <li>
+  //       <p>two</p>
+  //     </li>
+  //   </ol>
+  //   <p>me.</p>
+  // `);
+
+  // expect(html).toBe(expectedHtml);
+});
+
 test('description to dl', async () => {
   const markdown = await testProcessor.latex(String.raw`
     Let.

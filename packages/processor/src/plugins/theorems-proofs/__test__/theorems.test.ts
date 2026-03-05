@@ -1550,8 +1550,8 @@ test('syntax bug', async () => {
   // return;
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <div class="definition theorem" id="thm-1">
-      <p><span class="title"><strong>Theorem 1 (Clairaut's Theroem).</strong></span> abc [Roughly speaking] Then</p>
+    <div class="definition thm" id="thm-1">
+      <p><span class="title"><strong>Theorem 0.1 (Clairaut's Theroem).</strong></span> abc [Roughly speaking] Then</p>
     </div>
   `);
 
@@ -1605,6 +1605,281 @@ test('syntax bug', async () => {
       <p><span class="title"><strong>Theorem 0.1.</strong></span> a</p>
       <h3 id="remark"><span class="count">0.1</span> Remark</h3>
       <p>b</p>
+    </div>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('syntax bug', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{amsthm}
+    \newtheorem{dfn}{Definition}[section]
+    \newtheorem{lem}[dfn]{Lemma}
+    \begin{document}
+
+    \begin{lem}[Rolle's Theorem]\label{lem:Rolle}
+    Suppose that
+    \end{lem}
+
+    \begin{proof}[Proof of \cref{lem:Rolle}.]
+    By the extremal value theorem
+    \end{proof}
+
+    \end{document}
+  `;
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    ---
+    theorems:
+      custom:
+        - name: dfn
+          abbr: dfn
+          style: plain
+          heading: Definition
+          numberWithin: section
+          unnumbered: false
+          type: theorem
+        - name: lem
+          abbr: lem
+          style: plain
+          heading: Lemma
+          referenceCounter: dfn
+          unnumbered: false
+          type: theorem
+    ---
+
+    ::: {#lem-rolle name="Rolle's Theorem"}
+    Suppose that
+    :::
+
+    ::: {.proof name="Proof of @lem-rolle."}
+    By the extremal value theorem
+    :::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <div class="plain lem" id="lem-rolle">
+      <p><span class="title"><strong>Lemma 0.1 (Rolle's Theorem).</strong></span> Suppose that</p>
+    </div>
+    <div class="remark proof">
+      <p><span class="title"><em>Proof of <a href="#lem-rolle" class="ref">Lemma 0.1</a>.</em>. </span>By the extremal value theorem<span class="qed"> q.e.d.</span></p>
+    </div>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('syntax bug', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{amsthm}
+    \newtheorem{dfn}{Definition2}[section]
+    \newtheorem{thm}[dfn]{Theorem2}
+    \begin{document}
+
+    \setcounter{section}{4}
+    \fancysection{Alpha}
+    \begin{dfn}
+    Bravo.
+    \end{dfn}
+    \begin{thm}
+    Charlie.
+    \end{thm}
+
+    \end{document}
+  `;
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    ---
+    theorems:
+      custom:
+        - name: dfn
+          abbr: dfn
+          style: plain
+          heading: Definition2
+          numberWithin: section
+          unnumbered: false
+          type: theorem
+        - name: thm
+          abbr: thm
+          style: plain
+          heading: Theorem2
+          referenceCounter: dfn
+          unnumbered: false
+          type: theorem
+    ---
+
+    ::set-counter{type="h2" value="4"}
+
+    ## Alpha {.unnumbered}
+
+    ::: {#dfn-1}
+    Bravo.
+    :::
+
+    ::: {#thm-1}
+    Charlie.
+    :::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <h2 id="alpha">Alpha</h2>
+    <div class="plain dfn" id="dfn-1">
+      <p><span class="title"><strong>Definition2 4.1.</strong></span> Bravo.</p>
+    </div>
+    <div class="plain thm" id="thm-1">
+      <p><span class="title"><strong>Theorem2 4.2.</strong></span> Charlie.</p>
+    </div>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('syntax bug', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{amsthm}
+    \theoremstyle{definition}
+    \newtheorem{theorem}{Theorem}[section]
+    \newtheorem{lemma}[theorem]{Lemma}
+    \begin{document}
+
+    \section{Alpha}
+    \begin{lemma} \label{lem:normalremark}
+    Let $G$ be a group:
+    \begin{description}
+    \item[a)] $H$ is normal.
+    \end{description}
+    \end{lemma}
+
+    \end{document}
+  `;
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    ---
+    theorems:
+      theorem:
+        numberWithin: h2
+      lemma:
+        referenceCounter: theorem
+    ---
+
+    ## Alpha
+
+    ::: {#lem-normalremark}
+    Let $G$ be a group:
+
+    a)
+    :   $H$ is normal.
+
+    :::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <h2 id="alpha"><span class="count">1</span> Alpha</h2>
+    <div class="definition lemma" id="lem-normalremark">
+      <p><span class="title"><strong>Lemma 1.1.</strong></span> Let <code class="latex">G</code> be a group:</p>
+      <dl>
+        <dt>a)</dt>
+        <dd><code class="latex">H</code> is normal.
+        </dd>
+      </dl>
+    </div>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('syntax bug', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{amsthm}
+    \theoremstyle{definition}
+    \newtheorem{theorem}{Theorem}
+    \begin{document}
+
+    \begin{theorem}
+    \begin{enumerate}
+    \item there.
+    \end{enumerate}
+    \end{theorem}
+
+    \begin{proof}
+    \begin{enumerate}
+    \item The
+    \end{enumerate}
+    We claim
+    \end{proof}
+
+    \end{document}
+  `;
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    ::: {#thm-1}
+
+    1. there.
+
+    :::
+
+    ::: {.proof}
+
+    1. The
+
+    We claim
+    :::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <div class="definition theorem" id="thm-1">
+      <p><span class="title"><strong>Theorem 1.</strong></span> </p>
+      <ol>
+        <li>there.</li>
+      </ol>
+    </div>
+    <div class="remark proof">
+      <p><span class="title"><em>Proof</em>. </span></p>
+      <ol>
+        <li>The</li>
+      </ol>
+      <p>We claim<span class="qed"> q.e.d.</span></p>
     </div>
   `);
 

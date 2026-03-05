@@ -25,7 +25,7 @@ export function theorems(ctx: Context) {
         const id = node.attributes?.id;
         if (id) {
           const [abbr] = id.split('-');
-          const theorem = theoremArr.find((o) => o.abbr === abbr);
+          const theorem = theoremArr.findLast((o) => o.abbr === abbr);
 
           if (theorem) {
             createTheorem(node, theorem, theorem.name, id);
@@ -87,9 +87,9 @@ function createTheorem(
   const customName = node.attributes?.name || undefined;
   const label = createTitle(theorem, theoremName, customName, id);
   const title = createTitleElements(theorem, label);
-  const firstP = node.children.find((o) => o.type === 'paragraph');
+  const firstP = node.children[0];
 
-  if (firstP) {
+  if (firstP && firstP.type === 'paragraph') {
     firstP.children.unshift(...title);
   } else {
     node.children.unshift({

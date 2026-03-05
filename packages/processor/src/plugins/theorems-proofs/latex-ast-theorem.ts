@@ -1,6 +1,12 @@
-import { Environment, Macro } from '@unified-latex/unified-latex-types';
+import {
+  Environment,
+  Macro,
+  Node,
+  String,
+} from '@unified-latex/unified-latex-types';
 import { getArgsContent } from '@unified-latex/unified-latex-util-arguments';
 import { expandUnicodeLigatures } from '@unified-latex/unified-latex-util-ligatures';
+import kebabCase from 'lodash.kebabcase';
 
 import { htmlLike } from '@isos/unified-latex-util-html-like';
 import { printRaw } from '@isos/unified-latex-util-print-raw';
@@ -55,8 +61,10 @@ function createTheorem(node: Environment): Macro {
 function extractName(node: Environment) {
   const args = getArgsContent(node);
   const arg = args[args.length - 1] || [];
-  expandUnicodeLigatures(arg);
-  const name = printRaw(arg).trim();
+  const transformed = convertRefsToAt(arg);
+  expandUnicodeLigatures(transformed);
+  const name = printRaw(transformed).trim();
+  // console.log(name, arg);
   if (name !== '') {
     return name;
   }
@@ -80,4 +88,25 @@ function extractName(node: Environment) {
   }
 
   return '';
+}
+
+function convertRefsToAt(arg: Node[]) {
+  return arg.map((elem) => {
+    if (
+      elem.type === 'macro' &&
+      ['cref', 'autoref'].includes(elem.content)
+    ) {
+      const args = elem.args || [];
+      const lastArg = args[args.length - 1];
+      const str = printRaw(lastArg.content);
+      const id = kebabCase(str);
+      const string: String = {
+        type: 'string',
+        content: `@${id}`,
+      };
+      return string;
+    } else {
+      return elem;
+    }
+  });
 }

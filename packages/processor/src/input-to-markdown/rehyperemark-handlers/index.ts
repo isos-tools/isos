@@ -90,7 +90,10 @@ function spanHandler(
       return result;
     }
 
-    if (className.includes('macro-maketitle')) {
+    if (
+      className.includes('macro-maketitle') ||
+      className.includes('macro-fancytitle')
+    ) {
       const result = createMakeTitle();
       state.patch(node, result);
       return result;
@@ -155,6 +158,7 @@ function spanHandler(
 
     if (className.includes('macro-setcounter')) {
       const result = createSetCounter(ctx, state, node);
+      // @ts-expect-error
       state.patch(node, result);
       return result;
     }
@@ -201,7 +205,7 @@ function spanHandler(
       String(str).startsWith('macro-'),
     ) as string;
 
-    const unsupported = ['ref', 'eqref'];
+    const unsupported = ['macro-ref', 'macro-eqref'];
     if (unsupported.includes(macroName)) {
       const name = macroName.slice(6);
       const result = createWarn('macro', name);

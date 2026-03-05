@@ -439,3 +439,118 @@ test('pagestyle', async () => {
 
   expect(html).toBe(expectedHtml);
 });
+
+test('fancytitle under content', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \begin{document}
+    \title{How to \emph{Structure} a LaTeX Document}
+    \author{David \emph{McArthur}}
+    \date{29 \emph{May} 2025}
+
+    \section{Introduction}
+
+    Paragraph
+
+    \fancytitle
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    ---
+    title: How to *Structure* a LaTeX Document
+    date: 29 *May* 2025
+    author:
+      name: David *McArthur*
+    ---
+
+    ## Introduction
+
+    Paragraph
+
+    :::make-title
+    :::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown, { noSections: false });
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <section id="introduction">
+      <h2><span class="count">1</span> Introduction</h2>
+      <p>Paragraph</p>
+      <header>
+        <h1>How to <em>Structure</em> a LaTeX Document</h1>
+        <p class="author">Written by David <em>McArthur</em></p>
+        <p class="date"><time datetime="2025-05-29">29 <em>May</em> 2025</time></p>
+      </header>
+    </section>
+  `);
+
+  expect(html).toBe(expectedHtml);
+
+  // const quartoHtml = await markdownToQuartoHtml(expectedMarkdown);
+  // console.log(quartoHtml);
+});
+
+test('fancytitle with set-counter', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \title{How to \emph{Structure} a LaTeX Document}
+    \author{David \emph{McArthur}}
+    \date{29 \emph{May} 2025}
+
+    \begin{document}
+    \setcounter{section}{1}
+    \fancytitle
+
+    Bla
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    ---
+    title: How to *Structure* a LaTeX Document
+    date: 29 *May* 2025
+    author:
+      name: David *McArthur*
+    ---
+
+    ::set-counter{type="h2" value="1"}
+
+    :::make-title
+    :::
+
+    Bla
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown, { noSections: false });
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <section>
+      <header>
+        <h1>How to <em>Structure</em> a LaTeX Document</h1>
+        <p class="author">Written by David <em>McArthur</em></p>
+        <p class="date"><time datetime="2025-05-29">29 <em>May</em> 2025</time></p>
+      </header>
+      <p>Bla</p>
+    </section>
+  `);
+
+  expect(html).toBe(expectedHtml);
+
+  // const quartoHtml = await markdownToQuartoHtml(expectedMarkdown);
+  // console.log(quartoHtml);
+});

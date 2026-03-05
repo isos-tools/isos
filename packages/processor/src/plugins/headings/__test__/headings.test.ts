@@ -336,3 +336,33 @@ test('chapter with setcounter', async () => {
 
   expect(html).toBe(expected);
 });
+
+test('fancysection', async () => {
+  const latex = String.raw`
+    \fancysection{Hello}
+    text.
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ## Hello {.unnumbered}
+
+    text.
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(`
+    <h2 id="hello">Hello</h2>
+    <p>text.</p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});

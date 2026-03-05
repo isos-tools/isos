@@ -47,7 +47,7 @@ function MathsInline({ expr, className, maths }: MathsProps) {
 
   useEffect(() => {
     (async () => {
-      if (mml !== undefined) {
+      if (!isTauri() && mml !== undefined) {
         const speech = await mmlToSpeech(mml, maths);
         setLabel(speech.label);
         setBraille(speech.braille);
@@ -98,7 +98,7 @@ function MathsDisplay({
 
   useEffect(() => {
     (async () => {
-      if (mml !== undefined) {
+      if (!isTauri() && mml !== undefined) {
         const speech = await mmlToSpeech(mml, maths);
         setLabel(speech.label);
         setBraille(speech.braille);
@@ -125,4 +125,10 @@ function MathsDisplay({
 
 function formatLaTeX(expr: string) {
   return expr.replace(/\\qedhere/g, '');
+}
+
+// significant slowdown when updating document on change
+// should be solved when processor is moved to worker/thread
+function isTauri() {
+  return !!((globalThis as any) || window).isTauri;
 }
