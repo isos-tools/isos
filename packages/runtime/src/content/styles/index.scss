@@ -68,6 +68,18 @@ article {
   //   }
   // }
 
+  header {
+    .title-image {
+      display: block;
+      width: 33%;
+      margin-bottom: 2em;
+      // margin: 0 auto;
+      path {
+        fill: var(--textColor);
+      }
+    }
+  }
+
   h1,
   h2 {
     @include fonts.antique;

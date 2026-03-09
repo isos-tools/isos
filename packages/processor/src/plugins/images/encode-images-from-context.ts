@@ -16,23 +16,28 @@ export function encodeImagesFromContext(ctx: Context, options: Options) {
     }
     const nodes: Image[] = [];
 
+    // encode title image in frontmatter
+    const { titleImage } = ctx.frontmatter;
+    if (titleImage) {
+      const fullPath = getFullPath(ctx, titleImage);
+      const data = ctx.fileCache.getContent(fullPath);
+      if (data !== null) {
+        ctx.frontmatter.titleImage = data;
+      }
+    }
+
     visit(tree, 'image', (node) => {
       nodes.push(node);
     });
 
-    const dir = dirname(ctx.srcFilePath);
-
     for (const node of nodes) {
-      const imagePath = resolve(dir, node.url);
-
       if (node.url.startsWith('data')) {
         // already inlined
         continue;
       }
 
       // with latex, if no extension is given, default to .pdf
-      const fullPath =
-        ctx.type === 'latex' ? normaliseImagePath(imagePath) : imagePath;
+      const fullPath = getFullPath(ctx, node.url);
 
       const data = ctx.fileCache.getContent(fullPath);
 
@@ -56,7 +61,17 @@ export function encodeImagesFromContext(ctx: Context, options: Options) {
         });
       }
     }
+
+    // console.dir(tree, { depth: null });
   };
+}
+
+function getFullPath(ctx: Context, url: string) {
+  const dir = dirname(ctx.srcFilePath);
+  const imagePath = resolve(dir, url);
+
+  // with latex, if no extension is given, default to .pdf
+  return ctx.type === 'latex' ? normaliseImagePath(imagePath) : imagePath;
 }
 
 function normaliseImagePath(imagePath: string) {

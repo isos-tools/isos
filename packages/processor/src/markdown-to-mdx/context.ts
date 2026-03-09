@@ -25,6 +25,7 @@ export type Author = {
 
 export type Frontmatter = {
   title: string;
+  titleImage?: string;
   date: string;
   author: Author | Author[];
   abstract: string;
@@ -37,6 +38,7 @@ export type Frontmatter = {
 export type Context = {
   frontmatter: {
     title: string;
+    titleImage?: string;
     date: string;
     author: Author[];
     abstract: string;

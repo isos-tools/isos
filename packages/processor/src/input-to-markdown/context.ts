@@ -24,6 +24,7 @@ export type Context = {
   frontmatter: {
     documentClass?: string;
     title: string;
+    titleImage?: string;
     date: string;
     author: Author[];
     abstract: string;

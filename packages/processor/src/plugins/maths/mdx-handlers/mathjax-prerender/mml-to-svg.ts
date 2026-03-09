@@ -12,6 +12,7 @@ import '@mathjax/mathjax-newcm-font/js/svg/dynamic/double-struck.js';
 import '@mathjax/mathjax-newcm-font/js/svg/dynamic/sans-serif.js';
 import '@mathjax/mathjax-newcm-font/js/svg/dynamic/shapes.js';
 import '@mathjax/mathjax-newcm-font/js/svg/dynamic/fraktur.js';
+import '@mathjax/mathjax-newcm-font/js/svg/dynamic/script.js';
 
 import { MathJaxFiraFont } from '@mathjax/mathjax-fira-font/js/svg.js';
 import '@mathjax/mathjax-fira-font/js/svg/dynamic/arrows.js';
@@ -20,6 +21,7 @@ import '@mathjax/mathjax-fira-font/js/svg/dynamic/double-struck.js';
 import '@mathjax/mathjax-fira-font/js/svg/dynamic/sans-serif.js';
 import '@mathjax/mathjax-fira-font/js/svg/dynamic/shapes.js';
 import '@mathjax/mathjax-fira-font/js/svg/dynamic/fraktur.js';
+import '@mathjax/mathjax-fira-font/js/svg/dynamic/script.js';
 
 import { LayoutOptions } from '.';
 import { MathsFont, MathsState } from '../../mdx-state';
@@ -41,6 +43,7 @@ const packages = [
   'sans-serif',
   'shapes',
   'fraktur',
+  'script',
 ];
 
 packages.forEach((fontPackage) => {

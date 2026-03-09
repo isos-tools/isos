@@ -6,13 +6,19 @@ import { Context } from '../context';
 
 export function addFrontmatter(ctx: Context) {
   return (tree: Root) => {
-    const { documentClass, date, title, author, abstract } =
+    const { documentClass, date, title, titleImage, author, abstract } =
       ctx.frontmatter;
+
+    // console.log(ctx.frontmatter);
     const toExport: Record<string, any> = {};
 
     if (ctx.hasMakeTitle) {
       if (title) {
         toExport.title = title;
+      }
+
+      if (titleImage) {
+        toExport.titleImage = titleImage;
       }
 
       if (date) {
@@ -53,5 +59,7 @@ export function addFrontmatter(ctx: Context) {
         value: stringify(toExport).trim(),
       });
     }
+
+    // console.log(toExport);
   };
 }

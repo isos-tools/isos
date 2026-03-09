@@ -1,7 +1,7 @@
 import { Element, Root } from 'hast';
-import rehypeParse from 'rehype-parse';
-import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
+
+import { inlineSvg } from '@isos/image-tools';
 
 export function missingMathsImageToSvg() {
   return (tree: Root) => {
@@ -22,11 +22,7 @@ export function missingMathsImageToSvg() {
         ) {
           const src = String(node.properties.src);
           if (src.startsWith('data:image/svg+xml')) {
-            const decodedString = atob(fromUrl(src));
-            const processor = unified().use(rehypeParse);
-            const ast = processor.parse(decodedString);
-
-            const svg = extractSvg(ast);
+            const svg = inlineSvg(src);
             // console.log(svg);
 
             if (svg !== null) {
@@ -39,24 +35,6 @@ export function missingMathsImageToSvg() {
       }
     });
   };
-}
-
-function fromUrl(base64: string) {
-  return base64.replace(/^data:(.+?);base64,/, '');
-}
-
-function extractSvg(ast: Root) {
-  let svg = null;
-
-  visit(ast, 'element', (node) => {
-    if (node.tagName === 'svg') {
-      delete node.properties.xmlns;
-      node.properties.className = ['missing-maths'];
-      svg = node;
-    }
-  });
-
-  return svg;
 }
 
 function wrapSvg(svg: Element): Element {

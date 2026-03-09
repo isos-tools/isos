@@ -6,6 +6,7 @@ import { deleteToDoubleTilde } from '../../plugins/strikethrough/delete-to-doubl
 import { theoremLabelAsId } from '../../plugins/theorems-proofs/theorem-label-as-id';
 import { Context } from '../context';
 import { Options } from '../options';
+import { addFrontmatter } from './add-frontmatter';
 
 export function createMdastTransforms(
   ctx: Context,
@@ -21,5 +22,6 @@ export function createMdastTransforms(
     // () => (tree) => {
     //   console.dir(tree, { depth: null });
     // },
+    [addFrontmatter, ctx],
   ];
 }

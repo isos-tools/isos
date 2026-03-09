@@ -28,7 +28,6 @@ import { Context } from './context';
 import { createHastTransforms } from './hast-transforms';
 import { createLatexastTransforms } from './latexast-transforms';
 import { createMdastTransforms } from './mdast-transforms';
-import { addFrontmatter } from './mdast-transforms/add-frontmatter';
 import { formatBreak } from './mdast-transforms/format-break';
 import { createRehypeRemarkHandlers } from './rehyperemark-handlers';
 import { nbspToSpace } from './string-transforms/nbsp-to-space';
@@ -74,6 +73,8 @@ export const latexAstFromStringOptions = {
     newexsol: { signature: 'sO{}mmmmO{}' },
     // tcblower: { breakAround: true },
     counterwithin: { signature: 'm m' },
+    huge: { signature: 'm' },
+    Huge: { signature: 'm' },
 
     footnote: { signature: 'o o m' },
     sidenote: { signature: 'o o m' },
@@ -162,7 +163,6 @@ function createLatexToHastHandlers(ctx: Context): LatexConvertOptions {
 
 function createLatexMdAstTransforms(ctx: Context): PluggableList {
   return [
-    [addFrontmatter, ctx],
     formatBreak,
     [imageToPandocFigure, ctx],
     footnoteMarkToRef,

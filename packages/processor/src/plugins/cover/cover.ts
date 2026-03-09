@@ -3,6 +3,8 @@ import { Root } from 'mdast';
 import { toHast } from 'mdast-util-to-hast';
 import { visit } from 'unist-util-visit';
 
+import { inlineSvg } from '@isos/image-tools';
+
 import { Author, Context } from '../../markdown-to-mdx/context';
 import { createRemarkProcessor } from '../../remark-processor';
 
@@ -14,6 +16,13 @@ export function cover({ frontmatter }: Context) {
       if (node.name === 'make-title') {
         // console.log(frontmatter);
         const children: ElementContent[] = [];
+
+        if (frontmatter.titleImage) {
+          const titleImage = createTitleImage(frontmatter.titleImage);
+          if (titleImage) {
+            children.push({ type: 'text', value: '\n' }, titleImage);
+          }
+        }
 
         if (frontmatter.title) {
           const title = createTitle(frontmatter.title);
@@ -56,6 +65,26 @@ export function cover({ frontmatter }: Context) {
     });
 
     // console.dir(tree, { depth: null });
+  };
+}
+
+function createTitleImage(titleImage: string): Element {
+  const className = ['title-image'];
+  if (titleImage.startsWith('data:image/svg+xml')) {
+    const svg = inlineSvg(titleImage);
+    if (svg !== null) {
+      svg.properties.className = className;
+      return svg;
+    }
+  }
+  return {
+    type: 'element',
+    tagName: 'img',
+    properties: {
+      className,
+      src: titleImage,
+    },
+    children: [],
   };
 }
 

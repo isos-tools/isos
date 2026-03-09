@@ -2,6 +2,7 @@ import { convertToMarkdown } from '@unified-latex/unified-latex-to-mdast';
 import {
   Environment,
   Macro,
+  Node,
   Root,
 } from '@unified-latex/unified-latex-types';
 import { getArgsContent } from '@unified-latex/unified-latex-util-arguments';
@@ -25,7 +26,7 @@ export function extractTopMatter(ctx: Context) {
 
           ctx.frontmatter.author[authIdx - 1] = {
             ...(ctx.frontmatter.author[authIdx - 1] || {}),
-            orcid: extractMarkdown(node),
+            orcid: extractMarkdown(getLastArg(node)),
           };
           parent.content?.splice(idx, 1);
         }
@@ -42,13 +43,19 @@ export function extractTopMatter(ctx: Context) {
         }
 
         if (node.content === 'title') {
-          ctx.frontmatter.title = extractMarkdown(node);
+          const lastArg = getLastArg(node);
+          // console.dir(lastArg, { depth: null });
+          const { title, titleImage } = extractTitleElements(lastArg);
+          ctx.frontmatter.title = extractMarkdown(title);
+          if (titleImage !== null) {
+            ctx.frontmatter.titleImage = extractMarkdown(titleImage);
+          }
           parent.content?.splice(idx, 1);
         }
 
         if (node.content === 'author') {
           const authIdx = getAuthBlkIdx(node);
-          const name = extractMarkdown(node);
+          const name = extractMarkdown(getLastArg(node));
           ctx.frontmatter.author[authIdx - 1] = {
             ...(ctx.frontmatter.author[authIdx - 1] || {}),
             name,
@@ -60,13 +67,13 @@ export function extractTopMatter(ctx: Context) {
           const authIdx = getAuthBlkIdx(node);
           ctx.frontmatter.author[authIdx - 1] = {
             ...(ctx.frontmatter.author[authIdx - 1] || {}),
-            affiliation: extractMarkdown(node),
+            affiliation: extractMarkdown(getLastArg(node)),
           };
           parent.content?.splice(idx, 1);
         }
 
         if (node.content === 'date') {
-          ctx.frontmatter.date = extractMarkdown(node);
+          ctx.frontmatter.date = extractMarkdown(getLastArg(node));
           parent.content?.splice(idx, 1);
         }
       }
@@ -83,6 +90,30 @@ export function extractTopMatter(ctx: Context) {
   };
 }
 
+function extractTitleElements(arg: Node[]) {
+  let title: Node[] | null = arg;
+  let titleImage: Node[] | null = null;
+
+  visit(arg, (node) => {
+    if (node.type === 'macro' && ['huge', 'Huge'].includes(node.content)) {
+      // console.dir(node, { depth: null });
+      if (Array.isArray(node.args)) {
+        // console.log(node.args[0]);
+        const arg = node.args[0];
+        title = arg.content;
+      }
+    }
+    if (node.type === 'macro' && node.content === 'includegraphics') {
+      if (Array.isArray(node.args)) {
+        const arg = node.args[node.args.length - 1];
+        titleImage = arg.content;
+      }
+    }
+  });
+
+  return { title, titleImage };
+}
+
 function getAuthBlkIdx(node: Macro) {
   if (Array.isArray(node.args) && node.args.length === 2) {
     const str = printRaw(node.args[0].content);
@@ -94,7 +125,12 @@ function getAuthBlkIdx(node: Macro) {
   return 1;
 }
 
-function extractMarkdown(node: Macro | Environment) {
+function getLastArg(node: Macro | Environment) {
   const args = getArgsContent(node);
-  return convertToMarkdown(args[args.length - 1] || []).trim();
+  return args[args.length - 1] || [];
+}
+
+function extractMarkdown(arg: Node[]) {
+  const result = convertToMarkdown(arg).trim();
+  return result;
 }

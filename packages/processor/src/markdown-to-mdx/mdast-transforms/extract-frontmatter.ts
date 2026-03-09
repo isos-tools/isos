@@ -30,6 +30,9 @@ export function extractFrontmatter(ctx: Context) {
       if (fm.title) {
         ctx.frontmatter.title = fm.title;
       }
+      if (fm.titleImage) {
+        ctx.frontmatter.titleImage = fm.titleImage;
+      }
       if (fm.date) {
         ctx.frontmatter.date = fm.date;
       }
