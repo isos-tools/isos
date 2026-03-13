@@ -153,10 +153,10 @@ test('footnotemark and footnotetext with no identifier', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <section>
-      <p>Some text <span class="warn">footnote mark has no identifier</span>and <span class="warn">footnote mark has no identifier</span>.</p>
+      <p>Some text <span class="warn">footnote mark has no identifier</span> and <span class="warn">footnote mark has no identifier</span> .</p>
       <p>Another paragraph.</p>
-      <p> <span class="warn">footnote text has no identifier</span></p>
-      <p> <span class="warn">footnote text has no identifier</span></p>
+      <p> <span class="warn">footnote text has no identifier</span> </p>
+      <p> <span class="warn">footnote text has no identifier</span> </p>
     </section>
   `);
 
@@ -468,8 +468,8 @@ test('framedsidenote', async () => {
     \begin{framed}
     \begin{definition}Let $S$ be a set.
     \begin{enumerate}
-    \item[1.] We say that\framedsidenote{def}.
-    \item[2.] We say that\framedsidenote{ghi}.
+    \item We say that\framedsidenote{def}.
+    \item We say that\framedsidenote{ghi}.
     \end{enumerate}
     \end{definition}
     \end{framed}

@@ -1,7 +1,7 @@
 import { styled } from '@linaria/react';
 import { Signal } from '@preact/signals';
 import classNames from 'classnames';
-import { ChangeEvent, MouseEvent } from 'preact/compat';
+import type { TargetedInputEvent, TargetedMouseEvent } from 'preact';
 
 import { ViewOptionsParam } from '../../constants';
 
@@ -24,7 +24,7 @@ export function RangeInput(props: Props) {
         step={props.increment}
         defaultValue={props.initial}
         value={props.value}
-        onInput={(e: ChangeEvent<HTMLInputElement>) => {
+        onInput={(e: TargetedInputEvent<HTMLInputElement>) => {
           props.onInput(e.currentTarget.value);
         }}
       />
@@ -32,7 +32,7 @@ export function RangeInput(props: Props) {
         className={classNames({
           disabled: props.value.value === props.initial,
         })}
-        onClick={(e: MouseEvent<HTMLButtonElement>) => {
+        onClick={(e: TargetedMouseEvent<HTMLButtonElement>) => {
           e.preventDefault();
           props.onInput(props.initial);
         }}>

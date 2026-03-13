@@ -3,7 +3,7 @@ import { getArgsContent } from '@unified-latex/unified-latex-util-arguments';
 import { unifiedLatexFromString } from '@unified-latex/unified-latex-util-parse';
 import { unifiedLatexStringCompiler } from '@unified-latex/unified-latex-util-to-string';
 import { visit } from '@unified-latex/unified-latex-util-visit';
-import { dirname, parse, resolve } from 'pathe';
+import { dirname, join, parse, resolve } from 'pathe';
 import { unified } from 'unified';
 
 import { Fs } from '@isos/fs/types';
@@ -83,10 +83,18 @@ function recursivelyIncludeFiles(
         }
 
         if (isImage(node)) {
-          const args = getArgsContent(node as Ast.Macro);
+          const args = node.args || [];
           const lastArg = args[args.length - 1] || [];
+          const relativePath = join(
+            ctx.graphicsPath,
+            printRaw(lastArg.content),
+          );
+          const str = {
+            type: 'string',
+            content: relativePath,
+          };
           // prepend graphicspath to image file paths
-          lastArg.unshift({ type: 'string', content: ctx.graphicsPath });
+          Object.assign(lastArg, { content: [str] });
 
           const fullPath = getFullPath(node, srcDir, '.pdf');
           subFiles.push(fullPath);

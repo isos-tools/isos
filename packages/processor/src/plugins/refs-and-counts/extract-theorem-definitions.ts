@@ -27,30 +27,48 @@ export function extractTheoremDefinitions(ctx: Context) {
           ) as Theorem['style'];
         }
 
-        if (node.content === 'newtheorem') {
-          const { name, ...theorem } = extractTheorem(node, style);
+        if (node.content === 'numberwithin') {
+          const args = extractNumberWithin(node);
+          if (args !== null) {
+            const { name, numberWithin } = args;
+            theorems = {
+              ...theorems,
+              [name]: {
+                ...(theorems[name] || {}),
+                numberWithin,
+              },
+            };
+          }
+        }
 
-          theorems = {
-            ...theorems,
-            [name]: {
-              ...(theorems[name] || {}),
-              ...theorem,
-              type: 'theorem',
-            },
-          };
+        if (node.content === 'newtheorem') {
+          const thm = extractTheorem(node, style);
+          if (thm !== null) {
+            const { name, ...theorem } = thm;
+            theorems = {
+              ...theorems,
+              [name]: {
+                ...(theorems[name] || {}),
+                ...theorem,
+                type: 'theorem',
+              },
+            };
+          }
         }
 
         if (node.content === 'newframedtheorem') {
-          const { name, ...theorem } = extractFramedTheorem(node, style);
-
-          theorems = {
-            ...theorems,
-            [name]: {
-              ...(theorems[name] || {}),
-              ...theorem,
-              type: 'theorem',
-            },
-          };
+          const thm = extractFramedTheorem(node, style);
+          if (thm !== null) {
+            const { name, ...theorem } = thm;
+            theorems = {
+              ...theorems,
+              [name]: {
+                ...(theorems[name] || {}),
+                ...theorem,
+                type: 'theorem',
+              },
+            };
+          }
         }
 
         if (node.content === 'newexsol') {
@@ -97,9 +115,11 @@ export function extractTheoremDefinitions(ctx: Context) {
 function extractFramedTheorem(
   node: Macro,
   style: Theorem['style'],
-): Theorem {
+): Theorem | null {
   const theorem = extractTheorem(node, style);
-  theorem.framed = true;
+  if (theorem !== null) {
+    theorem.framed = true;
+  }
   return theorem;
 }
 
@@ -141,10 +161,37 @@ function normaliseFlag(flag: string) {
   }
 }
 
+function extractNumberWithin(node: Macro) {
+  // const args = getArgsContent(node);
+  const args = node.args || [];
+  // console.dir(args, { depth: null });
+
+  if (args.length !== 2) {
+    return null;
+  }
+
+  const [name, numberWithin] = args;
+
+  if (
+    name.content[0].type !== 'string' ||
+    numberWithin.content[0].type !== 'string'
+  ) {
+    return null;
+  }
+
+  return {
+    name: name.content[0].content,
+    numberWithin: numberWithin.content[0].content,
+  };
+}
+
 // Theorem definitions are defined in section 3.4 of:
 // https://anorien.csc.warwick.ac.uk/mirrors/CTAN/info/amscls-doc/Author_Handbook_ProcColl.pdf
 
-function extractTheorem(node: Macro, style: Theorem['style']): Theorem {
+function extractTheorem(
+  node: Macro,
+  style: Theorem['style'],
+): Theorem | null {
   const _args = node.args || [];
 
   // starred
@@ -203,5 +250,5 @@ function extractTheorem(node: Macro, style: Theorem['style']): Theorem {
     };
   }
 
-  throw new Error('theorem definition not supported');
+  return null;
 }

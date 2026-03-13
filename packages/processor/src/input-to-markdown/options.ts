@@ -71,6 +71,7 @@ export const latexAstFromStringOptions = {
 
     newframedtheorem: { signature: 'sO{}O{}momo' },
     newexsol: { signature: 'sO{}mmmmO{}' },
+    numberwithin: { signature: 'm m' },
     // tcblower: { breakAround: true },
     counterwithin: { signature: 'm m' },
     huge: { signature: 'm' },

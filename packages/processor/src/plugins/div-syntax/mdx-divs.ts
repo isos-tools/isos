@@ -69,14 +69,10 @@ function createFigure(
   }
 
   const { caption, content } = separateContentAndCaption(node);
-
-  const children: ElementContent[] = [];
-
   const contentHast = getContentHast(content);
-
+  const children: ElementContent[] = [];
   children.push(contentHast);
 
-  // if (caption.length > 0) {
   const strong: Element = {
     type: 'element',
     tagName: 'strong',

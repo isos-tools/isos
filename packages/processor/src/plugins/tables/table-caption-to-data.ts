@@ -73,7 +73,7 @@ function extractLabel(table: Ast.Node): Ast.Macro | null {
     if (node.type === 'macro' && node.content === 'label') {
       caption = node;
 
-      // remove caption
+      // remove label
       const parent = info.parents[0];
       if (parent && parent.type === 'environment') {
         parent.content.splice(info.index || 0, 1);

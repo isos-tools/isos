@@ -261,7 +261,7 @@ test('newexsol unnumbered', async () => {
 
     ## Alpha
 
-    :::: {#exr-1}
+    :::: {.exr.unnumbered}
     abc
 
     ***

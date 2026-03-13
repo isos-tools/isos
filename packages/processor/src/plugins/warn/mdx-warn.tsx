@@ -32,7 +32,7 @@ export function WarnSpan(props: HTMLAttributes<HTMLSpanElement>) {
   return (
     <>
       {' '}
-      <span {...props} className="warn" ref={ref} />
+      <span {...props} className="warn" ref={ref} />{' '}
     </>
   );
 }

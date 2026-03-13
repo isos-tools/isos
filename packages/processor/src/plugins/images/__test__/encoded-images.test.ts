@@ -61,3 +61,54 @@ test('encoded images', { timeout: 20_000 }, async () => {
 
   // expect(html).toBe(expectedHtml);
 });
+
+test('image does not exist', { timeout: 20_000 }, async () => {
+  // const pdfLatexHtml = await pdfLatexFixtureToHtml.poppler(
+  //   'images/article.tex',
+  // );
+  // console.log(pdfLatexHtml);
+
+  // TODO: neither poppler or mupdf will embed a PDF or SVG image here
+  // but it's in the pdflatex PDF
+  // const expectedPdfLatexHtml = unindentStringAndTrim(`
+  //   <img src="test-1_1.png"><br>
+  //   <img src="test-1_2.jpg"><br>
+  //   1
+  // `);
+
+  // expect(pdfLatexHtml).toBe(expectedPdfLatexHtml);
+
+  const markdown = await testProcessor.fixture('images/article2.tex', {
+    noInlineImages: false,
+  });
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    :warn[File diagram2.pdf does not exist]
+
+    :warn[File MyCubeAxis12.pdf does not exist]
+
+    :warn[File SquareSymmetry2.pdf does not exist]
+
+    :warn[File Triskelion2.jpg does not exist]
+
+    :warn[File FifthRootsOfUnity2 does not exist]
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+  // return;
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(`
+    <p> <span class="warn">File diagram2.pdf does not exist</span> </p>
+    <p> <span class="warn">File MyCubeAxis12.pdf does not exist</span> </p>
+    <p> <span class="warn">File SquareSymmetry2.pdf does not exist</span> </p>
+    <p> <span class="warn">File Triskelion2.jpg does not exist</span> </p>
+    <p> <span class="warn">File FifthRootsOfUnity2 does not exist</span> </p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});

@@ -199,22 +199,21 @@ function createAuthorContent(author: Author): ElementContent[] {
 }
 
 function createDate(date: string): Element {
+  // const time: Element = {
+  //   type: 'element',
+  //   tagName: 'time',
+  //   properties: {
+  //     datetime: '2025-05-29',
+  //   },
+  //   children: [],
+  // }
   return {
     type: 'element',
     tagName: 'p',
     properties: {
       className: ['date'],
     },
-    children: [
-      {
-        type: 'element',
-        tagName: 'time',
-        properties: {
-          datetime: '2025-05-29', // TODO
-        },
-        children: getInlineHast(date),
-      },
-    ],
+    children: getInlineHast(date),
   };
 }
 

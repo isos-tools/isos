@@ -1213,7 +1213,7 @@ test('theorems with reference and section counters', async () => {
     Some text
     :::
 
-    ::: {#exm-1}
+    ::: {.exm.unnumbered}
     Some text
     :::
 
@@ -1221,7 +1221,7 @@ test('theorems with reference and section counters', async () => {
     Some text
     :::
 
-    ::: {#rem-1}
+    ::: {.rem.unnumbered}
     Some text
     :::
 
@@ -1380,8 +1380,8 @@ test('qed placement', async () => {
 
     \begin{proof}We must:
     \begin{enumerate}
-    \item[1.] Let:
-    \item[2.] Let
+    \item Let:
+    \item Let
     \[
     S\qedhere
     \]
@@ -1880,6 +1880,55 @@ test('syntax bug', async () => {
         <li>The</li>
       </ol>
       <p>We claim<span class="qed"> q.e.d.</span></p>
+    </div>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('theorem name with star at the end', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{amsthm}
+    \newtheorem*{theorem*}{Theorem}
+    \begin{document}
+
+    \begin{theorem*}
+    A holomorphic function
+    \end{theorem*}
+
+    \end{document}
+  `;
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    ---
+    theorems:
+      custom:
+        - name: theorem*
+          abbr: theorem*
+          style: plain
+          heading: Theorem
+          unnumbered: true
+          type: theorem
+    ---
+
+    ::: {.theorem-star.unnumbered}
+    A holomorphic function
+    :::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <div class="plain theorem-star">
+      <p><span class="title"><strong>Theorem.</strong></span> A holomorphic function</p>
     </div>
   `);
 

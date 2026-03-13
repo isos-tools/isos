@@ -49,7 +49,7 @@ export function createFileCache(fs: Fs): FileCache {
           hash = await getHash(data);
         }
       } catch (err: any) {
-        console.log(err);
+        // console.log(err);
         // log.error(err?.message);
         error = err?.message;
       }

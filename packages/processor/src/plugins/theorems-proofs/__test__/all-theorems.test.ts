@@ -1470,43 +1470,43 @@ test('all theorems unnumbered', async () => {
         unnumbered: true
     ---
 
-    ::: {#thm-1}
+    ::: {.thm.unnumbered}
     Some text
     :::
 
-    ::: {#lem-1}
+    ::: {.lem.unnumbered}
     Some text
     :::
 
-    ::: {#cor-1}
+    ::: {.cor.unnumbered}
     Some text
     :::
 
-    ::: {#prp-1}
+    ::: {.prp.unnumbered}
     Some text
     :::
 
-    ::: {#cnj-1}
+    ::: {.cnj.unnumbered}
     Some text
     :::
 
-    ::: {#def-1}
+    ::: {.def.unnumbered}
     Some text
     :::
 
-    ::: {#exm-1}
+    ::: {.exm.unnumbered}
     Some text
     :::
 
-    ::: {#exr-1}
+    ::: {.exr.unnumbered}
     Some text
     :::
 
-    ::: {#sol-1}
+    ::: {.sol.unnumbered}
     Some text
     :::
 
-    ::: {#rem-1}
+    ::: {.rem.unnumbered}
     Some text
     :::
 

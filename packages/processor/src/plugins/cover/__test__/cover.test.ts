@@ -62,7 +62,7 @@ test('cover', async () => {
       <header>
         <h1>How to <em>Structure</em> a LaTeX Document</h1>
         <p class="author">Written by David <em>McArthur</em></p>
-        <p class="date"><time datetime="2025-05-29">29 <em>May</em> 2025</time></p>
+        <p class="date">29 <em>May</em> 2025</p>
         <aside aria-labelledby="h-abstract" class="abstract">
           <h2 id="h-abstract">Abstract</h2>
           <p>My abstract.</p>
@@ -178,7 +178,7 @@ test('cover with author with ORCID', async () => {
             C84.2,46.7,88.7,51.3,88.7,56.8z"></path>
               </g>
             </svg></a></p>
-        <p class="date"><time datetime="2025-05-29">29 <em>May</em> 2025</time></p>
+        <p class="date">29 <em>May</em> 2025</p>
       </header>
       <p>Hello</p>
     </section>
@@ -265,7 +265,7 @@ test('cover with multiple authors with ORCIDs', async () => {
                 </svg></a>, <span class="affiliation">Department of Biology, University Y</span></li>
           </ul>
         </div>
-        <p class="date"><time datetime="2025-05-29">29 <em>May</em> 2025</time></p>
+        <p class="date">29 <em>May</em> 2025</p>
       </header>
       <p>Hello</p>
     </section>
@@ -400,7 +400,7 @@ test('maketitle under content', async () => {
       <header>
         <h1>How to <em>Structure</em> a LaTeX Document</h1>
         <p class="author">Written by David <em>McArthur</em></p>
-        <p class="date"><time datetime="2025-05-29">29 <em>May</em> 2025</time></p>
+        <p class="date">29 <em>May</em> 2025</p>
       </header>
     </section>
   `);
@@ -488,7 +488,7 @@ test('fancytitle under content', async () => {
       <header>
         <h1>How to <em>Structure</em> a LaTeX Document</h1>
         <p class="author">Written by David <em>McArthur</em></p>
-        <p class="date"><time datetime="2025-05-29">29 <em>May</em> 2025</time></p>
+        <p class="date">29 <em>May</em> 2025</p>
       </header>
     </section>
   `);
@@ -543,7 +543,7 @@ test('fancytitle with set-counter', async () => {
       <header>
         <h1>How to <em>Structure</em> a LaTeX Document</h1>
         <p class="author">Written by David <em>McArthur</em></p>
-        <p class="date"><time datetime="2025-05-29">29 <em>May</em> 2025</time></p>
+        <p class="date">29 <em>May</em> 2025</p>
       </header>
       <p>Bla</p>
     </section>

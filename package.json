@@ -6,7 +6,7 @@
   "packageManager": "pnpm@10.30.3",
   "scripts": {
     "check-types": "tsc",
-    "tauri": "pnpm --filter @isos/tauri run tauri",
+    "tauri": "pnpm --filter @isos/runtime run build && pnpm --filter @isos/tauri run tauri",
     "test": "vitest",
     "e2e": "NODE_ENV=test playwright test",
     "prettier": "prettier",

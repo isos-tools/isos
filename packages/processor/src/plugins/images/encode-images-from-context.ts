@@ -55,7 +55,7 @@ export function encodeImagesFromContext(ctx: Context, options: Options) {
           children: [
             {
               type: 'text',
-              value: data,
+              value: `File ${node.url} does not exist`,
             },
           ],
         });

@@ -506,7 +506,7 @@ test('center inside theorem causes error', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <div class="remark solution" id="sol-fig-sphere">
-      <p><span class="title"><em>Solution 1</em>. </span>as shown in <span class="warn"><strong>unknown ref:</strong> <code>fig-sphere</code></span>.</p>
+      <p><span class="title"><em>Solution 1</em>. </span>as shown in <span class="warn"><strong>unknown ref:</strong> <code>fig-sphere</code></span> .</p>
       <p><img src="fig/ex1-1.png" alt="Image" /></p>
     </div>
   `);
@@ -749,7 +749,7 @@ test('image with references in caption', async () => {
       <div class="fig-content">
         <p><img src="img.pdf" alt="Image" /></p>
       </div>
-      <figcaption><strong>Figure 1:</strong> a <span class="warn"><strong>unknown ref:</strong> <code>eq-a-b</code></span> b <span class="warn"><strong>unknown ref:</strong> <code>ex-1-a-b</code></span>.</figcaption>
+      <figcaption><strong>Figure 1:</strong> a <span class="warn"><strong>unknown ref:</strong> <code>eq-a-b</code></span> b <span class="warn"><strong>unknown ref:</strong> <code>ex-1-a-b</code></span> .</figcaption>
     </figure>
   `);
 

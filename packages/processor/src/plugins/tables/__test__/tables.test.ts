@@ -161,7 +161,7 @@ test('tables', async () => {
       </table>
     </figure>
 
-    <p>See <a href="#tbl-letters-1" class="ref">Table 1</a> and <span class="warn"><strong>unknown ref:</strong> <code>tbl-letters-2</code></span> and <span class="warn"><strong>unknown ref:</strong> <code>tbl-letters-3</code></span>.</p>
+    <p>See <a href="#tbl-letters-1" class="ref">Table 1</a> and <span class="warn"><strong>unknown ref:</strong> <code>tbl-letters-2</code></span> and <span class="warn"><strong>unknown ref:</strong> <code>tbl-letters-3</code></span> .</p>
   `);
 
   expect(html).toBe(expectedHtml);

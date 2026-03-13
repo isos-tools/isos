@@ -31,11 +31,25 @@ export function theorems(ctx: Context) {
             createTheorem(node, theorem, theorem.name, id);
           }
         }
-        if (node.attributes?.class?.split(' ').includes('proof')) {
-          const proof = theoremArr.find(
-            (o) => o.name === 'proof',
-          ) as Theorem;
-          createTheorem(node, proof, 'proof');
+
+        const classes = node.attributes?.class?.split(' ');
+        if (Array.isArray(classes)) {
+          if (classes.includes('unnumbered')) {
+            const abbr = classes
+              .filter((s) => s !== 'unnumbered')
+              .map((s) => s.replace(/\-star$/, '*'))
+              .find((s) => theoremArr.find((o) => o.abbr === s));
+            const theorem = theoremArr.findLast((o) => o.abbr === abbr);
+
+            if (theorem) {
+              createTheorem(node, theorem, theorem.name);
+            }
+          } else if (classes.includes('proof')) {
+            const proof = theoremArr.find(
+              (o) => o.name === 'proof',
+            ) as Theorem;
+            createTheorem(node, proof, 'proof');
+          }
         }
       }
     });
@@ -68,7 +82,9 @@ function createTheorem(
   }
 
   const properties: Properties = {
-    className: removeDupes(className),
+    className: removeDupes(className).map((s) =>
+      s.replace(/\*$/, '-star'),
+    ),
   };
 
   if (theoremName !== 'proof' && !theorem.unnumbered) {

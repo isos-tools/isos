@@ -26,6 +26,7 @@ export function missingMathsImageToSvg() {
             // console.log(svg);
 
             if (svg !== null) {
+              svg.properties.className = ['missing-maths'];
               const code = wrapSvg(svg);
               code.properties['aria-label'] = node.properties.alt;
               Object.assign(node, code);

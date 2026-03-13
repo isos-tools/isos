@@ -22,29 +22,37 @@ export function theoremLabelAsId(ctx: Context) {
       if (type !== undefined && type !== 'proof') {
         const label = extractLabelFromContainer(node);
         const theorem = theorems[type];
-        const typeKey = theorem?.abbr || type;
-        const id =
-          label !== null
-            ? idFromLabel(label, typeKey, ctx)
-            : idFromCount(counter.increment(type), typeKey);
 
-        // console.log({ label, id });
+        if (theorem) {
+          const typeKey = prepareTypeKey(theorem?.abbr || type);
+          const attributes: Record<string, string> = {};
 
-        const { unnumbered } = theorems[type];
-        const newClass = prepareClasses(klass, type, unnumbered);
+          if (node.attributes?.name) {
+            attributes.name = node.attributes.name;
+          }
 
-        node.attributes = {
-          ...(node.attributes || {}),
-          id: kebabCase(id),
-          class: newClass,
-        };
+          if (theorem.unnumbered) {
+            attributes.class = [typeKey, 'unnumbered']
+              .filter(Boolean)
+              .join(' ');
+          } else {
+            const id =
+              label !== null
+                ? idFromLabel(label, typeKey, ctx)
+                : idFromCount(counter.increment(type), typeKey);
 
-        if (!newClass) {
-          delete node.attributes.class;
+            attributes.id = kebabCase(id);
+          }
+
+          node.attributes = attributes;
         }
       }
     });
   };
+}
+
+function prepareTypeKey(name: string) {
+  return name.replace(/\*$/, '-star');
 }
 
 function getTypeFromClass(str: string, ctx: Context) {
@@ -100,19 +108,4 @@ function idFromLabel(label: string, typeKey: string = '', ctx: Context) {
 
 function idFromCount(count: number, typeKey: string = '') {
   return `${typeKey}-${count}`;
-}
-
-function prepareClasses(
-  type: string,
-  prev: string,
-  _unnumbered?: boolean,
-) {
-  const classes = prev.split(' ');
-  // if (unnumbered) {
-  //   classes.push('unnumbered');
-  // }
-  return classes
-    .filter((s) => s !== type)
-    .join(' ')
-    .trim();
 }

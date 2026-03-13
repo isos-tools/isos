@@ -564,7 +564,60 @@ test('maths eqnarray', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <p class="maths"><code class="latex">x^{2} - 5 x + 6 = 0</code></p>
-    <p> <span class="warn"><strong>unhandled environment: eqnarray*</strong></span></p>
+    <p> <span class="warn"><strong>unhandled environment: eqnarray*</strong></span> </p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+
+  // const quartoHtml = await markdownToQuartoHtml(markdown);
+  // console.log(quartoHtml);
+});
+
+test('maths equation numberwithin', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{amsmath, amsthm}
+    \usepackage[colorlinks=true,bookmarks=false,linkcolor=blue]{hyperref}
+    \usepackage[noabbrev, capitalise, nameinlink]{cleveref}
+    \numberwithin{equation}{section}
+    \begin{document}
+
+    \begin{equation}\label{eq:1}
+      x
+    \end{equation}
+
+    See \autoref{eq:1}.
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    ---
+    theorems:
+      equation:
+        numberWithin: h2
+    ---
+
+    $$
+    \begin{equation}x\end{equation}
+    $$ {#eq-1}
+
+    See @eq-1.
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <p id="eq-1" class="maths env-equation"><code class="latex">\begin{equation}x\end{equation}</code><span class="eq-count">(0.1)</span></p>
+    <p>See <a href="#eq-1" class="ref">Equation 0.1</a>.</p>
   `);
 
   expect(html).toBe(expectedHtml);

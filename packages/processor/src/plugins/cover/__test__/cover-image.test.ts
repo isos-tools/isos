@@ -46,7 +46,7 @@ test('cover with image', { timeout: 20_000 }, async () => {
       </svg>
       <h1>4H/5E Partial Differential Equations</h1>
       <p class="author">Written by Dr Matthew Durey</p>
-      <p class="date"><time datetime="2025-05-29">This course provides..</time></p>
+      <p class="date">This course provides..</p>
     </header>
     <h2 id="introduction"><span class="count">1</span> Introduction</h2>
     <p>Paragraph</p>
