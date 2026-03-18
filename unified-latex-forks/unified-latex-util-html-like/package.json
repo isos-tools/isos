@@ -5,10 +5,10 @@
   "main": "dist/index.js",
   "type": "module",
   "dependencies": {
-    "@unified-latex/unified-latex-builder": "^1.8.0",
+    "@isos/unified-latex-util-print-raw": "workspace:*",
+    "@unified-latex/unified-latex-builder": "^1.8.3",
     "@unified-latex/unified-latex-types": "^1.8.0",
-    "@unified-latex/unified-latex-util-match": "^1.8.0",
-    "@isos/unified-latex-util-print-raw": "workspace:*"
+    "@unified-latex/unified-latex-util-match": "^1.8.0"
   },
   "files": [
     "dist/**/*.ts",

@@ -24,11 +24,11 @@ test('new environment command', async () => {
   const expectedMarkdown = unindentStringAndTrim(`
     ##### Remarks
 
-    1. a.
+    1) a.
 
-    2. b.
+    2) b.
 
-    3. c.
+    3) c.
   `);
 
   expect(markdown).toBe(expectedMarkdown);

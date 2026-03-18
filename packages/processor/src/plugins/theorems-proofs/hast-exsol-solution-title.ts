@@ -98,7 +98,12 @@ function prependToSolution(
         if (firstP.type === 'element' && firstP.tagName === 'p') {
           firstP.children.unshift(title, space);
         } else {
-          node.children.unshift(title, space);
+          node.children.unshift({
+            type: 'element',
+            tagName: 'p',
+            properties: {},
+            children: [title, space],
+          });
         }
       }
     }

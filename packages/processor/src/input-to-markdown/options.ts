@@ -7,6 +7,7 @@ import { mintedToPre } from '../plugins/code/minted-to-pre';
 import { descriptionToDl } from '../plugins/definition-list';
 import { footnoteMarkToRef } from '../plugins/footnotes/footnote-mark-text-to-ref-def';
 import { footnoteToRefDef } from '../plugins/footnotes/footnote-to-ref-def';
+import { spaceNestedContainers } from '../plugins/framed/space-nested-containers';
 import { createImage } from '../plugins/images/create-image';
 import {
   altToCaptionAttribute,
@@ -100,6 +101,9 @@ export const latexAstFromStringOptions = {
       renderInfo: { breakAround: true },
     },
     fancyboxed: { signature: 'm' },
+
+    includecomment: { signature: 'm' },
+    excludecomment: { signature: 'm' },
   },
   environments: {
     tabularx: { signature: 'm o m', renderInfo: { alignContent: true } },
@@ -168,5 +172,6 @@ function createLatexMdAstTransforms(ctx: Context): PluggableList {
     [imageToPandocFigure, ctx],
     footnoteMarkToRef,
     footnoteToRefDef,
+    spaceNestedContainers,
   ];
 }

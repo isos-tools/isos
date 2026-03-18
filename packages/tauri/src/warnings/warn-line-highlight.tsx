@@ -4,39 +4,52 @@ type Props = {
   loading: boolean;
 };
 
+type Detail = {
+  id: string;
+  top: number;
+};
+
 export function WarningLineHighlight({ loading }: Props) {
-  const [warnings, setWarnings] = useState<number[]>([]);
+  const [warnings, setWarnings] = useState<Detail[]>([]);
   const [articleHeight, setArticleHeight] = useState(0);
+  const [scrollY, setScrollY] = useState(0);
   // const { height, ref } = useElementDimensions();
   // console.log({ loading, warnings });
 
   useEffect(() => {
-    function addWarning(e: CustomEventInit<number>) {
-      // console.log('listening');
-      if (e.detail !== undefined) {
-        // @ts-expect-error
-        setWarnings((prev) => {
-          // @ts-expect-error
-          return prev.includes(e.detail) ? prev : [...prev, e.detail];
-        });
-      }
+    function addWarning(e: CustomEventInit<Detail>) {
+      setWarnings((prev) => {
+        if (e.detail === undefined) {
+          return prev;
+        }
+
+        const { id } = e.detail;
+        const idx = prev.findIndex((o) => o.id === id);
+        if (idx > -1) {
+          return [...prev.slice(0, idx), e.detail, ...prev.slice(idx + 1)];
+        } else {
+          return [...prev, e.detail];
+        }
+      });
     }
 
-    function removeWarning(e: CustomEventInit<number>) {
-      if (e.detail !== undefined) {
-        setWarnings((prev) => {
-          // @ts-expect-error
-          return prev.includes(e.detail)
-            ? prev.filter((n) => n !== e.detail)
-            : prev;
-        });
-      }
+    function removeWarning(e: CustomEventInit<string>) {
+      setWarnings((prev) => {
+        if (e.detail === undefined) {
+          return prev;
+        }
+
+        const id = e.detail;
+        return prev.find((o) => o.id === id)
+          ? prev.filter((o) => o.id !== id)
+          : prev;
+      });
     }
 
     window.addEventListener('warning', addWarning);
     window.addEventListener('warning-remove', removeWarning);
     return () => {
-      console.log('dismount');
+      // console.log('dismount');
       window.removeEventListener('warning', addWarning);
       window.removeEventListener('warning-remove', removeWarning);
     };
@@ -44,29 +57,40 @@ export function WarningLineHighlight({ loading }: Props) {
 
   useEffect(() => {
     if (loading) {
-      setWarnings([]);
+      // setWarnings([]);
     } else {
       const article = document.querySelector('article');
+      const scroll = document.getElementById('scroll-wrap');
+
       if (article) {
         const rect = article.getBoundingClientRect();
         setArticleHeight(rect.height);
       }
+      if (scroll) {
+        setScrollY(scroll.scrollTop);
+      }
     }
   }, [loading]);
 
-  if (loading) {
-    return null;
-  }
+  // if (loading) {
+  //   return null;
+  // }
+
+  // console.log(warnings);
 
   return (
     <div id="warnings">
-      {warnings.map((top, idx) => (
-        <div
-          key={idx}
-          className="warning"
-          style={{ top: `${100 / (articleHeight / top)}%` }}
-        />
-      ))}
+      {warnings.map((o) => {
+        const top = o.top + scrollY;
+        const ratio = articleHeight / top;
+        return (
+          <div
+            key={o.id}
+            className="warning"
+            style={{ top: `${100 / ratio}%` }}
+          />
+        );
+      })}
     </div>
   );
 }

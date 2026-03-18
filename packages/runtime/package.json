@@ -16,21 +16,21 @@
   },
   "dependencies": {
     "@isos/processor": "workspace:*",
-    "@preact/signals": "^2.8.1",
+    "@preact/signals": "^2.8.2",
     "classnames": "^2.5.1",
     "fscreen": "^1.2.0",
     "lodash.startcase": "^4.4.0",
-    "preact": "^10.28.4"
+    "preact": "^10.29.0"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",
     "@babel/plugin-transform-react-jsx": "^7.28.6",
-    "@babel/preset-env": "^7.29.0",
-    "@babel/preset-typescript": "^7.26.0",
+    "@babel/preset-env": "^7.29.2",
+    "@babel/preset-typescript": "^7.28.5",
     "@linaria/react": "^7.0.1",
-    "@preact/preset-vite": "^2.10.3",
+    "@preact/preset-vite": "^2.10.4",
     "@rollup/plugin-alias": "^6.0.0",
-    "@rollup/plugin-commonjs": "^29.0.0",
+    "@rollup/plugin-commonjs": "^29.0.2",
     "@types/fscreen": "^1.0.4",
     "@types/lodash.startcase": "^4.4.9",
     "@wyw-in-js/vite": "^1.0.6",

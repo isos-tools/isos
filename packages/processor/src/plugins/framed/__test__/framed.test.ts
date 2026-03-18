@@ -37,3 +37,49 @@ test('framed environment', async () => {
 
   expect(html).toBe(expectedHtml);
 });
+
+test('syntax bug', async () => {
+  const markdown = await testProcessor.latex(String.raw`
+    \documentclass{article}
+    \usepackage{framed}
+    \begin{document}
+
+    \begin{framed}
+    \begin{exercise}
+    Verify and explain
+    \end{exercise}
+    These results are summarised
+    \end{framed}
+
+    \end{document}
+  `);
+
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ::::framed
+    ::: {#exr-1}
+    Verify and explain
+    :::
+    These results are summarised
+    ::::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(`
+    <div class="framed">
+      <div class="definition exercise" id="exr-1">
+        <p><span class="title"><strong>Exercise 1.</strong></span> Verify and explain</p>
+      </div>
+      <p>These results are summarised</p>
+    </div>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});

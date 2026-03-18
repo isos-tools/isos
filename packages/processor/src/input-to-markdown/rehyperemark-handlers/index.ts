@@ -1,6 +1,6 @@
 import { Element, Parents } from 'hast';
 import { Handle, State } from 'hast-util-to-mdast';
-import { Image } from 'mdast';
+import { Image, Paragraph, PhrasingContent } from 'mdast';
 
 import { displayQuoteToBlockQuote } from '../../plugins/blockquote';
 import { callouts } from '../../plugins/callout/callouts';
@@ -297,7 +297,18 @@ function divHandler(ctx: Context, state: State, node: Element) {
     }
   }
 
-  return state.all(node);
+  const children = state.all(node);
+
+  if (node.children?.length > 0) {
+    const result: Paragraph = {
+      type: 'paragraph',
+      children: children as PhrasingContent[],
+    };
+    state.patch(node, result);
+    return result;
+  }
+
+  return children;
 }
 
 function figureHandler(state: State, node: Element) {

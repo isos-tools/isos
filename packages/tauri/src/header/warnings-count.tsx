@@ -4,29 +4,48 @@ type Props = {
   loading: boolean;
 };
 
-export function WarningsCount({ loading }: Props) {
-  const [warnings, setWarnings] = useState<number[]>([]);
+type Detail = {
+  id: string;
+  top: number;
+};
+
+export function WarningsCount({}: Props) {
+  const [warnings, setWarnings] = useState<Detail[]>([]);
 
   useEffect(() => {
-    function addWarning(e: CustomEventInit<number>) {
+    function addWarning(e: CustomEventInit<Detail>) {
       if (e.detail !== undefined) {
-        // @ts-expect-error
         setWarnings((prev) => {
-          // @ts-expect-error
-          return prev.includes(e.detail) ? prev : [...prev, e.detail];
+          if (e.detail === undefined) {
+            return prev;
+          }
+
+          const { id } = e.detail;
+          const idx = prev.findIndex((o) => o.id === id);
+          if (idx > -1) {
+            return [
+              ...prev.slice(0, idx),
+              e.detail,
+              ...prev.slice(idx + 1),
+            ];
+          } else {
+            return [...prev, e.detail];
+          }
         });
       }
     }
 
-    function removeWarning(e: CustomEventInit<number>) {
-      if (e.detail !== undefined) {
-        setWarnings((prev) => {
-          // @ts-expect-error
-          return prev.includes(e.detail)
-            ? prev.filter((n) => n !== e.detail)
-            : prev;
-        });
-      }
+    function removeWarning(e: CustomEventInit<string>) {
+      setWarnings((prev) => {
+        if (e.detail === undefined) {
+          return prev;
+        }
+
+        const id = e.detail;
+        return prev.find((o) => o.id === id)
+          ? prev.filter((o) => o.id !== id)
+          : prev;
+      });
     }
 
     window.addEventListener('warning', addWarning);
@@ -37,13 +56,13 @@ export function WarningsCount({ loading }: Props) {
     };
   }, []);
 
-  useEffect(() => {
-    if (loading) {
-      setWarnings([]);
-    }
-  }, [loading]);
+  // useEffect(() => {
+  //   if (loading) {
+  //     setWarnings([]);
+  //   }
+  // }, [loading]);
 
-  if (loading || warnings.length === 0) {
+  if (warnings.length === 0) {
     return null;
   }
 

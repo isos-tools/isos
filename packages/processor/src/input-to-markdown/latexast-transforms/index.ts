@@ -1,6 +1,7 @@
 import { PluggableList } from 'unified';
 
 import { trimVerbatim } from '../../plugins/code/trim-verbatim';
+import { commentEnv } from '../../plugins/comment/extract-comment-envs';
 import { extractTopMatter } from '../../plugins/cover/extract-top-matter';
 import {
   fancyBoxedToSubSection,
@@ -34,6 +35,7 @@ export function createLatexastTransforms(ctx: Context): PluggableList {
     removeNewDocumentCommand,
     // [inlineFilesFromContext, ctx],
     [setSideNotes, ctx],
+    [commentEnv, ctx],
     [extractTheoremDefinitions, ctx],
     [extractTopMatter, ctx],
 

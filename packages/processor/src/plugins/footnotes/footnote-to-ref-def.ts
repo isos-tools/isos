@@ -1,4 +1,9 @@
-import { FootnoteDefinition, FootnoteReference, Root } from 'mdast';
+import {
+  FootnoteDefinition,
+  FootnoteReference,
+  PhrasingContent,
+  Root,
+} from 'mdast';
 import { TextDirective } from 'mdast-util-directive';
 import { toString } from 'mdast-util-to-string';
 import { visit } from 'unist-util-visit';
@@ -25,29 +30,21 @@ export function footnoteToRefDef() {
 
         Object.assign(node, reference);
 
-        // trim left
-        const trimmed = node.children.slice(
-          node.children.findIndex(
-            (o) => !(o.type === 'text' && o.value === '\n'),
-          ),
-        );
+        const contents = getContents(node);
+        // console.log(contents);
 
         const definition: FootnoteDefinition = {
           type: 'footnoteDefinition',
           identifier: String(count),
           label: label || String(count),
-          children: [
-            {
-              type: 'paragraph',
-              children: trimmed,
-            },
-          ],
+          children: [{ type: 'paragraph', children: contents }],
         };
 
         const nextIdx = (idx || 0) + 1;
         parent?.children.splice(nextIdx, 0, definition);
       }
     });
+    // console.dir(tree, { depth: null });
 
     // move footnote definitions to their own paragraphs
     visit(tree, 'paragraph', (node, idx = 0, parent) => {
@@ -84,4 +81,21 @@ function extractLabel(footnote: TextDirective): string | null {
     }
   });
   return label;
+}
+
+function getContents(content: TextDirective) {
+  const children = content.children.reduce((acc: PhrasingContent[], o) => {
+    // @ts-expect-error
+    if (o.type === 'paragraph') {
+      // @ts-expect-error
+      acc.push(...o.children);
+    } else {
+      acc.push(o);
+    }
+    return acc;
+  }, []);
+
+  return children.slice(
+    children.findIndex((o) => !(o.type === 'text' && o.value === '\n')),
+  );
 }

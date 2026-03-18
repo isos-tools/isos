@@ -19,7 +19,7 @@ export function Content({ markdown, onRendered, setStatus }: Props) {
   const [error, setError] = useState('');
   const ref = useRef<HTMLElement>(null);
   return (
-    <ArticleWrapper ref={ref}>
+    <ArticleWrapper id="scroll-wrap" ref={ref}>
       {error && (
         <Error>
           <span>Error:</span> {error}

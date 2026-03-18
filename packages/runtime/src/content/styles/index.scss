@@ -229,6 +229,7 @@ article {
       p {
         // margin: 0;
         text-indent: 0;
+        margin-bottom: 1em;
       }
     }
 
@@ -328,6 +329,9 @@ article {
   }
 
   code.maths {
+    // padding: 2px 0;
+    overflow: hidden;
+
     .mathjax-error {
       display: inline-block;
       padding: 0 0.5em;
@@ -353,11 +357,15 @@ article {
     text-align: center;
     // overflow: auto;
     code.maths, svg {
-      display: block;
       max-width: 100%;
+      margin: 0 auto;
+    }
+    code.maths {
+      display: inline-block;
+      padding: 2px;
     }
     svg {
-      margin: 0 auto;
+      display: block;
     }
 
     .eq-tag, .eq-count {
@@ -415,7 +423,7 @@ article {
   }
 
   .framed {
-    box-shadow: 0 0 0 2px hsl(from var(--textColor) h s calc(l - 70));
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--textColor), transparent 70%);
     padding: 1em 2em 1em 1.2em;
     margin: 2em 0;
     border-radius: 0.35rem;
@@ -431,7 +439,7 @@ article {
     }
 
     hr {
-      border: dashed hsl(from var(--textColor) h s calc(l - 70));
+      border: dashed color-mix(in srgb, var(--textColor), transparent 70%);
       border-width: 2px 0 0 0;
       color: transparent;
       margin-top: -0.5em;

@@ -12,16 +12,16 @@
     "dist/**/*.json"
   ],
   "dependencies": {
-    "@unified-latex/unified-latex-ctan": "^1.7.0",
-    "@unified-latex/unified-latex-types": "^1.7.0",
-    "@unified-latex/unified-latex-util-arguments": "^1.7.0",
-    "@unified-latex/unified-latex-util-catcode": "^1.7.0",
-    "@unified-latex/unified-latex-util-environments": "^1.7.0",
-    "@unified-latex/unified-latex-util-match": "^1.7.0",
-    "@unified-latex/unified-latex-util-pegjs": "^1.7.0",
     "@isos/unified-latex-util-print-raw": "workspace:*",
-    "@unified-latex/unified-latex-util-trim": "^1.7.0",
-    "@unified-latex/unified-latex-util-visit": "^1.7.0",
+    "@unified-latex/unified-latex-ctan": "^1.8.3",
+    "@unified-latex/unified-latex-types": "^1.8.0",
+    "@unified-latex/unified-latex-util-arguments": "^1.8.3",
+    "@unified-latex/unified-latex-util-catcode": "^1.8.3",
+    "@unified-latex/unified-latex-util-environments": "^1.8.3",
+    "@unified-latex/unified-latex-util-match": "^1.8.0",
+    "@unified-latex/unified-latex-util-pegjs": "^1.8.1",
+    "@unified-latex/unified-latex-util-trim": "^1.8.3",
+    "@unified-latex/unified-latex-util-visit": "^1.8.3",
     "unified": "^11.0.5"
   }
 }

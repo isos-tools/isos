@@ -5,7 +5,7 @@ import { ContainerDirective } from 'mdast-util-directive';
 
 export function createFramed(
   state: State,
-  div: Element
+  div: Element,
 ): ContainerDirective {
   const children: BlockContent[] = [
     {

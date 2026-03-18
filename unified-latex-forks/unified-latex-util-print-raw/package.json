@@ -12,6 +12,6 @@
     "dist/**/*.json"
   ],
   "dependencies": {
-    "@unified-latex/unified-latex-types": "^1.7.0"
+    "@unified-latex/unified-latex-types": "^1.8.0"
   }
 }
