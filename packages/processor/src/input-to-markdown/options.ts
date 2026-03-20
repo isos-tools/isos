@@ -107,6 +107,7 @@ export const latexAstFromStringOptions = {
   },
   environments: {
     tabularx: { signature: 'm o m', renderInfo: { alignContent: true } },
+    comment: { signature: 'm' },
   },
 };
 

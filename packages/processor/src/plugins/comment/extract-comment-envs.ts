@@ -32,6 +32,13 @@ export function commentEnv() {
           parent.content.splice(info.index, 1);
         }
       }
+
+      if (node.type === 'verbatim' && node.env === 'comment') {
+        const parent = info.parents[0];
+        if (parent.type === 'environment' && info.index !== undefined) {
+          parent.content.splice(info.index, 1);
+        }
+      }
     });
   };
 }

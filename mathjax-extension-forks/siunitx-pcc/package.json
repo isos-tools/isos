@@ -1,0 +1,9 @@
+{
+  "name": "@isos/siunitx",
+  "private": true,
+  "type": "module",
+  "main": "./src/siunitx.ts",
+  "dependencies": {
+    "@mathjax/src": "^4.1.1"
+  }
+}

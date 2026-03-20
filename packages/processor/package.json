@@ -16,6 +16,7 @@
     "@isos/unified-latex-to-hast": "workspace:*",
     "@isos/unified-latex-util-html-like": "workspace:*",
     "@isos/unified-latex-util-print-raw": "workspace:*",
+    "@isos/siunitx": "workspace:*",
     "@mathjax/mathjax-fira-font": "^4.1.1",
     "@mathjax/mathjax-newcm-font": "^4.1.1",
     "@mathjax/src": "^4.1.1",

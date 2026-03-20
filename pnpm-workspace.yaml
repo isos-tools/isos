@@ -2,6 +2,7 @@ packages:
   - docs
   - packages/*
   - unified-latex-forks/*
+  - mathjax-extension-forks/*
 
 ignoredBuiltDependencies:
   - esbuild

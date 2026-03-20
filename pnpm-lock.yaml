@@ -109,6 +109,12 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0(@types/node@25.5.0)(happy-dom@20.8.4)(jsdom@20.0.3)(vite@6.4.1(@types/node@25.5.0)(jiti@2.6.1)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.2))
 
+  mathjax-extension-forks/siunitx-pcc:
+    dependencies:
+      '@mathjax/src':
+        specifier: ^4.1.1
+        version: 4.1.1
+
   packages/export:
     dependencies:
       '@isos/fs':
@@ -185,6 +191,9 @@ importers:
       '@isos/logger':
         specifier: workspace:*
         version: link:../logger
+      '@isos/siunitx':
+        specifier: workspace:*
+        version: link:../../mathjax-extension-forks/siunitx-pcc
       '@isos/test-utils':
         specifier: workspace:*
         version: link:../test-utils

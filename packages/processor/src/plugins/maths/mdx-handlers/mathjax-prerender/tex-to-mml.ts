@@ -14,6 +14,10 @@ import '@mathjax/src/js/input/tex/newcommand/NewcommandConfiguration.js';
 import '@mathjax/src/js/input/tex/textcomp/TextcompConfiguration.js';
 import '@mathjax/src/js/input/tex/color/ColorConfiguration.js';
 import '@mathjax/src/js/input/tex/extpfeil/ExtpfeilConfiguration.js';
+import '@mathjax/src/js/input/tex/upgreek/UpgreekConfiguration.js';
+import '@mathjax/src/js/input/tex/mathtools/MathtoolsConfiguration.js';
+
+// import { configuration as siunitx } from '@isos/siunitx';
 
 const adaptor = liteAdaptor();
 const visitor = new SerializedMmlVisitor();
@@ -28,6 +32,9 @@ const packages = [
   'textcomp',
   'color',
   'extpfeil',
+  'upgreek',
+  'mathtools',
+  // siunitx.name,
 ];
 
 const tex = new TeX({
@@ -49,8 +56,14 @@ export function texToMml(latex: string) {
     tex.reset();
 
     const mmlNode = mmlDoc.convert(latex, { end: STATE.CONVERT });
-    return visitor.visitTree(mmlNode);
+    return {
+      error: false,
+      mml: visitor.visitTree(mmlNode),
+    };
   } catch (err) {
-    return '';
+    return {
+      error: true,
+      mml: `mathjax error: ${String(err)}`,
+    };
   }
 }
