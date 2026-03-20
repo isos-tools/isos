@@ -15,6 +15,7 @@ import { warnOnHardcodedListLabels } from '../../plugins/lists/warn-hardcoded-li
 import { equationLabelToId } from '../../plugins/maths/equation-label-to-id';
 // import { extractFancyTitle } from './extract-fancytitle';
 import { extractTheoremDefinitions } from '../../plugins/refs-and-counts/extract-theorem-definitions';
+import { extractTocContents } from '../../plugins/table-of-contents/extract-toc-contents';
 import { tableCaptionToData } from '../../plugins/tables/table-caption-to-data';
 import { Context } from '../context';
 import { insertParbreaksAroundBlockElements } from './block-elements';
@@ -38,6 +39,7 @@ export function createLatexastTransforms(ctx: Context): PluggableList {
     [commentEnv, ctx],
     [extractTheoremDefinitions, ctx],
     [extractTopMatter, ctx],
+    [extractTocContents, ctx],
 
     trimVerbatim,
     convertHspace,

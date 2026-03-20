@@ -28,6 +28,7 @@ export type Frontmatter = {
   titleImage?: string;
   date: string;
   author: Author | Author[];
+  tableOfContentsPrefix?: string;
   abstract: string;
   documentClass?: string;
   hasPart?: boolean;
@@ -41,6 +42,7 @@ export type Context = {
     titleImage?: string;
     date: string;
     author: Author[];
+    tableOfContentsPrefix?: string;
     abstract: string;
     theorems: RefObjectsYaml;
     refMap: Record<string, Reference>;

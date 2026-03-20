@@ -25,6 +25,7 @@ export type Context = {
     documentClass?: string;
     title: string;
     titleImage?: string;
+    tableOfContentsPrefix?: string;
     date: string;
     author: Author[];
     abstract: string;

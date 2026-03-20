@@ -1,5 +1,6 @@
 import { convertToMarkdown } from '@unified-latex/unified-latex-to-mdast';
 import {
+  Argument,
   Environment,
   Macro,
   Node,
@@ -35,21 +36,23 @@ export function extractTopMatter(ctx: Context) {
 
     visit(tree, (node, info) => {
       if (node.type === 'macro') {
-        const idx = info.index || 0;
-        const parent = info.parents[0] as Environment;
-
         if (['maketitle', 'fancytitle'].includes(node.content)) {
           ctx.hasMakeTitle = true;
         }
 
+        const idx = info.index || 0;
+        const parent = info.parents[0] as Environment;
+
         if (node.content === 'title') {
-          const lastArg = getLastArg(node);
-          // console.dir(lastArg, { depth: null });
-          const { title, titleImage } = extractTitleElements(lastArg);
-          ctx.frontmatter.title = extractMarkdown(title);
+          const titleImage = extractTitleImage(node);
           if (titleImage !== null) {
             ctx.frontmatter.titleImage = extractMarkdown(titleImage);
           }
+          const lastArg = getLastArg(node);
+          const title = extractMarkdown(lastArg);
+          // remove line breaks from text
+          const oneline = title.replace(/\\\n/gm, ' ');
+          ctx.frontmatter.title = oneline;
           parent.content?.splice(idx, 1);
         }
 
@@ -90,28 +93,54 @@ export function extractTopMatter(ctx: Context) {
   };
 }
 
-function extractTitleElements(arg: Node[]) {
-  let title: Node[] | null = arg;
+// function extractTitleElements(node: Macro) {
+//   const arg = getLastArg(node);
+//   let title: Node[] | null = arg;
+
+//   const titleImage = extractTitleImage(arg);
+
+//   console.dir(node, { depth: null });
+//   // console.log(getArgsContent(arg));
+
+//   // visit(arg, (node) => {
+//   //   if (node.type === 'macro' && ['huge', 'Huge'].includes(node.content)) {
+//   //     // console.dir(node, { depth: null });
+//   //     if (Array.isArray(node.args)) {
+//   //       // console.log(node.args[0]);
+//   //       const arg = node.args[0];
+//   //       title = arg.content;
+//   //     }
+//   //   }
+//   //   // if (node.type === 'macro' && node.content === 'includegraphics') {
+//   //   //   if (Array.isArray(node.args)) {
+//   //   //     const arg = node.args[node.args.length - 1];
+//   //   //     titleImage = arg.content;
+//   //   //   }
+//   //   // }
+//   // });
+
+//   return { title, titleImage };
+// }
+
+function extractTitleImage(macro: Macro) {
   let titleImage: Node[] | null = null;
 
-  visit(arg, (node) => {
-    if (node.type === 'macro' && ['huge', 'Huge'].includes(node.content)) {
-      // console.dir(node, { depth: null });
-      if (Array.isArray(node.args)) {
-        // console.log(node.args[0]);
-        const arg = node.args[0];
-        title = arg.content;
-      }
-    }
+  visit(macro, (node, info) => {
     if (node.type === 'macro' && node.content === 'includegraphics') {
       if (Array.isArray(node.args)) {
         const arg = node.args[node.args.length - 1];
         titleImage = arg.content;
+
+        // console.log(info);
+        const parent = info.parents[0] as Argument;
+        // console.log(parent);
+        const idx = info.index || 0;
+        parent.content?.splice(idx, 1);
       }
     }
   });
 
-  return { title, titleImage };
+  return titleImage;
 }
 
 function getAuthBlkIdx(node: Macro) {

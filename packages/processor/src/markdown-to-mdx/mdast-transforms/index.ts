@@ -14,6 +14,7 @@ import { imageAttributes } from '../../plugins/images/image-attributes';
 import { pandocImplicitFigures } from '../../plugins/images/pandoc-implicit-figures';
 import { mathMetaToId } from '../../plugins/maths/math-meta-to-id';
 import { headingSections } from '../../plugins/sections/heading-sections';
+import { includeTocContents } from '../../plugins/table-of-contents/include-toc-contents';
 import { tableCaptionToFigure } from '../../plugins/tables/table-caption-to-figure';
 import { exSolSolutionDirective } from '../../plugins/theorems-proofs/clicktoshow-directive';
 import { theorems } from '../../plugins/theorems-proofs/mdast-theorems';
@@ -33,7 +34,7 @@ import { removeComments } from './remove-comments';
 
 export function createMdastTransforms(
   ctx: Context,
-  options: Pick<Options, 'noSections'>,
+  options: Pick<Options, 'noSections' | 'includeTocContents'>,
 ): PluggableList {
   const plugins: PluggableList = [
     dashesToEndashEmdash,
@@ -63,16 +64,12 @@ export function createMdastTransforms(
     [extractFrontmatter, ctx], // theorems depends on this
     [theorems, ctx],
     [cover, ctx],
-
-    // fancyTitle,
-    // [references, ctx],
-    // [sidenotes, ctx],
-    // center,
-    // underline,
-    // () => (tree) => {
-    //   console.dir(tree, { depth: null });
-    // },
   );
+
+  if (options.includeTocContents === true) {
+    plugins.push([includeTocContents, ctx]);
+    // console.log(ctx.frontmatter);
+  }
 
   // should be last
   plugins.push(escapeCharsForMdx);

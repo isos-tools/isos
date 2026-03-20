@@ -40,6 +40,9 @@ export function extractFrontmatter(ctx: Context) {
         const author = Array.isArray(fm.author) ? fm.author : [fm.author];
         ctx.frontmatter.author = author;
       }
+      if (fm.tableOfContentsPrefix) {
+        ctx.frontmatter.tableOfContentsPrefix = fm.tableOfContentsPrefix;
+      }
       if (fm.abstract) {
         ctx.frontmatter.abstract = fm.abstract;
       }

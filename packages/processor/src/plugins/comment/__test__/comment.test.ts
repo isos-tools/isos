@@ -155,7 +155,7 @@ test('comment exclude both', async () => {
   expect(html).toBe(expectedHtml);
 });
 
-test.only('comment env', async () => {
+test('comment env', async () => {
   const latex = unindentStringAndTrim(String.raw`
     \documentclass{article}
     \usepackage{comment}
@@ -173,13 +173,13 @@ test.only('comment env', async () => {
 
   const markdown = await testProcessor.latex(latex);
 
-  const expectedMarkdown = unindentStringAndTrim(`Staff`);
+  const expectedMarkdown = unindentStringAndTrim(`Hi`);
 
   expect(markdown).toBe(expectedMarkdown);
 
   const html = await testProcessor.md(markdown);
 
-  const expectedHtml = unindentStringAndTrim(`<p>Staff</p>`);
+  const expectedHtml = unindentStringAndTrim(`<p>Hi</p>`);
 
   expect(html).toBe(expectedHtml);
 });

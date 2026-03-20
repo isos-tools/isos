@@ -6,6 +6,7 @@ import {
 } from '@mdx-js/mdx';
 import { Node, Root } from 'mdast';
 
+import { getTocContent } from '../plugins/table-of-contents/include-toc-contents';
 import { createRemarkProcessor } from '../remark-processor';
 import { processorOptions } from './hast-transforms';
 import { Options } from './options';
@@ -29,12 +30,15 @@ export async function markdownToArticle(
 
 export async function markdownToTOC(md: string, options: Options) {
   const mdAst = await getMdAst(md, options);
-  // console.dir(mdAst, { depth: null });
-
+  const tocContent = getTocContent(mdAst as Root);
   const toc = createTableOfContents(mdAst as Root);
-  // console.dir(toc, { depth: null });
 
-  return createMDX(toc, processorOptions, options.mdxTOCRunOptions);
+  const root = {
+    type: 'root',
+    children: [...tocContent, toc],
+  };
+
+  return createMDX(root, processorOptions, options.mdxTOCRunOptions);
 }
 
 async function getMdAst(md: string, options: Options) {

@@ -75,8 +75,10 @@ export const latexAstFromStringOptions = {
     numberwithin: { signature: 'm m' },
     // tcblower: { breakAround: true },
     counterwithin: { signature: 'm m' },
-    huge: { signature: 'm' },
-    Huge: { signature: 'm' },
+    // huge: { signature: 'm' },
+    // Huge: { signature: 'm' },
+    // large: { signature: 'm' },
+    // Large: { signature: 'm' },
 
     footnote: { signature: 'o o m' },
     sidenote: { signature: 'o o m' },
@@ -89,6 +91,9 @@ export const latexAstFromStringOptions = {
     author: { signature: 'o m' },
     affil: { signature: 'o m' },
     orcidlink: { signature: 'm' },
+
+    thispagestyle: { signature: 'm' },
+    addtocontents: { signature: 'mm' },
 
     notebox: { signature: 'm' },
     tipbox: { signature: 'm' },

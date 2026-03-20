@@ -15,6 +15,7 @@ export type Options = {
   noSections: boolean;
   noIcons: boolean;
   noFooter: boolean;
+  includeTocContents: boolean;
   markdownStringTransforms: Array<(markdown: string) => string>;
   mdAstTransforms: PluggableList;
   htmlAstTransforms: PluggableList;
@@ -36,11 +37,13 @@ export function createDefaultOptions(
   const noSections = opts?.noSections || false;
   const noIcons = opts?.noIcons || false;
   const noFooter = opts?.noFooter || false;
+  const includeTocContents = opts?.includeTocContents || false;
   return {
     noWrapper,
     noSections,
     noIcons,
     noFooter,
+    includeTocContents,
     // markdownStringTransforms: [
     //   (str) => `${str}2`,
     //   (str) => `${str}.jpg`
@@ -50,7 +53,10 @@ export function createDefaultOptions(
       pandocAttributesToMathsMeta,
       tableCaptionToDirective,
     ],
-    mdAstTransforms: createMdastTransforms(ctx, { noSections }),
+    mdAstTransforms: createMdastTransforms(ctx, {
+      noSections,
+      includeTocContents,
+    }),
     htmlAstTransforms: createRehypePlugins(ctx, {
       noWrapper,
       noFooter,

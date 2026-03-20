@@ -29,7 +29,7 @@ export function TableOfContents({ markdown }: Props) {
         mdxState={mdxState}
         renderFn={markdownToTOC}
         onError={setError}
-        options={{ noSections: true }}
+        options={{ noSections: true, includeTocContents: true }}
       />
     </TableOfContentsWrapper>
   );
@@ -40,6 +40,11 @@ const TableOfContentsWrapper = styled.div`
   display: none;
   &.show {
     display: block;
+  }
+
+  .toc-content {
+    margin: 0;
+    padding: 0 1.5em 1em 1.5em;
   }
 
   ol {

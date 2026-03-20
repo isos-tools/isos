@@ -554,3 +554,82 @@ test('fancytitle with set-counter', async () => {
   // const quartoHtml = await markdownToQuartoHtml(expectedMarkdown);
   // console.log(quartoHtml);
 });
+
+test('title with formatting', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{bbding}
+    \usepackage[colorlinks=true,bookmarks=false,linkcolor=blue]{hyperref}
+    \usepackage[noabbrev, capitalise, nameinlink]{cleveref}
+
+    \title{
+      \vspace*{0.1\textheight}
+      \Huge{LECTURES}\\[0.4\baselineskip]
+      \Large{ON}\\[0.6\baselineskip]
+      \Huge{GALOIS THEORY}\\[\baselineskip]
+    }
+    \author{
+      Author Name\\
+      \href{mailto:email@glasgow.ac.uk}{email@glasgow.ac.uk}\\[0.08\textheight ]
+      \FiveStarOpenCircled\\[0.5\baselineskip]
+    }
+    \date{
+      \small{\scshape January -- March 2026}\\[0.01\textheight]
+      \Large{4H/5E Galois Theory}\\
+    }
+
+    \begin{document}
+    \maketitle
+
+    Hello
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    ---
+    title: LECTURES ON GALOIS THEORY
+    date: |-
+      January – March 2026\
+      4H/5E Galois Theory
+    author:
+      name: |-
+        Author Name\
+        <email@glasgow.ac.uk>
+    ---
+
+    :::make-title
+    :::
+
+    Hello
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown, { noSections: false });
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <section>
+      <header>
+        <h1>LECTURES ON GALOIS THEORY</h1>
+        <p class="author">Written by Author Name<br />
+          <a href="mailto:email@glasgow.ac.uk" target="_blank">email@glasgow.ac.uk</a>
+        </p>
+        <p class="date">January – March 2026<br />
+          4H/5E Galois Theory</p>
+      </header>
+      <p>Hello</p>
+    </section>
+  `);
+
+  expect(html).toBe(expectedHtml);
+
+  // const quartoHtml = await markdownToQuartoHtml(expectedMarkdown);
+  // console.log(quartoHtml);
+});

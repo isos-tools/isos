@@ -136,6 +136,7 @@ async function markdownToTableOfContents(
   const htmlOptions = createMarkdownToMdxOptions(mdxState, htmlCtx, {
     ...testHtmlOptions,
     ...options,
+    includeTocContents: true,
   });
   const component = await markdownToTOC(markdown, htmlOptions);
   // @ts-expect-error

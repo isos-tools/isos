@@ -6,8 +6,15 @@ import { Context } from '../context';
 
 export function addFrontmatter(ctx: Context) {
   return (tree: Root) => {
-    const { documentClass, date, title, titleImage, author, abstract } =
-      ctx.frontmatter;
+    const {
+      documentClass,
+      date,
+      title,
+      titleImage,
+      author,
+      abstract,
+      tableOfContentsPrefix,
+    } = ctx.frontmatter;
 
     // console.log(ctx.frontmatter);
     const toExport: Record<string, any> = {};
@@ -41,6 +48,10 @@ export function addFrontmatter(ctx: Context) {
 
     if (documentClass) {
       toExport.documentClass = documentClass;
+    }
+
+    if (tableOfContentsPrefix) {
+      toExport.tableOfContentsPrefix = tableOfContentsPrefix;
     }
 
     if (ctx.frontmatter['reference-location'] !== 'margin') {
