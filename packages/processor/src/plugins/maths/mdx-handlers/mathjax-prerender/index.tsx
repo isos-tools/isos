@@ -35,7 +35,7 @@ export function MathJaxPrerender({
   const [label, setLabel] = useState<string>();
   const [braille, setBraille] = useState<string>();
 
-  const mml = useMemo(() => texToMml(formatLaTeX(expr)), [expr]);
+  const mml = useMemo(() => texToMml(formatLaTeX(expr || '')), [expr]);
 
   const svg = useMemo(() => {
     if (!mml.error) {

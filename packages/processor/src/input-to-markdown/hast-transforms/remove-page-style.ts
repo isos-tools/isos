@@ -2,7 +2,12 @@ import { Root } from 'hast';
 import { visit } from 'unist-util-visit';
 
 export function removePageStyle() {
-  const macroNames = ['macro-pagestyle', 'macro-thispagestyle'];
+  const macroNames = [
+    'macro-pagestyle',
+    'macro-thispagestyle',
+    'macro-captionsetup',
+    'macro-setlength',
+  ];
   return (tree: Root) => {
     visit(tree, 'element', (node, idx = 0, parent) => {
       if (node.tagName === 'span') {

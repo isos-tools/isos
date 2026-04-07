@@ -206,6 +206,9 @@ importers:
       '@isos/unified-latex-util-print-raw':
         specifier: workspace:*
         version: link:../../unified-latex-forks/unified-latex-util-print-raw
+      '@mathjax/mathjax-bbm-font-extension':
+        specifier: ^4.1.1
+        version: 4.1.1
       '@mathjax/mathjax-fira-font':
         specifier: ^4.1.1
         version: 4.1.1
@@ -242,6 +245,9 @@ importers:
       '@unified-latex/unified-latex-util-arguments':
         specifier: ^1.8.3
         version: 1.8.3
+      '@unified-latex/unified-latex-util-catcode':
+        specifier: ^1.8.3
+        version: 1.8.3
       '@unified-latex/unified-latex-util-ligatures':
         specifier: ^1.8.3
         version: 1.8.3
@@ -254,6 +260,9 @@ importers:
       '@unified-latex/unified-latex-util-parse':
         specifier: ^1.8.3
         version: 1.8.3
+      '@unified-latex/unified-latex-util-pgfkeys':
+        specifier: ^1.8.1
+        version: 1.8.1
       '@unified-latex/unified-latex-util-replace':
         specifier: ^1.8.3
         version: 1.8.3
@@ -1813,6 +1822,9 @@ packages:
     engines: {node: '>=20.0.0'}
     peerDependencies:
       react: '>=16'
+
+  '@mathjax/mathjax-bbm-font-extension@4.1.1':
+    resolution: {integrity: sha512-TGH3Tf/CWMBNBgg6XXCt2eQdtabfJ96eMkLnvZYvqD4OEw1loqMMTCWDCYbnyZonUTZtqRtX00X14SuLnDOJ6w==}
 
   '@mathjax/mathjax-fira-font@4.1.1':
     resolution: {integrity: sha512-RxFi1jQInR6aVTBGzxV0esplJv8xMgZi8mVc9i6CcAsqVaw67bWw9KvWc8tyQBCEsQoiy7AdpvWuyh2/aXk3cQ==}
@@ -6286,6 +6298,8 @@ snapshots:
       ts-invariant: 0.10.3
     transitivePeerDependencies:
       - supports-color
+
+  '@mathjax/mathjax-bbm-font-extension@4.1.1': {}
 
   '@mathjax/mathjax-fira-font@4.1.1': {}
 

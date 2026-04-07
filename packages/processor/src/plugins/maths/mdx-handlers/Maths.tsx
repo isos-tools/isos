@@ -4,7 +4,7 @@ import { formatLaTeX, syntaxHighlight } from './latex';
 import { MathJaxPrerender } from './mathjax-prerender';
 
 type Props = {
-  expr: string;
+  expr: any;
   maths: MathsState;
   article: ArticleState;
   inSidenote?: boolean;
@@ -21,6 +21,11 @@ export function Maths({
   // asComponents = true,
 }: Props) {
   if (maths.mathsAsTex.value) {
+    // console.log({ expr });
+    if (typeof expr !== 'string') {
+      return null;
+    }
+
     const formatted = formatLaTeX(expr);
     if (maths.syntaxHighlight.value) {
       return (

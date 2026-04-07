@@ -1,4 +1,6 @@
 import { FileCache } from '../embed-includes/file-cache';
+import { Reference } from '../plugins/bibliography/extract-bibliography';
+import { Warning } from '../plugins/preamble-warnings/def-warn';
 import { RefObjectsYaml } from '../plugins/refs-and-counts/default-objects';
 import { FileType, parseFilePath } from './utils/parse-file-path';
 
@@ -31,6 +33,8 @@ export type Context = {
     abstract: string;
     theorems: RefObjectsYaml;
     'reference-location': string;
+    references: Reference[];
+    preambleWarnings: Warning[];
   };
 };
 
@@ -64,6 +68,8 @@ export async function createContext(
       abstract: '',
       theorems: {},
       'reference-location': 'margin',
+      references: [],
+      preambleWarnings: [],
     },
   };
 }
@@ -90,6 +96,8 @@ export function createTestContext(
       abstract: '',
       theorems: {},
       'reference-location': 'margin',
+      references: [],
+      preambleWarnings: [],
     },
   };
 }

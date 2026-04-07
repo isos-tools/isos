@@ -82,7 +82,6 @@ test('tables', async () => {
             </tbody>
           </table>
         </div>
-        <figcaption><strong>Figure 1</strong></figcaption>
       </figure>
       <p>Hello.</p>
     </div>

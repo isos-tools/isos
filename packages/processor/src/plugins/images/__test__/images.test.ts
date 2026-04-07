@@ -658,7 +658,6 @@ test('images with no label or caption', async () => {
         <p><img src="fig/ex1-2b.png" alt="Image" /></p>
         <p><img src="fig/ex1-2c.png" alt="Image" /></p>
       </div>
-      <figcaption><strong>Figure 1</strong></figcaption>
     </figure>
   `);
 
@@ -707,7 +706,6 @@ test('images with includegraphics*', async () => {
         <p><img src="fig/ex1-2b.png" alt="Bravo" /></p>
         <p><img src="fig/ex1-2c.png" alt="Charlie" /></p>
       </div>
-      <figcaption><strong>Figure 1</strong></figcaption>
     </figure>
   `);
 
@@ -751,6 +749,168 @@ test('image with references in caption', async () => {
       </div>
       <figcaption><strong>Figure 1:</strong> a <span class="warn"><strong>unknown ref:</strong> <code>eq-a-b</code></span> b <span class="warn"><strong>unknown ref:</strong> <code>ex-1-a-b</code></span> .</figcaption>
     </figure>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('figure with three subfigures with captions', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{subcaption}
+    \usepackage{graphicx}
+    \usepackage{float}
+    \begin{document}
+
+    \begin{figure}[H]
+    \captionsetup[subfigure]{justification=centering}
+    \centering
+    \begin{subfigure}{ 0.3\textwidth }
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/fig1}
+    \caption*{injective\\'don't lose information'}
+    \end{subfigure}
+    \quad
+    \begin{subfigure}{0.3\textwidth}
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/fig2}
+    \caption*{surjective\\'hit everything'}
+    \end{subfigure}
+    \quad
+    \begin{subfigure}{0.3\textwidth}
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/fig3}
+    \caption*{bijective\\'the same'}
+    \end{subfigure}
+    \end{figure}
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ::: {.fig}
+
+    ![injective\\n’don’t lose information’](figures/fig1){.unnumbered width="30%"}
+
+    ![surjective\\n’hit everything’](figures/fig2){.unnumbered width="30%"}
+
+    ![bijective\\n’the same’](figures/fig3){.unnumbered width="30%"}
+
+    :::
+  `);
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <figure>
+      <div class="fig-content">
+        <figure style="width:30%;">
+          <div class="fig-content">
+            <p><img src="figures/fig1" alt="Image" /></p>
+          </div>
+          <figcaption>injective<br />’don’t lose information’</figcaption>
+        </figure>
+        <figure style="width:30%;">
+          <div class="fig-content">
+            <p><img src="figures/fig2" alt="Image" /></p>
+          </div>
+          <figcaption>surjective<br />’hit everything’</figcaption>
+        </figure>
+        <figure style="width:30%;">
+          <div class="fig-content">
+            <p><img src="figures/fig3" alt="Image" /></p>
+          </div>
+          <figcaption>bijective<br />’the same’</figcaption>
+        </figure>
+      </div>
+    </figure>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('figure with relative width', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{graphicx}
+    \begin{document}
+
+    \begin{center}
+    \includegraphics[alt={My \textbf{alt} text}, width=0.8\linewidth]{figures/fig1}
+    \end{center}
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ![](figures/fig1){alt="My alt text" width="80%"}
+  `);
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <p><img src="figures/fig1" alt="My alt text" style="width:80%;" /></p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('syntax bug', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+
+    \makeatletter
+    \renewcommand\section{\clearpage\@startsection{section}
+    {1}%level of numbering
+    {0pt}%indent
+    {-0pt}%beforeskip
+    {1.5\baselineskip}%afterskip
+    {\huge\bf}}%style
+    \makeatother
+
+    \makeatletter
+    \renewcommand\subsection{\@startsection{subsection}
+    {2}%level of numbering
+    {0pt}%indent
+    {-1.5\baselineskip}%beforeskip
+    {0.5\baselineskip}%afterskip
+    {\large\bf}}%style
+    \makeatother
+
+    \begin{document}
+
+    Hello
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(`Hello`);
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <p>Hello</p>
   `);
 
   expect(html).toBe(expectedHtml);

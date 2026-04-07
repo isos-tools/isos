@@ -16,6 +16,7 @@ import '@mathjax/src/js/input/tex/color/ColorConfiguration.js';
 import '@mathjax/src/js/input/tex/extpfeil/ExtpfeilConfiguration.js';
 import '@mathjax/src/js/input/tex/upgreek/UpgreekConfiguration.js';
 import '@mathjax/src/js/input/tex/mathtools/MathtoolsConfiguration.js';
+import '@mathjax/src/js/input/tex/bbm/BbmConfiguration.js';
 
 // import { configuration as siunitx } from '@isos/siunitx';
 
@@ -34,6 +35,7 @@ const packages = [
   'extpfeil',
   'upgreek',
   'mathtools',
+  'bbm',
   // siunitx.name,
 ];
 
@@ -42,6 +44,9 @@ const tex = new TeX({
   macros: {
     pounds: '\\textsterling',
     bm: ['{\\boldsymbol #1}', 1],
+    colonequals: '\\coloneq',
+    hdots: '\\ldots',
+    ensuremath: '\\mathop',
   },
 });
 

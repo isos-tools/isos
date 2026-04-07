@@ -5,6 +5,8 @@ import { MathML } from '@mathjax/src/js/input/mathml.js';
 import { mathjax } from '@mathjax/src/js/mathjax.js';
 import { SVG } from '@mathjax/src/js/output/svg.js';
 
+import { MathJaxBbmFontExtension } from '@mathjax/mathjax-bbm-font-extension/js/svg.js';
+
 import { MathJaxNewcmFont } from '@mathjax/mathjax-newcm-font/js/svg.js';
 import '@mathjax/mathjax-newcm-font/js/svg/dynamic/arrows.js';
 import '@mathjax/mathjax-newcm-font/js/svg/dynamic/calligraphic.js';
@@ -33,6 +35,9 @@ const htmlDoc = mathjax.document('', {
   InputJax: new MathML(),
 });
 
+MathJaxNewcmFont.addExtension(MathJaxBbmFontExtension);
+MathJaxFiraFont.addExtension(MathJaxBbmFontExtension);
+
 const NewcmFont = new MathJaxNewcmFont();
 const FiraFont = new MathJaxFiraFont();
 
@@ -44,13 +49,14 @@ const packages = [
   'shapes',
   'fraktur',
   'script',
+  // MathJaxBbmFontExtension,
 ];
 
-packages.forEach((fontPackage) => {
+packages.forEach((name) => {
   // @ts-expect-error
-  MathJaxNewcmFont.dynamicFiles[fontPackage].setup(NewcmFont);
+  MathJaxNewcmFont.dynamicFiles[name].setup(NewcmFont);
   // @ts-expect-error
-  MathJaxFiraFont.dynamicFiles[fontPackage].setup(FiraFont);
+  MathJaxFiraFont.dynamicFiles[name].setup(FiraFont);
 });
 
 const fontOptions = {

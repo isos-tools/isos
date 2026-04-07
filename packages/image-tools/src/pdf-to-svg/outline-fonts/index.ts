@@ -27,7 +27,10 @@ type Font = {
 
 type Fonts = Record<string, Font[]>;
 
-export async function outlineFonts({ svg, fonts }: Props) {
+export async function outlineFonts({
+  svg,
+  fonts,
+}: Props): Promise<string> {
   if (Object.keys(fonts).length === 0) {
     return svg;
   }

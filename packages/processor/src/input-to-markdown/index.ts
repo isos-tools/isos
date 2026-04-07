@@ -13,6 +13,7 @@ import { createRemarkProcessor } from '../remark-processor';
 import { Options } from './options';
 
 export async function inputToMarkdown(input: string, options: Options) {
+  // console.log(input);
   const mdAst = await getMdAst(input, options);
   // console.dir(mdAst, { depth: null });
   const processor = createRemarkProcessor(options.input.mdAstTransforms);
@@ -65,6 +66,7 @@ async function latexToMdAstProcessor(
     .parse(input);
 
   // console.dir(parsed, { depth: null });
+  // console.log(JSON.stringify(parsed, null, 4));
 
   const latexAst = await unified()
     .use(options.latexAstTransforms)

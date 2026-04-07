@@ -1,6 +1,7 @@
 import { Element, Root, Text } from 'hast';
 import { Handle, State } from 'hast-util-to-mdast';
 import { toString } from 'hast-util-to-string';
+// import * as _ from 'lodash';
 import kebabCase from 'lodash.kebabcase';
 import { InlineMath } from 'mdast-util-math';
 import rehypeRemark from 'rehype-remark';
@@ -14,55 +15,86 @@ import remarkGfm from '../remark-gfm';
 export function figureToP() {
   return (tree: Root) => {
     // console.log('hast: figureToP');
-    visit(tree, (node) => {
-      if (node.type === 'element' && node.tagName === 'div') {
-        const { className } = node.properties;
-        if (Array.isArray(className) && className.includes('figure')) {
-          const label = extractLabel(node);
-          const caption = extractCaption(node);
+    // if (process.NODE_ENV === 'test') {
+    //   console.dir(tree, { depth: null });
+    // } else {
+    //   console.dir(_.cloneDeep(tree), { depth: null });
+    // }
 
-          if (containsSingleImage(node)) {
-            const img = extractSingleImage(node);
-            if (img !== null) {
+    for (const env of ['subfigure', 'figure']) {
+      visit(tree, (node) => {
+        if (node.type === 'element' && node.tagName === 'div') {
+          const { className } = node.properties;
+          if (
+            Array.isArray(className) &&
+            className[0] === 'environment' &&
+            className[1] === env
+          ) {
+            const label = extractLabel(node);
+            const caption = extractCaption(node);
+            // console.log({ label, caption });
+
+            // console.log(env, node.properties);
+
+            // console.log(caption?.children);
+
+            if (containsSingleImage(node)) {
+              const img = extractSingleImage(node);
+              if (img !== null) {
+                if (label !== '') {
+                  img.properties.id = label;
+                }
+                if (caption !== null) {
+                  img.properties.title = convertToMarkdown(caption);
+
+                  const { className } = caption.properties;
+                  if (Array.isArray(className)) {
+                    if (className.includes('unnumbered')) {
+                      img.properties.class = 'unnumbered';
+                    }
+                  }
+
+                  // console.log(node.properties);
+
+                  const { width } = node.properties;
+                  if (width) {
+                    img.properties.width = width;
+                  }
+                }
+
+                Object.assign(node, {
+                  tagName: 'p',
+                  children: [img],
+                });
+              }
+            } else {
+              // create figure element
+              Object.assign(node, { tagName: 'figure' });
+
               if (label !== '') {
-                img.properties.id = label;
+                node.properties.id = label;
               }
+
               if (caption !== null) {
-                img.properties.title = convertToMarkdown(caption);
+                node.children.push({
+                  type: 'element',
+                  tagName: 'figcaption',
+                  properties: {},
+                  children: [
+                    {
+                      type: 'element',
+                      tagName: 'p',
+                      properties: {},
+                      children: [caption],
+                    },
+                  ],
+                });
               }
-
-              Object.assign(node, {
-                tagName: 'p',
-                children: [img],
-              });
-            }
-          } else {
-            // create figure element
-            Object.assign(node, { tagName: 'figure' });
-
-            if (label !== '') {
-              node.properties.id = label;
-            }
-
-            if (caption !== null) {
-              node.children.push({
-                type: 'element',
-                tagName: 'figcaption',
-                properties: {},
-                children: [
-                  {
-                    type: 'element',
-                    tagName: 'p',
-                    properties: {},
-                    children: [caption],
-                  },
-                ],
-              });
             }
           }
         }
-      }
-    });
+      });
+    }
   };
 }
 
@@ -115,17 +147,25 @@ function extractSingleImage(figure: Element): Element | null {
 }
 
 function extractCaption(figure: Element): Element | null {
+  // console.dir(figure, { depth: null });
   let caption = null;
   visit(figure, 'element', (node, idx = 0, parent) => {
     const { className } = node.properties;
 
     if (Array.isArray(className) && className.includes('macro-caption')) {
+      // console.log(node.children);
+      if (toString(node.children[0]) === '*') {
+        className.push('unnumbered');
+      }
+
+      node.children = [node.children[node.children.length - 1]];
       caption = node;
 
       // remove caption
       parent?.children.splice(idx, 1);
     }
   });
+  // console.dir(caption, { depth: null });
   return caption;
 }
 
@@ -155,7 +195,7 @@ function convertToMarkdown(elem: Element) {
           const math = node.children[0] as Text;
           const result: InlineMath = {
             type: 'inlineMath',
-            value: math.value,
+            value: math?.value || '',
           };
           state.patch(node, result);
           return result;
@@ -163,6 +203,7 @@ function convertToMarkdown(elem: Element) {
         // references
         if (
           className.includes('macro-cref') ||
+          className.includes('macro-zcref') ||
           className.includes('macro-autoref')
         ) {
           const id = kebabCase(toString(node));

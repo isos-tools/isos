@@ -46,10 +46,14 @@ export function imageAttributes() {
         {},
       );
 
-      // console.log(props);
-
       node.alt = props.alt || node.alt || '';
       node.title = props.title || null;
+
+      if (props.width) {
+        props.style = `width: ${props.width}`;
+        delete props.width;
+      }
+
       node.data = {
         hProperties: props,
       };

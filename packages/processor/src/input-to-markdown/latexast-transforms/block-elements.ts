@@ -92,8 +92,10 @@ function isDescriptionList(node: Node | Argument) {
   return node.type === 'environment' && node.env === 'description';
 }
 
+const figureEnvs = ['figure', 'subfigure'];
+
 function isFigure(node: Node | Argument) {
-  return node.type === 'environment' && node.env === 'figure';
+  return node.type === 'environment' && figureEnvs.includes(node.env);
 }
 
 function isImage(node: Node | Argument) {

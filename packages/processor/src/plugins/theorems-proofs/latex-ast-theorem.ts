@@ -94,7 +94,7 @@ function convertRefsToAt(arg: Node[]) {
   return arg.map((elem) => {
     if (
       elem.type === 'macro' &&
-      ['cref', 'autoref'].includes(elem.content)
+      ['cref', 'zcref', 'autoref'].includes(elem.content)
     ) {
       const args = elem.args || [];
       const lastArg = args[args.length - 1];

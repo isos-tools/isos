@@ -14,6 +14,7 @@ export function addFrontmatter(ctx: Context) {
       author,
       abstract,
       tableOfContentsPrefix,
+      preambleWarnings,
     } = ctx.frontmatter;
 
     // console.log(ctx.frontmatter);
@@ -57,6 +58,14 @@ export function addFrontmatter(ctx: Context) {
     if (ctx.frontmatter['reference-location'] !== 'margin') {
       toExport['reference-location'] =
         ctx.frontmatter['reference-location'];
+    }
+
+    if (ctx.frontmatter.references.length) {
+      toExport.references = ctx.frontmatter.references;
+    }
+
+    if (preambleWarnings.length) {
+      toExport.preambleWarnings = preambleWarnings;
     }
 
     const theoremsYaml = theoremsToFrontmatter(ctx);

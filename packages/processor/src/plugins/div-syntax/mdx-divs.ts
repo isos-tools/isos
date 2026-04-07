@@ -94,6 +94,7 @@ function createFigure(
     ],
   };
   const captionHast = getCaptionHast(caption);
+
   const figCaption: Element = {
     type: 'element',
     tagName: 'figcaption',
@@ -120,7 +121,9 @@ function createFigure(
     value: '\n',
   };
   if (floatName === 'figure') {
-    children.push(newLine, figCaption);
+    if (caption.length > 0) {
+      children.push(newLine, figCaption);
+    }
   } else {
     children.unshift(figCaption, newLine);
   }

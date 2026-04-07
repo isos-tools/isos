@@ -4,6 +4,8 @@ import { ProcessorOptions } from '@mdx-js/mdx';
 import { PluggableList } from 'unified';
 
 import { articleWrapper } from '../../plugins/article/article-wrapper';
+import { atCitationToLink } from '../../plugins/bibliography/at-citation-to-link';
+import { renderBibliography } from '../../plugins/bibliography/render-bibliography';
 // import { visit } from 'unist-util-visit';
 
 import { defListHastHandlers } from '../../plugins/definition-list';
@@ -15,6 +17,7 @@ import { addDefaultAltText } from '../../plugins/images/default-image-alt';
 import { addMathsRefsAndCount } from '../../plugins/maths/add-maths-refs-and-count';
 import { mathTagToRefLabel } from '../../plugins/maths/math-tag-to-ref-label';
 import { missingMathsImageToSvg } from '../../plugins/missing-maths/missing-maths-img-to-svg';
+import { addPreambleWarnings } from '../../plugins/preamble-warnings/add-preamble-warnings';
 import { atReferenceToLink } from '../../plugins/refs-and-counts/at-reference-to-link';
 import { addCounts } from '../../plugins/refs-and-counts/hast-add-counts';
 import { exSolSolutionTitle } from '../../plugins/theorems-proofs/hast-exsol-solution-title';
@@ -55,12 +58,15 @@ function createRehypeFragmentPlugins(
   options: Partial<Options> = {},
 ): PluggableList {
   return [
+    [addPreambleWarnings, ctx],
+
     addDefaultAltText,
     missingMathsImageToSvg,
     addMathsRefsAndCount,
 
     [replaceFootnoteRefDefs, ctx],
     [footNotesToSideNotes, ctx],
+    [renderBibliography, ctx],
     // TODO:
     // [
     // autolinkHeadings,
@@ -75,6 +81,7 @@ function createRehypeFragmentPlugins(
     // should be last
     [mathTagToRefLabel, ctx],
     [addCounts, ctx],
+    [atCitationToLink, ctx], // depends on addCounts
     [atReferenceToLink, ctx], // depends on addCounts
     [exSolSolutionTitle, ctx], // depends on addCounts
 

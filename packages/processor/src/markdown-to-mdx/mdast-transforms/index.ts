@@ -56,6 +56,7 @@ export function createMdastTransforms(
     [headings, ctx], // headingSections depends on this
   ];
 
+  // TODO: remove this (a lot of tests will need updating)
   if (options.noSections === false) {
     plugins.push(headingSections); // theorems depends on this
   }

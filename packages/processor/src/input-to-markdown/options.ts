@@ -3,6 +3,7 @@ import { PluginOptions as LatexParseOptions } from '@unified-latex/unified-latex
 import { Options as HtmlConvertOptions } from 'rehype-remark';
 import { PluggableList } from 'unified';
 
+import { unescapeCitation } from '../plugins/bibliography/formatted-citation';
 import { mintedToPre } from '../plugins/code/minted-to-pre';
 import { descriptionToDl } from '../plugins/definition-list';
 import { footnoteMarkToRef } from '../plugins/footnotes/footnote-mark-text-to-ref-def';
@@ -14,6 +15,7 @@ import {
   captionAttributeToAlt,
 } from '../plugins/images/formatted-caption';
 import { imageToPandocFigure } from '../plugins/images/image-to-pandoc-figure';
+import { subfigureWidth } from '../plugins/images/subfigure-width';
 import {
   mathsMetaToPandocAttributes,
   pandocAttributesToMathsMeta,
@@ -59,6 +61,7 @@ export const latexAstFromStringOptions = {
   macros: {
     // signatures are defined in section 3 of:
     // https://ctan.math.washington.edu/tex-archive/macros/latex/contrib/l3packages/xparse.pdf
+    def: { signature: 'm m' },
     // sidenote: { signature: 'm' },
     // title: { signature: 'om' },
     // underline: { signature: 'm' },
@@ -69,6 +72,7 @@ export const latexAstFromStringOptions = {
     mintinline: { signature: 'm m' },
     scalerel: { signature: 'm m' },
     tag: { signature: 'm' },
+    zcref: { signature: 'o m' },
 
     newframedtheorem: { signature: 'sO{}O{}momo' },
     newexsol: { signature: 'sO{}mmmmO{}' },
@@ -93,7 +97,7 @@ export const latexAstFromStringOptions = {
     orcidlink: { signature: 'm' },
 
     thispagestyle: { signature: 'm' },
-    addtocontents: { signature: 'mm' },
+    addtocontents: { signature: 'm m' },
 
     notebox: { signature: 'm' },
     tipbox: { signature: 'm' },
@@ -109,10 +113,20 @@ export const latexAstFromStringOptions = {
 
     includecomment: { signature: 'm' },
     excludecomment: { signature: 'm' },
+
+    caption: { signature: 's o m' },
+    captionsetup: { signature: 'o m' },
+
+    graphicspath: { signature: 'm' },
+    includegraphics: {
+      signature: 's o o m',
+      renderInfo: { breakAround: true, pgfkeysArgs: true },
+    },
   },
   environments: {
     tabularx: { signature: 'm o m', renderInfo: { alignContent: true } },
     comment: { signature: 'm' },
+    subfigure: { signature: 'm m' },
   },
 };
 
@@ -153,6 +167,7 @@ export function createDefaultOptions(
       mathsMetaToPandocAttributes,
       nbspToSpace,
       removeExcessNewline,
+      unescapeCitation,
     ],
   };
 }
@@ -162,6 +177,7 @@ function createLatexToHastHandlers(ctx: Context): LatexConvertOptions {
     environmentReplacements: {
       ...createTheoremHandlers(ctx),
       minted: mintedToPre,
+      subfigure: subfigureWidth,
       description: descriptionToDl,
       enumerate: enumerateToOl,
     },

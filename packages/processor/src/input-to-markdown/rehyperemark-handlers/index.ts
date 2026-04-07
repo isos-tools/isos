@@ -2,6 +2,7 @@ import { Element, Parents } from 'hast';
 import { Handle, State } from 'hast-util-to-mdast';
 import { Image, Paragraph, PhrasingContent } from 'mdast';
 
+import { createCitation } from '../../plugins/bibliography/citation';
 import { displayQuoteToBlockQuote } from '../../plugins/blockquote';
 import { callouts } from '../../plugins/callout/callouts';
 import { createCallout } from '../../plugins/callout/rehype-remark-callout';
@@ -99,9 +100,10 @@ function spanHandler(
       return result;
     }
 
-    // cleverref
+    // cleverref / zref-clever
     if (
       className.includes('macro-cref') ||
+      className.includes('macro-zcref') ||
       className.includes('macro-autoref')
     ) {
       const result = createReference(state, node);
@@ -140,6 +142,13 @@ function spanHandler(
 
     if (className.includes('macro-footnotetext')) {
       const result = createFootnoteText(state, node, parents);
+      state.patch(node, result);
+      return result;
+    }
+
+    // bibliography
+    if (className.includes('macro-cite')) {
+      const result = createCitation(state, node);
       state.patch(node, result);
       return result;
     }

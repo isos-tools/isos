@@ -64,10 +64,9 @@ export function createRunOptions(
         const className = String(props.class || '');
 
         if (className.includes('math-inline')) {
-          const expr = props.children as string;
           return (
             <Maths
-              expr={expr}
+              expr={props.children}
               format="inline"
               maths={maths}
               article={article}
@@ -110,7 +109,6 @@ export function createRunOptions(
 
         if (className.includes('math-display')) {
           const id = props['data-id'];
-          const expr = child.props.children as string;
           const className = classNames('maths', { 'env-equation': count });
           const inSidenote = (props.class || '').includes('in-sidenote');
 
@@ -118,7 +116,7 @@ export function createRunOptions(
           return (
             <p id={id} className={className}>
               <Maths
-                expr={expr}
+                expr={child.props.children}
                 format="display"
                 maths={maths}
                 article={article}
@@ -162,10 +160,9 @@ export function createSidebarRunOptions({
         const className = String(props.class || '');
 
         if (className.includes('math-inline')) {
-          const expr = props.children as string;
           return (
             <Maths
-              expr={expr}
+              expr={props.children}
               format="inline"
               maths={maths}
               article={article}

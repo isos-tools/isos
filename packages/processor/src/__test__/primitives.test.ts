@@ -34,6 +34,13 @@ test('textbf to strong', async () => {
   expect(html).toBe('<p><strong>hi 1.2</strong></p>');
 });
 
+test('bf to strong', async () => {
+  const markdown = await testProcessor.latex(String.raw`{\bf (hi 1.2)}`);
+  expect(markdown).toBe('**(hi 1.2)**');
+  const html = await testProcessor.md(markdown);
+  expect(html).toBe('<p><strong>(hi 1.2)</strong></p>');
+});
+
 test('textbf emph to italic strong', async () => {
   const markdown = await testProcessor.latex(
     String.raw`\textbf{\emph{hi 1.2}}`,

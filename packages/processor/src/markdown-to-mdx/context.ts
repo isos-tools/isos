@@ -2,6 +2,8 @@
 //   noEmbedAssetUrl: boolean;
 //   noSyntaxHighlight: boolean;
 // };
+import { Reference } from '../plugins/bibliography/extract-bibliography';
+import { Warning } from '../plugins/preamble-warnings/def-warn';
 import { RefObjectsYaml } from '../plugins/refs-and-counts/default-objects';
 
 // export type Context = {
@@ -11,11 +13,6 @@ import { RefObjectsYaml } from '../plugins/refs-and-counts/default-objects';
 //   refStore: Record<string, string>;
 //   options: Options;
 // };
-
-export type Reference = {
-  id: string;
-  label: string;
-};
 
 export type Author = {
   name: string;
@@ -34,6 +31,8 @@ export type Frontmatter = {
   hasPart?: boolean;
   theorems: RefObjectsYaml;
   'reference-location': string;
+  references: Reference[];
+  preambleWarnings: Warning[];
 };
 
 export type Context = {
@@ -49,6 +48,8 @@ export type Context = {
     referenceLocation: string;
     documentClass?: string;
     hasPart?: boolean;
+    references: Reference[];
+    preambleWarnings: Warning[];
   };
   hasSideNotes: boolean;
 };
@@ -63,6 +64,8 @@ export function createContext(): Context {
       theorems: {},
       refMap: {},
       referenceLocation: 'margin',
+      references: [],
+      preambleWarnings: [],
     },
     hasSideNotes: false,
     // cacheDir: '',

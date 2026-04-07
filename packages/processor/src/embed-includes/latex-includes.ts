@@ -10,6 +10,7 @@ import { Fs } from '@isos/fs/types';
 import { printRaw } from '@isos/unified-latex-util-print-raw';
 
 import { Context } from '../input-to-markdown/context';
+import { latexAstFromStringOptions } from '../input-to-markdown/options';
 
 export async function embedLatexIncludes(ctx: Context, fs: Fs) {
   const subFiles: string[] = [];
@@ -39,11 +40,7 @@ async function getLatexAst(
 ) {
   const processor = unified()
     // @ts-expect-error
-    .use(unifiedLatexFromString, {
-      macros: {
-        graphicspath: { signature: 'm' },
-      },
-    })
+    .use(unifiedLatexFromString, latexAstFromStringOptions)
     .use(recursivelyIncludeFiles, ctx, fs, subFiles);
   const parsed = processor.parse(input);
   const transformed = await processor.run(parsed);

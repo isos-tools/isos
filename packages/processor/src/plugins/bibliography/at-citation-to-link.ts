@@ -6,46 +6,60 @@ import { Context } from '../../markdown-to-mdx/context';
 import { createRemarkProcessor } from '../../remark-processor';
 import { Reference } from '../bibliography/extract-bibliography';
 
-const pattern = /(^|[^a-zA-Z0-9])@([\w-]+)/g;
+const pattern = /\[@([^\s]+) (.*?)\]/g;
 
-export function atReferenceToLink(ctx: Context) {
+export function atCitationToLink(ctx: Context) {
   return (tree: Root) => {
-    // console.dir(tree, { depth: null });
-    // console.log(ctx.frontmatter.refMap);
     findAndReplace(tree, [
       pattern,
-      (_, prefix, ref) => {
-        const reference = ctx.frontmatter.refMap[ref];
-        // console.log({ ref, reference });
-
-        const output: (Element | Text)[] = [
-          {
-            type: 'text',
-            value: prefix,
-          },
-        ];
-
+      (_, id, cite) => {
+        const reference = ctx.frontmatter.refMap[`bib-${id}`];
+        const output: (Element | Text)[] = [];
         if (reference) {
-          output.push(createReferenceLink(reference));
+          output.push(createReferenceLink(reference, cite));
         } else {
-          output.push(createBrokenReferenceWarning(ref));
+          output.push(createBrokenReferenceWarning(id));
         }
-
         return output;
       },
     ]);
   };
 }
 
-function createReferenceLink(reference: Reference): Element {
+function createReferenceLink(reference: Reference, cite: string): Element {
   return {
     type: 'element',
-    tagName: 'a',
+    tagName: 'span',
     properties: {
-      href: `#${reference.id}`,
-      class: 'ref',
+      class: 'cite',
     },
-    children: getTagHast(reference.label),
+    children: [
+      {
+        type: 'text',
+        value: '[',
+      },
+      {
+        type: 'element',
+        tagName: 'a',
+        properties: {
+          href: `#${reference.id}`,
+          class: 'ref',
+        },
+        children: getTagHast(reference.label),
+      },
+      {
+        type: 'text',
+        value: ' ',
+      },
+      {
+        type: 'text',
+        value: cite,
+      },
+      {
+        type: 'text',
+        value: ']',
+      },
+    ],
   };
 }
 

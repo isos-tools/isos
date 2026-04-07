@@ -14,12 +14,13 @@ export function imageToPandocFigure(_ctx: Context) {
     // console.log('mdast: imageToPandocFigure');
     // console.dir(tree, { depth: null });
     visit(tree, 'image', (node, idx = 0, parent) => {
-      node.alt = getText(node.alt);
+      node.alt = getAlt(node.alt);
+      // console.log(node.title);
       const children = parent?.children || [];
       const data = (node.data || {}) as Record<string, string>;
       const attrs: Record<string, string> = {
-        alt: getText(node.alt),
-        caption: node.title || '',
+        alt: node.alt,
+        caption: getCaption(node.title),
         ...data,
       };
 
@@ -37,13 +38,18 @@ export function imageToPandocFigure(_ctx: Context) {
   };
 }
 
-function getText(markdown?: string | null) {
-  if (!markdown) return '';
+function getAlt(alt?: string | null) {
+  if (!alt) return '';
 
   const processor = unified()
     .use(remarkParse)
     .use(strip)
     .use(remarkStringify);
 
-  return String(processor.processSync(markdown)).trim();
+  return String(processor.processSync(alt)).trim();
+}
+
+function getCaption(title?: string | null) {
+  if (!title) return '';
+  return title.replace(/\\\n/g, '\\n');
 }

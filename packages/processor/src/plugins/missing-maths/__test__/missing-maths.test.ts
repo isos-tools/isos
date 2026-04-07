@@ -11,7 +11,7 @@ test('missing maths', { timeout: 20_000 }, async () => {
   `);
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
-    symbol ![](varoiint1){alt="img1" .missing-maths} and ![](varoiint2){alt="img2" .missing-maths} is used
+    symbol ![](varoiint1){.missing-maths alt="img1"} and ![](varoiint2){.missing-maths alt="img2"} is used
  `);
 
   expect(markdown).toBe(expectedMarkdown);

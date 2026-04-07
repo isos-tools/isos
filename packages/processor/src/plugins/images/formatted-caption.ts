@@ -45,7 +45,7 @@ export function serialiseAttributes(attributes: Record<string, string>) {
       if (!v) {
         return acc;
       }
-      if (k === 'id') {
+      if (['id', 'class'].includes(k)) {
         return getAttribute(k, v) + acc;
       }
       return acc + getAttribute(k, v);

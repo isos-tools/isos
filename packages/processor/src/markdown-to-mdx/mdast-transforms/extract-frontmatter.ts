@@ -25,6 +25,7 @@ export function extractFrontmatter(ctx: Context) {
       const combined = fmStrings.join('\n\n');
       const fm = parse(combined) as Frontmatter;
 
+      // console.log(combined);
       // console.log(fm);
 
       if (fm.title) {
@@ -75,6 +76,22 @@ export function extractFrontmatter(ctx: Context) {
         ctx.frontmatter.referenceLocation = fm['reference-location'];
       }
 
+      if (fm.references) {
+        ctx.frontmatter.references = fm.references;
+        const { refMap } = ctx.frontmatter;
+        const references = Object.fromEntries(
+          fm.references.map((o, i) => {
+            const id = `bib-${o.id}`;
+            const ref = { id, label: `Reference ${i + 1}` };
+            return [id, ref];
+          }),
+        );
+        ctx.frontmatter.refMap = { ...refMap, ...references };
+      }
+
+      if (fm.preambleWarnings) {
+        ctx.frontmatter.preambleWarnings = fm.preambleWarnings;
+      }
       // console.log(ctx.frontmatter);
     }
 
