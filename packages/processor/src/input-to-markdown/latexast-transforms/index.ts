@@ -37,6 +37,8 @@ export function createLatexastTransforms(ctx: Context): PluggableList {
   return [
     [documentClass, ctx],
     expandEnvironments,
+    [expandMacros, ctx],
+
     removeNewDocumentCommand,
     removeAtLetter,
     // [inlineFilesFromContext, ctx],
@@ -52,7 +54,6 @@ export function createLatexastTransforms(ctx: Context): PluggableList {
     convertEmToEmph,
     // replaceTildeWithSpace,
     // figureToImage,
-    expandMacros,
     // expandDefs,
     [defWarn, ctx],
     expandMathOperatorPlugin,

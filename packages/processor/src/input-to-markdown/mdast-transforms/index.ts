@@ -7,6 +7,7 @@ import { theoremLabelAsId } from '../../plugins/theorems-proofs/theorem-label-as
 import { Context } from '../context';
 import { Options } from '../options';
 import { addFrontmatter } from './add-frontmatter';
+import { lostLabelToWarn } from './lost-label-to-warn';
 
 export function createMdastTransforms(
   ctx: Context,
@@ -23,5 +24,6 @@ export function createMdastTransforms(
     //   console.dir(tree, { depth: null });
     // },
     [addFrontmatter, ctx],
+    lostLabelToWarn,
   ];
 }

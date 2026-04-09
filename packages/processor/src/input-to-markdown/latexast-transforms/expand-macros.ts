@@ -2,15 +2,16 @@ import { Macro, Node, Root } from '@unified-latex/unified-latex-types';
 import { attachMacroArgs } from '@unified-latex/unified-latex-util-arguments';
 import {
   createMacroExpander,
-  expandMacrosExcludingDefinitions,
   listNewcommands,
 } from '@unified-latex/unified-latex-util-macros';
 import { match } from '@unified-latex/unified-latex-util-match';
 import { replaceNode } from '@unified-latex/unified-latex-util-replace';
 
+import { Context } from '../context';
+
 // https://github.com/siefkenj/unified-latex/blob/e3a07de05a5a57f8580768b40b4f53e92790f8ec/examples/expanding-or-replacing-macros.ts#L106-L131
 
-export function expandMacros() {
+export function expandMacros(ctx: Context) {
   return (tree: Root) => {
     // console.dir(tree, { depth: null });
     const newcommands = listNewcommands(tree);
@@ -22,10 +23,10 @@ export function expandMacros() {
     attachMacroArgs(tree, macroInfo);
 
     // Expand all macros in `\newcommand` definitions with those from previous `\newcommand` definitions
-    expandMacroDefinitions(newcommands);
+    const expanded = expandMacroDefinitions(newcommands, ctx);
 
     // Expand all macros, except `\newcommand` definitions.
-    expandMacrosExcludingDefinitions(tree, newcommands);
+    expandMacrosExcludingDefinitions(tree, expanded);
 
     // remove `\newcommand`s
     const newcommandsUsed = Object.fromEntries(
@@ -39,16 +40,22 @@ export function expandMacros() {
   };
 }
 
-function expandMacroDefinitions(
-  macros: {
-    name: string;
-    body: Node[];
-    definition: Macro;
-  }[],
-) {
+type MacroDef = {
+  name: string;
+  body: Node[];
+  definition: Macro;
+};
+
+function expandMacroDefinitions(macros: MacroDef[], ctx: Context) {
   const expanderCache = new Map<string, (macro: Macro) => Node[]>();
 
-  for (const macro of macros) {
+  const filtered = macros.filter((m) =>
+    m.body.every(
+      (o) => !(o.type === 'macro' && ['begin', 'end'].includes(o.content)),
+    ),
+  );
+
+  for (const macro of filtered) {
     replaceNode(macro.body, (node) => {
       if (!match.anyMacro(node)) {
         return;
@@ -63,4 +70,41 @@ function expandMacroDefinitions(
 
     expanderCache.set(macro.name, createMacroExpander(macro.body));
   }
+
+  const brokenEnvs = macros.length - filtered.length;
+  if (brokenEnvs > 0) {
+    ctx.frontmatter.preambleWarnings.push({
+      message: '\\newcommands with broken environments are not supported',
+      info: `Remove (${brokenEnvs}) \\newcommands which \\begin an environment but don't end it (or vice versa).  A supported alternative for this purpose is \\newenvironment.`,
+    });
+  }
+
+  return filtered;
+}
+
+function expandMacrosExcludingDefinitions(tree: Root, macros: MacroDef[]) {
+  const expanderCache = new Map(
+    macros.map((spec) => [spec.name, createMacroExpander(spec.body)]),
+  );
+  // console.log(expanderCache);
+  replaceNode(tree, (node, info) => {
+    if (!match.anyMacro(node)) {
+      return;
+    }
+    if (
+      info.parents.some(
+        (o) => o.type === 'macro' && o.content === 'newcommand',
+      )
+    ) {
+      return;
+    }
+    const macroName = node.content;
+    const expander = expanderCache.get(macroName);
+    if (!expander) {
+      return;
+    }
+    const result = expander(node);
+    // console.log(node, result);
+    return result;
+  });
 }

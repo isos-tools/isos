@@ -15,6 +15,7 @@ import '@mathjax/mathjax-newcm-font/js/svg/dynamic/sans-serif.js';
 import '@mathjax/mathjax-newcm-font/js/svg/dynamic/shapes.js';
 import '@mathjax/mathjax-newcm-font/js/svg/dynamic/fraktur.js';
 import '@mathjax/mathjax-newcm-font/js/svg/dynamic/script.js';
+// import '@mathjax/mathjax-newcm-font/js/svg/dynamic/math.js';
 
 import { MathJaxFiraFont } from '@mathjax/mathjax-fira-font/js/svg.js';
 import '@mathjax/mathjax-fira-font/js/svg/dynamic/arrows.js';
@@ -24,6 +25,7 @@ import '@mathjax/mathjax-fira-font/js/svg/dynamic/sans-serif.js';
 import '@mathjax/mathjax-fira-font/js/svg/dynamic/shapes.js';
 import '@mathjax/mathjax-fira-font/js/svg/dynamic/fraktur.js';
 import '@mathjax/mathjax-fira-font/js/svg/dynamic/script.js';
+// import '@mathjax/mathjax-fira-font/js/svg/dynamic/math-other.js';
 
 import { LayoutOptions } from '.';
 import { MathsFont, MathsState } from '../../mdx-state';
@@ -49,13 +51,13 @@ const packages = [
   'shapes',
   'fraktur',
   'script',
-  // MathJaxBbmFontExtension,
+  // 'math',
 ];
 
 packages.forEach((name) => {
-  // @ts-expect-error
+  // @ts-expect-error Property 'dynamicFiles' is protected
   MathJaxNewcmFont.dynamicFiles[name].setup(NewcmFont);
-  // @ts-expect-error
+  // @ts-expect-error Property 'dynamicFiles' is protected
   MathJaxFiraFont.dynamicFiles[name].setup(FiraFont);
 });
 
@@ -89,10 +91,10 @@ export function mmlToSvg(
 
     const match = html.match(/data-mjx-error="(.*?)"/);
     if (match !== null) {
-      console.log('mathjax error:', match[1]);
+      console.log('mathjax:', match[1]);
       return {
         error: true,
-        html: `mathjax error: ${match[1]}`,
+        html: `mathjax: ${match[1]}`,
       };
     }
 
@@ -103,7 +105,7 @@ export function mmlToSvg(
   } catch (err) {
     return {
       error: true,
-      html: `mathjax error: ${String(err)}`,
+      html: `mathjax: ${String(err)}`,
     };
   }
 }

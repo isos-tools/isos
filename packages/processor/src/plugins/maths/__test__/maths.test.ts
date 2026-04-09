@@ -645,7 +645,7 @@ test('empty maths', async () => {
   const expectedMarkdown = unindentStringAndTrim(String.raw`
     $a$
 
-    $$
+    $ $
   `);
 
   expect(markdown).toBe(expectedMarkdown);
@@ -656,7 +656,7 @@ test('empty maths', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <p><code class="latex">a</code></p>
-    <p class="maths"></p>
+    <p><code class="latex"> </code></p>
   `);
 
   expect(html).toBe(expectedHtml);

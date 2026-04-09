@@ -81,10 +81,18 @@ export function MathJaxPrerender({
   ]);
 
   if (mml.error) {
-    return <WarnSpan>{mml.mml}</WarnSpan>;
+    return (
+      <WarnSpan>
+        <strong>{mml.mml}</strong>
+      </WarnSpan>
+    );
   }
   if (svg.error) {
-    return <WarnSpan>{svg.html}</WarnSpan>;
+    return (
+      <WarnSpan>
+        <strong>{svg.html}</strong>
+      </WarnSpan>
+    );
   }
 
   const brailleOnly = maths.ariaMode.value === 'braille-only';
@@ -101,6 +109,7 @@ export function MathJaxPrerender({
 function formatLaTeX(expr: string) {
   return expr.replace(/\\qedhere/g, '');
 }
+
 function isTauri() {
   return !!((globalThis as any) || window).isTauri;
 }
