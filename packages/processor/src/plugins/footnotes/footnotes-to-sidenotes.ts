@@ -7,143 +7,147 @@ import { extractFootnoteDefinitions } from './extract-definitions';
 export function footNotesToSideNotes(ctx: Context) {
   return (tree: Root) => {
     // console.dir(tree, { depth: null });
-    // console.log(ctx.frontmatter);
-    // console.log(ctx.frontmatter.referenceLocation);
-    if (ctx.frontmatter.referenceLocation !== 'margin') {
-      return;
-    }
-
     const footnotes = extractFootnoteDefinitions(tree);
     // console.dir(footnotes, { depth: null });
     if (footnotes === null) {
       return;
     }
 
-    visit(tree, 'element', (node) => {
-      if (node.type === 'element' && node.tagName === 'sup') {
-        const { className } = node.properties;
-        if (Array.isArray(className) && className.includes('fn-ref')) {
-          const a = node.children[0] as ElementContent;
+    if (ctx.frontmatter.referenceLocation === 'below') {
+      inlineFootNotes(tree, footnotes);
+    } else if (ctx.frontmatter.referenceLocation === 'margin') {
+      inlineSideNotes(tree, footnotes);
+    }
+  };
+}
 
-          if (a.type === 'element') {
-            const href = String(a.properties.href || '');
-            const id = href.replace(/^#fn-/, '');
-            const { idx, definition } = findDefinition(footnotes, id);
+function inlineSideNotes(tree: Root, footnotes: Element[]) {
+  visit(tree, 'element', (node) => {
+    if (node.type === 'element' && node.tagName === 'sup') {
+      const { className } = node.properties;
+      if (Array.isArray(className) && className.includes('fn-ref')) {
+        const a = node.children[0] as ElementContent;
 
-            if (definition !== null) {
-              const sideNote: ElementContent = {
-                type: 'element',
-                tagName: 'span',
-                properties: {
-                  className: ['sidenote'],
-                },
-                children: [
-                  {
-                    type: 'element',
-                    tagName: 'sup',
-                    properties: {
-                      className: ['sidenote-count'],
-                    },
-                    children: [
-                      {
-                        type: 'element',
-                        tagName: 'a',
-                        properties: {
-                          id: `fn-${id}`,
-                          href: `#fn-ref-${id}`,
+        if (a.type === 'element') {
+          const href = String(a.properties.href || '');
+          const id = href.replace(/^#fn-/, '');
+          const { idx, definition } = findDefinition(footnotes, id);
+
+          if (definition !== null) {
+            const sideNote: ElementContent = {
+              type: 'element',
+              tagName: 'span',
+              properties: {
+                className: ['sidenote'],
+              },
+              children: [
+                {
+                  type: 'element',
+                  tagName: 'sup',
+                  properties: {
+                    className: ['sidenote-count'],
+                  },
+                  children: [
+                    {
+                      type: 'element',
+                      tagName: 'a',
+                      properties: {
+                        id: `fn-${id}`,
+                        href: `#fn-ref-${id}`,
+                      },
+                      children: [
+                        {
+                          type: 'text',
+                          value: String(idx + 1),
                         },
-                        children: [
-                          {
-                            type: 'text',
-                            value: String(idx + 1),
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                  {
-                    type: 'element',
-                    tagName: 'span',
-                    properties: {
-                      className: ['sidenote-label'],
+                      ],
                     },
-                    children: [
-                      {
-                        type: 'text',
-                        value: ' (sidenote: ',
-                      },
-                    ],
+                  ],
+                },
+                {
+                  type: 'element',
+                  tagName: 'span',
+                  properties: {
+                    className: ['sidenote-label'],
                   },
-                  {
-                    type: 'element',
-                    tagName: 'small',
-                    properties: {
-                      className: ['sidenote-content'],
+                  children: [
+                    {
+                      type: 'text',
+                      value: ' (sidenote: ',
                     },
-                    children: definition,
+                  ],
+                },
+                {
+                  type: 'element',
+                  tagName: 'small',
+                  properties: {
+                    className: ['sidenote-content'],
                   },
-                  {
-                    type: 'element',
-                    tagName: 'span',
-                    properties: {
-                      className: ['sidenote-label'],
+                  children: definition,
+                },
+                {
+                  type: 'element',
+                  tagName: 'span',
+                  properties: {
+                    className: ['sidenote-label'],
+                  },
+                  children: [
+                    {
+                      type: 'text',
+                      value: ')',
                     },
-                    children: [
-                      {
-                        type: 'text',
-                        value: ')',
-                      },
-                    ],
-                  },
-                ],
-              };
+                  ],
+                },
+              ],
+            };
 
-              Object.assign(node, sideNote);
-            }
+            Object.assign(node, sideNote);
           }
         }
       }
-    });
-  };
+    }
+  });
 }
 
 // appends an aside after the paragraph the footnote is mentioned.
 // matches quarto margin notes (but with bug when used in nested
 // elements like list items).
 
-// visit(tree, 'element', (node, idx, parent) => {
-//   if (node.tagName === 'p') {
-//     const refs = node.children.filter((o) => {
-//       return o.type === 'element' && o.tagName === 'sup';
-//     }) as Element[];
-//     const definitions: Element[] = [];
+function inlineFootNotes(tree: Root, footnotes: Element[]) {
+  visit(tree, 'element', (node, idx, parent) => {
+    if (node.tagName === 'p') {
+      const refs = node.children.filter((o) => {
+        return o.type === 'element' && o.tagName === 'sup';
+      }) as Element[];
+      const definitions: Element[] = [];
 
-//     refs.forEach((ref) => {
-//       const { className } = ref.properties;
-//       if (Array.isArray(className) && className.includes('fn-ref')) {
-//         const a = ref.children[0] as Element;
-//         const href = String(a.properties.href || '');
-//         const id = href.replace(/^#fn-/, '');
-//         const sideNotes = findFootnote(footnotes, id);
+      refs.forEach((ref) => {
+        const { className } = ref.properties;
+        if (Array.isArray(className) && className.includes('fn-ref')) {
+          const a = ref.children[0] as Element;
+          const href = String(a.properties.href || '');
+          const id = href.replace(/^#fn-/, '');
+          const { definition } = findDefinition(footnotes, id);
 
-//         if (sideNotes !== null) {
-//           definitions.push({
-//             type: 'element',
-//             tagName: 'aside',
-//             properties: {
-//               className: ['inline-fn'],
-//               id: `fn-${id}`,
-//             },
-//             children: sideNotes,
-//           });
-//         }
-//       }
-//     });
+          if (definition !== null) {
+            definitions.push({
+              type: 'element',
+              tagName: 'aside',
+              properties: {
+                className: ['inline-footnotes'],
+                id: `fn-${id}`,
+              },
+              children: definition,
+            });
+          }
+        }
+      });
 
-//     const nextIdx = (idx || 0) + 1;
-//     parent?.children.splice(nextIdx, 0, ...definitions);
-//   }
-// });
+      const nextIdx = (idx || 0) + 1;
+      parent?.children.splice(nextIdx, 0, ...definitions);
+    }
+  });
+}
 
 type Footnote = {
   idx: number;
@@ -172,9 +176,13 @@ function addIdentifier(
   id: string,
   idx: number,
 ) {
+  // console.log(children);
   const firstP = children.find(
     (o) => o.type === 'element' && o.tagName === 'p',
   ) as Parent;
+  if (!firstP) {
+    console.dir(children, { depth: null });
+  }
   firstP.children.unshift({
     type: 'element',
     tagName: 'sup',

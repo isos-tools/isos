@@ -77,13 +77,13 @@ test('syntax bug', async () => {
     ---
     references:
       - id: stewart
-        label: I. Stewart, Galois Theory, 3rd edition, Chapman&Hall/CRC Mathematics
+        label: I. Stewart, Galois Theory, 3rd edition, Chapman\\&Hall/CRC Mathematics
     ---
   `);
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(markdown, { noIcons: true });
+  const html = await testProcessor.md(markdown);
   // console.log(html);
   // return
 
@@ -164,7 +164,7 @@ test('bibliography large', async () => {
       - id: hungerford
         label: T.W. Hungerford, Algebra, Springer
       - id: stewart
-        label: I. Stewart, Galois Theory, 3rd edition, Chapman&Hall/CRC Mathematics
+        label: I. Stewart, Galois Theory, 3rd edition, Chapman\\&Hall/CRC Mathematics
       - id: weintraub
         label: S. Weintraub, Galois Thoery, Springer
     ---
@@ -267,6 +267,68 @@ test('bibliography large', async () => {
         </li>
         <li id="bib-weintraub">
           <p>S. Weintraub, Galois Thoery, Springer</p>
+        </li>
+      </ol>
+    </section>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('bibliography with formatting', async () => {
+  const latex = unindentStringAndTrim(String.raw`
+    \documentclass{article}
+    \begin{document}
+
+    \begin{thebibliography}{99}
+    \bibitem{Arv} W.B. Arveson, \emph{A short course on spectral theory}, Graduate $x$ Texts.
+    \bibitem{Dav} K.R. \textsc{Davidson}, \emph{C*-algebras by example}, Fields Institute Monographs.
+    \bibitem{Mur} G. \textsc{Murphy}, \emph{C*-algebras and operator theory}, Academic Press, 1990.
+    \bibitem{Roe} M. \textsc{R{\o}rdam}, F. \textsc{Larsen}, N. \textsc{Laustsen}, London Mathematical.
+    \end{thebibliography}
+
+    \end{document}
+  `);
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ---
+    references:
+      - id: arv
+        label: W\\.B. Arveson, *A short course on spectral theory*, Graduate $x$ Texts.
+      - id: dav
+        label: K.R. Davidson, *C\\*-algebras by example*, Fields Institute Monographs.
+      - id: mur
+        label: G. Murphy, *C\\*-algebras and operator theory*, Academic Press, 1990.
+      - id: roe
+        label: M. Rørdam, F. Larsen, N. Laustsen, London Mathematical.
+    ---
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(`
+    <section class="bibliography">
+      <h2>References</h2>
+      <ol>
+        <li id="bib-arv">
+          <p>W.B. Arveson, <em>A short course on spectral theory</em>, Graduate <code class="latex">x</code> Texts.</p>
+        </li>
+        <li id="bib-dav">
+          <p>K.R. Davidson, <em>C*-algebras by example</em>, Fields Institute Monographs.</p>
+        </li>
+        <li id="bib-mur">
+          <p>G. Murphy, <em>C*-algebras and operator theory</em>, Academic Press, 1990.</p>
+        </li>
+        <li id="bib-roe">
+          <p>M. Rørdam, F. Larsen, N. Laustsen, London Mathematical.</p>
         </li>
       </ol>
     </section>

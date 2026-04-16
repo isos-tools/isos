@@ -130,6 +130,7 @@ export function createProcessor(
         }
       }
 
+      // TODO: move this to a separate file with its own options and context
       // step 7: processor
       handlers.onStatus(`Converting ${ctx.type} to markdown...`);
       log.info(`${ctx.type} to markdown`);

@@ -36,7 +36,7 @@ test('newcommands with theorem expansion are not supported', async () => {
     documentClass: amsart
     preambleWarnings:
       - message: \\newcommands with broken environments are not supported
-        info: Replace (2) \\newcommands which \\begin an environment but don't end it (or
+        info: Remove (2) \\newcommands which \\begin an environment but don't end it (or
           vice versa).  A supported alternative for this purpose is \\newenvironment.
     theorems:
       theorem:
@@ -63,7 +63,7 @@ test('newcommands with theorem expansion are not supported', async () => {
       <h2>Preamble warnings:</h2>
       <dl>
         <dt>\\newcommands with broken environments are not supported</dt>
-        <dd>Replace (2) \\newcommands which \\begin an environment but don't end it (or vice versa). A supported alternative for this purpose is \\newenvironment.</dd>
+        <dd>Remove (2) \\newcommands which \\begin an environment but don't end it (or vice versa). A supported alternative for this purpose is \\newenvironment.</dd>
       </dl>
     </section>
     <p> <span class="warn"><strong>lost label:</strong> <code>thm:sr</code></span> Let <code class="latex">A</code> be a Banach algebra.</p>

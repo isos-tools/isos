@@ -1,6 +1,8 @@
-import { Element, Root } from 'hast';
+import { Element, Parent, Root } from 'hast';
+import remarkRehype from 'remark-rehype';
 
 import { Context } from '../../markdown-to-mdx/context';
+import { createRemarkProcessor } from '../../remark-processor';
 
 export function renderBibliography(ctx: Context) {
   return (tree: Root) => {
@@ -29,25 +31,13 @@ export function renderBibliography(ctx: Context) {
             type: 'element',
             tagName: 'ol',
             properties: {},
-            children: references.map((o) => ({
+            children: references.map(({ id, label }) => ({
               type: 'element',
               tagName: 'li',
               properties: {
-                id: `bib-${o.id}`,
+                id: `bib-${id}`,
               },
-              children: [
-                {
-                  type: 'element',
-                  tagName: 'p',
-                  properties: {},
-                  children: [
-                    {
-                      type: 'text',
-                      value: o.label,
-                    },
-                  ],
-                },
-              ],
+              children: converToHast(label),
             })),
           },
         ],
@@ -55,4 +45,12 @@ export function renderBibliography(ctx: Context) {
       tree.children.push(bibliography);
     }
   };
+}
+
+function converToHast(md: string) {
+  const processor = createRemarkProcessor([remarkRehype]);
+  const parsed = processor.parse(md);
+  // console.log(parsed);
+  const transformed = processor.runSync(parsed) as Parent;
+  return transformed.children as Element[];
 }

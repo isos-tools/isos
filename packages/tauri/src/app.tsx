@@ -35,8 +35,10 @@ export function App() {
       onComplete({ markdown, ctx }) {
         setMarkdown(markdown);
 
-        const filePaths = ctx.fileCache.getFilePaths();
-        setSubFilePaths(filePaths);
+        if (ctx.fileCache) {
+          const filePaths = ctx.fileCache.getFilePaths();
+          setSubFilePaths(filePaths);
+        }
         setError('');
       },
       onLoading: setLoading,

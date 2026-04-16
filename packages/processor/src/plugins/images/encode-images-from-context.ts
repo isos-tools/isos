@@ -11,7 +11,7 @@ export function encodeImagesFromContext(ctx: Context, options: Options) {
   return async (tree: Root) => {
     // console.log(ctx.fileCache.getStore());
     // console.log('inlineImages', options.noInlineImages);
-    if (options.noInlineImages) {
+    if (options.noInlineImages || !ctx.fileCache) {
       return;
     }
     const nodes: Image[] = [];

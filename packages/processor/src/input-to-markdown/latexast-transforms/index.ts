@@ -36,11 +36,15 @@ import { removeNewDocumentCommand } from './remove-new-document-command';
 export function createLatexastTransforms(ctx: Context): PluggableList {
   return [
     [documentClass, ctx],
+
+    // remove things before expansion
+    removeAtLetter,
+    removeNewDocumentCommand,
+
+    // expansion
     expandEnvironments,
     [expandMacros, ctx],
 
-    removeNewDocumentCommand,
-    removeAtLetter,
     // [inlineFilesFromContext, ctx],
     [setSideNotes, ctx],
     [commentEnv, ctx],

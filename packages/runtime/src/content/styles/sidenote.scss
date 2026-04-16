@@ -86,3 +86,13 @@
   //   }
   // }
 }
+
+aside.inline-footnotes {
+  padding: 0.5em 1em;
+  border-radius: 0.4em;
+  background: color-mix(in srgb, var(--textColor), transparent 95%);
+  border: 1px solid color-mix(in srgb, var(--textColor), transparent 85%);
+  sup {
+    padding-right: 0.2em;
+  }
+}

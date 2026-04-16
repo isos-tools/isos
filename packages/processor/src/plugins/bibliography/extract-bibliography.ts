@@ -6,7 +6,12 @@ import kebabCase from 'lodash.kebabcase';
 
 import { printRaw } from '@isos/unified-latex-util-print-raw';
 
-import { Context } from '../../input-to-markdown/context';
+import { inputToMarkdown } from '../../input-to-markdown';
+import {
+  Context,
+  createTestContext,
+} from '../../input-to-markdown/context';
+import { createDefaultOptions } from '../../input-to-markdown/options';
 
 export type Reference = {
   id: string;
@@ -14,7 +19,7 @@ export type Reference = {
 };
 
 export function extractBibliography(ctx: Context) {
-  return (tree: Root) => {
+  return async (tree: Root) => {
     const references: Reference[] = [];
 
     visit(tree, (node, info) => {
@@ -33,7 +38,8 @@ export function extractBibliography(ctx: Context) {
               let label = '';
               const lastArg = args[args.length - 1];
               if (lastArg) {
-                expandUnicodeLigatures(lastArg);
+                // expandUnicodeLigatures(lastArg);
+                // console.log(lastArg.content);
                 label = printRaw(lastArg).trim();
               }
 
@@ -52,8 +58,21 @@ export function extractBibliography(ctx: Context) {
       }
     });
 
+    for (const o of references) {
+      o.label = await convertToMarkdown(o.label);
+    }
+
     ctx.frontmatter.references = references;
 
     // console.log(ctx.frontmatter.references);
   };
+}
+
+async function convertToMarkdown(str: string) {
+  const ctx = createTestContext('latex', str);
+  const options = createDefaultOptions(ctx);
+  // console.log(ctx.content);
+  const markdown = await inputToMarkdown(ctx.content, options);
+  // console.log(markdown);
+  return markdown;
 }

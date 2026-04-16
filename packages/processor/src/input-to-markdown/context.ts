@@ -15,7 +15,7 @@ export type Context = {
   includePaths: string[];
   graphicsPath: string;
   imagePaths: string[];
-  fileCache: FileCache;
+  fileCache?: FileCache;
   type: FileType;
   content: string;
   hasMakeTitle: boolean;
@@ -32,7 +32,7 @@ export type Context = {
     author: Author[];
     abstract: string;
     theorems: RefObjectsYaml;
-    'reference-location': string;
+    'reference-location': 'below' | 'margin' | 'document';
     references: Reference[];
     preambleWarnings: Warning[];
   };
@@ -67,7 +67,7 @@ export async function createContext(
       author: [],
       abstract: '',
       theorems: {},
-      'reference-location': 'margin',
+      'reference-location': 'below',
       references: [],
       preambleWarnings: [],
     },
@@ -77,7 +77,7 @@ export async function createContext(
 export function createTestContext(
   type: FileType,
   content: string,
-  fileCache: FileCache,
+  fileCache?: FileCache,
 ): Context {
   return {
     srcFilePath: 'test',
@@ -95,7 +95,7 @@ export function createTestContext(
       author: [],
       abstract: '',
       theorems: {},
-      'reference-location': 'margin',
+      'reference-location': 'below',
       references: [],
       preambleWarnings: [],
     },

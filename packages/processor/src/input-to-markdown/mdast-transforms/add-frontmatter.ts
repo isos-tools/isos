@@ -55,7 +55,7 @@ export function addFrontmatter(ctx: Context) {
       toExport.tableOfContentsPrefix = tableOfContentsPrefix;
     }
 
-    if (ctx.frontmatter['reference-location'] !== 'margin') {
+    if (ctx.frontmatter['reference-location'] !== 'below') {
       toExport['reference-location'] =
         ctx.frontmatter['reference-location'];
     }

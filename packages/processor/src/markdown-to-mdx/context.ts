@@ -30,7 +30,7 @@ export type Frontmatter = {
   documentClass?: string;
   hasPart?: boolean;
   theorems: RefObjectsYaml;
-  'reference-location': string;
+  'reference-location': 'below' | 'margin' | 'document';
   references: Reference[];
   preambleWarnings: Warning[];
 };
@@ -63,7 +63,7 @@ export function createContext(): Context {
       abstract: '',
       theorems: {},
       refMap: {},
-      referenceLocation: 'margin',
+      referenceLocation: 'below',
       references: [],
       preambleWarnings: [],
     },

@@ -1508,7 +1508,7 @@ test('syntax bug', async () => {
   expect(html).toBe(expectedHtml);
 });
 
-test('syntax bug', async () => {
+test('syntax bug 2', async () => {
   const latex = String.raw`
     \documentclass{article}
     \usepackage{amsthm}
@@ -1558,7 +1558,7 @@ test('syntax bug', async () => {
   expect(html).toBe(expectedHtml);
 });
 
-test('syntax bug', async () => {
+test('syntax bug 3', async () => {
   const latex = String.raw`
     \documentclass{article}
     \usepackage{amsthm}
@@ -1611,7 +1611,7 @@ test('syntax bug', async () => {
   expect(html).toBe(expectedHtml);
 });
 
-test('syntax bug', async () => {
+test('syntax bug 4', async () => {
   const latex = String.raw`
     \documentclass{article}
     \usepackage{amsthm}
@@ -1680,7 +1680,7 @@ test('syntax bug', async () => {
   expect(html).toBe(expectedHtml);
 });
 
-test('syntax bug', async () => {
+test('syntax bug 5', async () => {
   const latex = String.raw`
     \documentclass{article}
     \usepackage{amsthm}
@@ -1755,7 +1755,7 @@ test('syntax bug', async () => {
   expect(html).toBe(expectedHtml);
 });
 
-test('syntax bug', async () => {
+test('syntax bug 6', async () => {
   const latex = String.raw`
     \documentclass{article}
     \usepackage{amsthm}
@@ -1819,7 +1819,7 @@ test('syntax bug', async () => {
   expect(html).toBe(expectedHtml);
 });
 
-test('syntax bug', async () => {
+test('syntax bug 7', async () => {
   const latex = String.raw`
     \documentclass{article}
     \usepackage{amsthm}

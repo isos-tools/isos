@@ -57,7 +57,7 @@ async function latexToMdAstProcessor(
   input: string,
   options: Options['latexToMdAst'],
 ) {
-  const parsed = unified()
+  const latexAst = unified()
     .use(
       // @ts-expect-error
       unifiedLatexFromString,
@@ -68,15 +68,15 @@ async function latexToMdAstProcessor(
   // console.dir(parsed, { depth: null });
   // console.log(JSON.stringify(parsed, null, 4));
 
-  const latexAst = await unified()
+  const latexAstTransformed = await unified()
     .use(options.latexAstTransforms)
-    .run(parsed as LatexAstRoot);
+    .run(latexAst as LatexAstRoot);
 
   // console.dir(latexAst, { depth: null });
 
   const htmlAst = await unified()
     .use(unifiedLatexToHast, options.latexAstToHtmlAstOptions())
-    .run(latexAst as LatexAstRoot);
+    .run(latexAstTransformed as LatexAstRoot);
 
   // console.dir(htmlAst, { depth: null });
 

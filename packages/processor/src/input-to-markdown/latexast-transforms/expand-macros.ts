@@ -3,6 +3,7 @@ import { attachMacroArgs } from '@unified-latex/unified-latex-util-arguments';
 import {
   createMacroExpander,
   listNewcommands,
+  newcommandMatcher,
 } from '@unified-latex/unified-latex-util-macros';
 import { match } from '@unified-latex/unified-latex-util-match';
 import { replaceNode } from '@unified-latex/unified-latex-util-replace';
@@ -91,11 +92,7 @@ function expandMacrosExcludingDefinitions(tree: Root, macros: MacroDef[]) {
     if (!match.anyMacro(node)) {
       return;
     }
-    if (
-      info.parents.some(
-        (o) => o.type === 'macro' && o.content === 'newcommand',
-      )
-    ) {
+    if (info.parents.some((o) => newcommandMatcher(o))) {
       return;
     }
     const macroName = node.content;
