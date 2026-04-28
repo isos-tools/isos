@@ -81,7 +81,7 @@ test('tables', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(expectedMarkdown);
+  const html = await testProcessor.md(markdown);
   // console.log(html);
   // return;
 

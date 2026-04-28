@@ -15,7 +15,7 @@ export function expandEnvironments() {
   return (tree: Ast.Root) => {
     const environments = listEnvironments(tree);
 
-    visit(tree, (node) => {
+    visit(tree, (node, info) => {
       if (node.type === 'environment' && environments[node.env]) {
         const { begin, end } = environments[node.env];
         const body = printRaw(node.content);
@@ -24,7 +24,17 @@ export function expandEnvironments() {
           .join(String.raw`\\` + '\n');
         // console.log(tex);
         const parsed = processor.parse(tex) as Ast.Root;
-        node.content = parsed.content;
+
+        // replace custom environment with results
+        const parent = info.parents[0];
+        const idx = info.index;
+        if (
+          parent &&
+          idx !== undefined &&
+          (parent.type === 'root' || parent.type === 'environment')
+        ) {
+          parent.content.splice(idx, 1, ...parsed.content);
+        }
       }
     });
 
@@ -53,8 +63,8 @@ function listEnvironments(tree: Ast.Ast) {
 }
 
 function getArgString(node: Ast.Macro, idx: number): string {
-  if (!node.args?.length) {
+  if (!node.args?.length || !node.args[idx]) {
     return '';
   }
-  return printRaw(node.args[idx]?.content).trim();
+  return printRaw(node.args[idx].content).trim();
 }

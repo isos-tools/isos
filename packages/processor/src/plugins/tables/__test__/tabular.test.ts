@@ -12,6 +12,7 @@ test('tabular', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
     | Beep | Pharetra | Commodo Pellentesque |
@@ -21,7 +22,7 @@ test('tabular', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(expectedMarkdown);
+  const html = await testProcessor.md(markdown);
   // console.log(html);
 
   const expected = unindentStringAndTrim(`
@@ -71,7 +72,7 @@ test('table with unsupported formatting', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(expectedMarkdown);
+  const html = await testProcessor.md(markdown);
   // console.log(html);
 
   const expected = unindentStringAndTrim(`
@@ -120,7 +121,7 @@ test('tabularx', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(expectedMarkdown);
+  const html = await testProcessor.md(markdown);
   // console.log(html);
 
   const expected = unindentStringAndTrim(`

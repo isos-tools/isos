@@ -81,7 +81,7 @@ test('custom theorem', async () => {
 
   // expect(quartoHtml).toBe(expectedQuartoHtml);
 
-  const html = await testProcessor.md(expectedMarkdown);
+  const html = await testProcessor.md(markdown);
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`

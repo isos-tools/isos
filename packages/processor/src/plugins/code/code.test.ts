@@ -32,6 +32,10 @@ test('verbatim to code', async () => {
       yo
     `),
   );
+
+  // console.log(markdown);
+  // return;
+
   expect(markdown).toBe(
     unindentStringAndTrim(`
     hi
@@ -44,6 +48,10 @@ test('verbatim to code', async () => {
   `),
   );
   const html = await testProcessor.md(markdown);
+
+  // console.log(markdown);
+  // return;
+
   expect(html).toBe(
     unindentStringAndTrim(`
       <p>hi</p>

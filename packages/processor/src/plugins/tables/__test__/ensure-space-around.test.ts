@@ -37,12 +37,10 @@ test('tables', async () => {
     Hi.
 
     ::: {.fig}
-
     | Date gilt matures | Coupon |       Price      |
     | :---------------: | :----: | :--------------: |
     | 7th December 2028 |  $6\%$ | $\pounds 120.66$ |
     |   7th June 2021   |  $8\%$ | $\pounds 134.70$ |
-
     :::
 
     Hello.
@@ -51,7 +49,7 @@ test('tables', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(expectedMarkdown);
+  const html = await testProcessor.md(markdown);
   // console.log(html);
   // return;
 
@@ -112,6 +110,7 @@ test('table syntax bug', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
     ::: {#thm-1}
@@ -130,7 +129,7 @@ test('table syntax bug', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(expectedMarkdown);
+  const html = await testProcessor.md(markdown);
   // console.log(html);
 
   const expected = unindentStringAndTrim(`

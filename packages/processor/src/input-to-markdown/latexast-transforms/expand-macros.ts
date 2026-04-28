@@ -76,7 +76,7 @@ function expandMacroDefinitions(macros: MacroDef[], ctx: Context) {
   if (brokenEnvs > 0) {
     ctx.frontmatter.preambleWarnings.push({
       message: '\\newcommands with broken environments are not supported',
-      info: `Remove (${brokenEnvs}) \\newcommands which \\begin an environment but don't end it (or vice versa).  A supported alternative for this purpose is \\newenvironment.`,
+      info: `Remove (${brokenEnvs}) \\newcommands which \\begin an environment but don't end it (or vice versa).  A supported alternative is \\newenvironment.`,
     });
   }
 

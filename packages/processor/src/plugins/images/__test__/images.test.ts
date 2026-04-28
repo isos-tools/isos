@@ -255,7 +255,7 @@ test('image with maths in the caption and label', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(expectedMarkdown);
+  const html = await testProcessor.md(markdown);
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
@@ -295,10 +295,10 @@ test('figure with image and text', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
     ::: {#fig-f-x-y}
-
     ![](image.png)
 
     [Interactive plot $\rightarrow$](https://moodle.gla.ac.uk)
@@ -354,10 +354,10 @@ test('figure with two images with alt text and caption', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
     ::: {.fig}
-
     ![](image.png){alt="My alt text"}
 
     ![](image2.png){alt="My alt text2"}
@@ -367,7 +367,7 @@ test('figure with two images with alt text and caption', async () => {
   `);
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(expectedMarkdown);
+  const html = await testProcessor.md(markdown);
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
@@ -399,10 +399,10 @@ test('figure with two images with alt text, caption and label', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
     ::: {#fig-logo}
-
     ![](image.png){alt="My alt text"}
 
     ![](image2.png){alt="My alt text2"}
@@ -496,7 +496,6 @@ test('center inside theorem causes error', async () => {
     as shown in @fig-sphere.
 
     ![](fig/ex1-1.png)
-
     :::
   `);
   expect(markdown).toBe(expectedMarkdown);
@@ -540,7 +539,6 @@ test('figure inside theorem', async () => {
     as shown in @fig-sphere.
 
     ![](fig/ex1-1.png){#fig-sphere}
-
     :::
   `);
   expect(markdown).toBe(expectedMarkdown);
@@ -633,16 +631,15 @@ test('images with no label or caption', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
     ::: {.fig}
-
     ![](fig/ex1-2a.png)
 
     ![](fig/ex1-2b.png)
 
     ![](fig/ex1-2c.png)
-
     :::
   `);
 
@@ -684,13 +681,11 @@ test('images with includegraphics*', async () => {
 
   const expectedMarkdown = unindentStringAndTrim(`
     ::: {.fig}
-
     ![](fig/ex1-2a.png){alt="Alpha"}
 
     ![](fig/ex1-2b.png){alt="Bravo"}
 
     ![](fig/ex1-2c.png){alt="Charlie"}
-
     :::
   `);
 
@@ -793,13 +788,11 @@ test('figure with three subfigures with captions', async () => {
 
   const expectedMarkdown = unindentStringAndTrim(`
     ::: {.fig}
-
     ![injective\\n’don’t lose information’](figures/fig1){.unnumbered width="30%"}
 
     ![surjective\\n’hit everything’](figures/fig2){.unnumbered width="30%"}
 
     ![bijective\\n’the same’](figures/fig3){.unnumbered width="30%"}
-
     :::
   `);
   expect(markdown).toBe(expectedMarkdown);

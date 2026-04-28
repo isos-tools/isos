@@ -6,27 +6,27 @@ import { PluggableList } from 'unified';
 import { unescapeCitation } from '../plugins/bibliography/formatted-citation';
 import { mintedToPre } from '../plugins/code/minted-to-pre';
 import { descriptionToDl } from '../plugins/definition-list';
-import { footnoteMarkToRef } from '../plugins/footnotes/footnote-mark-text-to-ref-def';
-import { footnoteToRefDef } from '../plugins/footnotes/footnote-to-ref-def';
-import { spaceNestedContainers } from '../plugins/framed/space-nested-containers';
-import { createImage } from '../plugins/images/create-image';
 import {
   altToCaptionAttribute,
   captionAttributeToAlt,
 } from '../plugins/images/formatted-caption';
-import { imageToPandocFigure } from '../plugins/images/image-to-pandoc-figure';
-import { subfigureWidth } from '../plugins/images/subfigure-width';
+import { createImage } from '../plugins/images/input-to-md/create-image';
+import { imageToPandocFigure } from '../plugins/images/input-to-md/image-to-pandoc-figure';
+import { subfigureWidth } from '../plugins/images/input-to-md/subfigure-width';
 import {
   mathsMetaToPandocAttributes,
   pandocAttributesToMathsMeta,
 } from '../plugins/maths/formatted-maths';
-import { enumerateToOl } from '../plugins/ordered-list/enumberate-to-ol';
+import { noteContentBelowMark } from '../plugins/notes/input-to-md/md-ast';
+import { enumerateToOl } from '../plugins/ordered-list/enumerate-to-ol';
 import {
   codeToTableCaption,
   tableCaptionToCode,
 } from '../plugins/tables/formatted-table-caption';
-import { createExSolSeparator } from '../plugins/theorems-proofs/create-exsol-separator';
-import { createTheoremHandlers } from '../plugins/theorems-proofs/latex-ast-theorem';
+import {
+  createExSolSeparator,
+  createTheoremHandlers,
+} from '../plugins/theorems-proofs/input-to-md/latex-to-html';
 import { Context } from './context';
 import { createHastTransforms } from './hast-transforms';
 import { createLatexastTransforms } from './latexast-transforms';
@@ -57,7 +57,7 @@ export type Options = {
   markdownStringTransforms: Array<(markdown: string) => string>;
 };
 
-export const latexAstFromStringOptions = {
+export const latexAstFromStringOptions: LatexParseOptions = {
   macros: {
     // signatures are defined in section 3 of:
     // https://ctan.math.washington.edu/tex-archive/macros/latex/contrib/l3packages/xparse.pdf
@@ -88,7 +88,11 @@ export const latexAstFromStringOptions = {
     sidenote: { signature: 'o o m' },
     marginnote: { signature: 'o o m' },
     framedsidenote: { signature: 'o o m' },
-    setsidenotes: { signature: 'm' },
+    setsidenotes: { signature: 'm', renderInfo: { pgfkeysArgs: true } },
+    postnote: { signature: 'o m' },
+    printpostnotes: { signature: '' },
+    sepfootnote: { signature: 'm' },
+    sepfootnotecontent: { signature: 'm m' },
 
     setcounter: { signature: 'm m' },
 
@@ -192,8 +196,6 @@ function createLatexMdAstTransforms(ctx: Context): PluggableList {
   return [
     formatBreak,
     [imageToPandocFigure, ctx],
-    footnoteMarkToRef,
-    footnoteToRefDef,
-    spaceNestedContainers,
+    [noteContentBelowMark, ctx],
   ];
 }

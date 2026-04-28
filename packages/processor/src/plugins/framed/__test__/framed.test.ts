@@ -62,6 +62,7 @@ test('syntax bug', async () => {
     ::: {#exr-1}
     Verify and explain
     :::
+
     These results are summarised
     ::::
   `);

@@ -34,21 +34,17 @@ test('appendix', async () => {
     ## The 1st section
 
     :::appendices
-
     ## The 1st appendix
 
     ## The 2nd appendix
 
     ### The subsection
-
     :::
 
     :::appendices
-
     ## The 3rd appendix
 
     ## The 4th appendix
-
     :::
 
     ## The 2nd section
@@ -112,21 +108,17 @@ test('appendix with book documentClass', async () => {
     ## The 1st chapter
 
     :::appendices
-
     ## The 1st appendix
 
     ## The 2nd appendix
 
     ### The section
-
     :::
 
     :::appendices
-
     ## The 3rd appendix
 
     ## The 4th appendix
-
     :::
 
     ## The 2nd chapter
@@ -190,6 +182,7 @@ test('appendix with labels and references', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return
 
   const expectedMarkdown = unindentStringAndTrim(`
     ## The 1st section {#alpha}
@@ -197,15 +190,12 @@ test('appendix with labels and references', async () => {
     @alpha, @bravo, @charlie, @delta and @echo.
 
     :::appendices
-
     ## The 1st appendix {#bravo}
 
     ## The 2nd appendix
-
     :::
 
     :::appendices
-
     ## The 3rd appendix
 
     ## The 4th appendix {#charlie}
@@ -215,11 +205,12 @@ test('appendix with labels and references', async () => {
     :::
 
     ## The 2nd section {#echo}
+
   `);
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(expectedMarkdown);
+  const html = await testProcessor.md(markdown);
   // console.log(html);
   // return;
 

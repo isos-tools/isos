@@ -1,5 +1,5 @@
 import { Root } from '@unified-latex/unified-latex-types';
-import { expandUnicodeLigatures } from '@unified-latex/unified-latex-util-ligatures';
+// import { expandUnicodeLigatures } from '@unified-latex/unified-latex-util-ligatures';
 import { toString } from '@unified-latex/unified-latex-util-to-string';
 import { visit } from '@unified-latex/unified-latex-util-visit';
 import kebabCase from 'lodash.kebabcase';

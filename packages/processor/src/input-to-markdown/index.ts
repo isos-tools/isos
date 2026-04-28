@@ -65,26 +65,26 @@ async function latexToMdAstProcessor(
     )
     .parse(input);
 
-  // console.dir(parsed, { depth: null });
-  // console.log(JSON.stringify(parsed, null, 4));
+  // console.dir(latexAst, { depth: null });
+  // console.log(JSON.stringify(latexAst, null, 4));
 
   const latexAstTransformed = await unified()
     .use(options.latexAstTransforms)
     .run(latexAst as LatexAstRoot);
 
-  // console.dir(latexAst, { depth: null });
+  // console.dir(latexAstTransformed, { depth: null });
 
   const htmlAst = await unified()
     .use(unifiedLatexToHast, options.latexAstToHtmlAstOptions())
     .run(latexAstTransformed as LatexAstRoot);
 
-  // console.dir(htmlAst, { depth: null });
+  // console.dir(htmlAst, { depth: 10 });
 
   const htmlAstTransformed = await unified()
     .use(options.htmlAstTransforms)
     .run(htmlAst as HastRoot);
 
-  // console.dir(htmlAstTransformed, { depth: null });
+  // console.dir(htmlAstTransformed, { depth: 6 });
 
   // const html = unified()
   //   .use(rehypeStringify)

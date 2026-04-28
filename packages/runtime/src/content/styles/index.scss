@@ -603,6 +603,44 @@ article {
     }
   }
 
+  aside.notes, aside.footnotes {
+    dl {
+      margin: 0;
+      dt {
+        float: left;
+        width: 1em;
+        text-align: right;
+        font-weight: normal;
+        margin-right: 0.2em;
+        margin-left: 0.5em;
+      }
+
+      dd {
+        display: block;
+        margin-left: 0.5em;
+        &::after {
+          margin-bottom: 0.2em;
+        }
+        p {
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  aside.footnotes {
+    font-size: 0.9rem;
+
+    &::before {
+      content: '';
+      display: block;
+      width: 50%;
+      height: 0;
+      border-top: 1px solid var(--textColor);
+      padding-top: 0.5em;
+    }
+  }
+
   // .boxout {
   //   &.proposition,
   //   &.lemma {

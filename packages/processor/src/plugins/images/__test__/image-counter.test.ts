@@ -184,7 +184,7 @@ test('image with counterWithin', async () => {
   expect(markdown).toBe(expectedMarkdown);
 
   // TODO: will prioritise later
-  // const html = await testProcessor.md(expectedMarkdown);
+  // const html = await testProcessor.md(markdown);
   // console.log(html);
 
   // const expectedHtml = unindentStringAndTrim(`

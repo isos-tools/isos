@@ -8,30 +8,23 @@ import {
   fancyBoxedToSubSection,
   fancySectionToSection,
 } from '../../plugins/fancy/fancy-section-to-section';
-import { ignoreOptionalSidenoteArgs } from '../../plugins/footnotes/ignore-optional-args';
-import { setSideNotes } from '../../plugins/footnotes/latexast-set-sidenotes';
+import { insertParbreaksAroundImage } from '../../plugins/images/input-to-md/block-elements';
 import { warnOnHardcodedListLabels } from '../../plugins/lists/warn-hardcoded-list-labels';
-// import { figureToImage } from '../../plugins/images/figure-to-image';
-// import { inlineFilesFromContext } from '../../plugins/includes/inline-files-from-context';
 import { equationLabelToId } from '../../plugins/maths/equation-label-to-id';
+import { extractNotes } from '../../plugins/notes/input-to-md/latex-ast';
 import { defWarn } from '../../plugins/preamble-warnings/def-warn';
-// import { extractFancyTitle } from './extract-fancytitle';
-import { extractTheoremDefinitions } from '../../plugins/refs-and-counts/extract-theorem-definitions';
 import { extractTocContents } from '../../plugins/table-of-contents/extract-toc-contents';
 import { tableCaptionToData } from '../../plugins/tables/table-caption-to-data';
+import { theorems } from '../../plugins/theorems-proofs/input-to-md/latex-ast';
 import { Context } from '../context';
-import { insertParbreaksAroundBlockElements } from './block-elements';
 import { convertEmToEmph } from './convert-em-to-emph';
 import { convertHspace } from './convert-hspace';
 import { documentClass } from './document-class';
-// import { expandDefs } from './expand-defs';
 import { expandEnvironments } from './expand-environments';
 import { expandMacros } from './expand-macros';
 import { expandMathOperatorPlugin } from './expand-math-ops';
 import { removeAtLetter } from './remove-atletter';
 import { removeNewDocumentCommand } from './remove-new-document-command';
-
-// import { replaceTildeWithSpace } from './replace-tilde-with-space';
 
 export function createLatexastTransforms(ctx: Context): PluggableList {
   return [
@@ -44,11 +37,11 @@ export function createLatexastTransforms(ctx: Context): PluggableList {
     // expansion
     expandEnvironments,
     [expandMacros, ctx],
+    expandMathOperatorPlugin,
 
-    // [inlineFilesFromContext, ctx],
-    [setSideNotes, ctx],
+    [extractNotes, ctx],
     [commentEnv, ctx],
-    [extractTheoremDefinitions, ctx],
+    [theorems, ctx],
     [extractBibliography, ctx],
     [extractTopMatter, ctx],
     [extractTocContents, ctx],
@@ -56,15 +49,9 @@ export function createLatexastTransforms(ctx: Context): PluggableList {
     trimVerbatim,
     convertHspace,
     convertEmToEmph,
-    // replaceTildeWithSpace,
-    // figureToImage,
-    // expandDefs,
     [defWarn, ctx],
-    expandMathOperatorPlugin,
     equationLabelToId,
-    ignoreOptionalSidenoteArgs,
-    // [extractFancyTitle, ctx],
-    insertParbreaksAroundBlockElements,
+    insertParbreaksAroundImage,
     tableCaptionToData,
     fancySectionToSection,
     fancyBoxedToSubSection,

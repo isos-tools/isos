@@ -67,7 +67,7 @@ test('enumerate to ol with setcounter', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(expectedMarkdown);
+  const html = await testProcessor.md(markdown);
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
@@ -117,7 +117,7 @@ test.skip('enumerate to ol with styling', async () => {
 
   // // expect(markdown).toBe(expectedMarkdown);
 
-  // const html = await testProcessor.md(expectedMarkdown);
+  // const html = await testProcessor.md(markdown);
   // console.log(html);
   // return;
 
@@ -183,7 +183,7 @@ test.skip('enumerate to ol with labels', async () => {
 
   // // expect(markdown).toBe(expectedMarkdown);
 
-  // const html = await testProcessor.md(expectedMarkdown);
+  // const html = await testProcessor.md(markdown);
   // console.log(html);
   // return;
 

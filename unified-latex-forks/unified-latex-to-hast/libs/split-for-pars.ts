@@ -1,6 +1,6 @@
-import * as Ast from "@unified-latex/unified-latex-types";
-import { match } from "@unified-latex/unified-latex-util-match";
-import { trim } from "@unified-latex/unified-latex-util-trim";
+import * as Ast from '@unified-latex/unified-latex-types';
+import { match } from '@unified-latex/unified-latex-util-match';
+import { trim } from '@unified-latex/unified-latex-util-trim';
 
 /**
  * Takes an array of nodes and splits it into chunks that should be wrapped
@@ -9,59 +9,69 @@ import { trim } from "@unified-latex/unified-latex-util-trim";
  *
  */
 export function splitForPars(
-    nodes: Ast.Node[],
-    options: {
-        macrosThatBreakPars: string[];
-        environmentsThatDontBreakPars: string[];
-    }
+  nodes: Ast.Node[],
+  options: {
+    macrosThatBreakPars: string[];
+    environmentsThatDontBreakPars: string[];
+  },
 ): { content: Ast.Node[]; wrapInPar: boolean }[] {
-    const ret: { content: Ast.Node[]; wrapInPar: boolean }[] = [];
-    let currBody: Ast.Node[] = [];
-    trim(nodes);
+  const ret: { content: Ast.Node[]; wrapInPar: boolean }[] = [];
+  let currBody: Ast.Node[] = [];
+  trim(nodes);
 
-    const isParBreakingMacro = match.createMacroMatcher(
-        options.macrosThatBreakPars
-    );
-    const isEnvThatShouldNotBreakPar = match.createEnvironmentMatcher(
-        options.environmentsThatDontBreakPars
-    );
+  const isParBreakingMacro = match.createMacroMatcher(
+    options.macrosThatBreakPars,
+  );
+  const isEnvThatShouldNotBreakPar = match.createEnvironmentMatcher(
+    options.environmentsThatDontBreakPars,
+  );
 
-    /**
-     * Push and clear the contents of `currBody` to the return array.
-     * If there are any contents, it should be wrapped in an array.
-     */
-    function pushBody() {
-        if (currBody.length > 0) {
-            trim(currBody);
-            ret.push({ content: currBody, wrapInPar: true });
-            currBody = [];
-        }
+  /**
+   * Push and clear the contents of `currBody` to the return array.
+   * If there are any contents, it should be wrapped in an array.
+   */
+  function pushBody() {
+    if (currBody.length > 0) {
+      trim(currBody);
+      ret.push({ content: currBody, wrapInPar: true });
+      currBody = [];
+    }
+  }
+
+  for (const node of nodes) {
+    if (isParBreakingMacro(node)) {
+      pushBody();
+      ret.push({ content: [node], wrapInPar: false });
+      continue;
+    }
+    if (match.anyEnvironment(node) && !isEnvThatShouldNotBreakPar(node)) {
+      // if (node.env !== 'theorem') {
+      // console.log(node.env);
+      pushBody();
+      ret.push({ content: [node], wrapInPar: false });
+      continue;
+      // }
+      // console.log(node.env);
+      // pushBody();
+      // ret.push({ content: [node], wrapInPar: false });
+      // continue;
+    }
+    // Display-math should always break pars
+    if (['displaymath', 'verbatim'].includes(node.type)) {
+      // console.log('hey!');
+      pushBody();
+      ret.push({ content: [node], wrapInPar: false });
+      continue;
+    }
+    if (match.parbreak(node) || match.macro(node, 'par')) {
+      pushBody();
+      continue;
     }
 
-    for (const node of nodes) {
-        if (isParBreakingMacro(node)) {
-            pushBody();
-            ret.push({ content: [node], wrapInPar: false });
-            continue;
-        }
-        if (match.anyEnvironment(node) && !isEnvThatShouldNotBreakPar(node)) {
-            pushBody();
-            ret.push({ content: [node], wrapInPar: false });
-            continue;
-        }
-        // Display-math should always break pars
-        if (node.type === "displaymath") {
-            pushBody();
-            ret.push({ content: [node], wrapInPar: false });
-            continue;
-        }
-        if (match.parbreak(node) || match.macro(node, "par")) {
-            pushBody();
-            continue;
-        }
-        currBody.push(node);
-    }
-    pushBody();
+    currBody.push(node);
+  }
 
-    return ret;
+  pushBody();
+  // console.dir(ret, { depth: 3 });
+  return ret;
 }

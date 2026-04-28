@@ -1,5 +1,6 @@
 import { FileCache } from '../embed-includes/file-cache';
 import { Reference } from '../plugins/bibliography/extract-bibliography';
+import { NoteMap } from '../plugins/notes/input-to-md/latex-ast';
 import { Warning } from '../plugins/preamble-warnings/def-warn';
 import { RefObjectsYaml } from '../plugins/refs-and-counts/default-objects';
 import { FileType, parseFilePath } from './utils/parse-file-path';
@@ -23,6 +24,7 @@ export type Context = {
     string,
     'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
   >;
+  notes: NoteMap;
   frontmatter: {
     documentClass?: string;
     title: string;
@@ -61,6 +63,7 @@ export async function createContext(
     content: '',
     hasMakeTitle: false,
     sectionToHeading: {},
+    notes: {},
     frontmatter: {
       title: '',
       date: '',
@@ -89,6 +92,7 @@ export function createTestContext(
     content,
     hasMakeTitle: false,
     sectionToHeading: {},
+    notes: {},
     frontmatter: {
       title: '',
       date: '',

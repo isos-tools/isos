@@ -201,18 +201,18 @@ test('theorem with id', async () => {
 
   // expect(quartoHtml).toBe(expectedQuartoHtml);
 
-  // const html = await testProcessor.md(markdown);
+  const html = await testProcessor.md(markdown);
   // // console.log(html);
 
-  // const expectedHtml = unindentStringAndTrim(`
-  //   <div class="definition theorem" id="thm-line">
-  //     <p><span class="title"><strong>Theorem 1 (Ho ha).</strong></span> Cras mattis.</p>
-  //     <p>Cras justo odio.</p>
-  //   </div>
-  //   <p>See <a href="#thm-line" class="ref">Theorem 1</a>.</p>
-  // `);
+  const expectedHtml = unindentStringAndTrim(`
+    <div class="definition theorem" id="thm-line">
+      <p><span class="title"><strong>Theorem 1 (Ho ha).</strong></span> Cras mattis.</p>
+      <p>Cras justo odio.</p>
+    </div>
+    <p>See <a href="#thm-line" class="ref">Theorem 1</a>.</p>
+  `);
 
-  // expect(html).toBe(expectedHtml);
+  expect(html).toBe(expectedHtml);
 });
 
 test('theorems with section counter', async () => {
@@ -1352,6 +1352,7 @@ test('nested theorems', async () => {
   `;
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
     :::: {#prp-1}
@@ -1392,6 +1393,7 @@ test('qed placement', async () => {
   `;
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
     ::: {.proof}
@@ -1404,7 +1406,6 @@ test('qed placement', async () => {
        $$
        S\qedhere
        $$
-
     :::
   `);
 
@@ -1435,18 +1436,20 @@ test('qed placement', async () => {
 test('qed placement 2', async () => {
   const latex = String.raw`
     \begin{proof}
-    Observe that \sidenote{If we substitute}
+    Observe that\sidenote{If we substitute}.
     \end{proof}
   `;
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
-    ::: {.proof}
-    Observe that [^1]
+    :::: {.proof}
+    Observe that:sidenote[sn-1].
 
-    [^1]: If we substitute
+    :::sidenotecontent[sn-1]
+    If we substitute
     :::
+    ::::
   `);
 
   expect(markdown).toBe(expectedMarkdown);
@@ -1456,7 +1459,7 @@ test('qed placement 2', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <div class="remark proof">
-      <p><span class="title"><em>Proof</em>. </span>Observe that <span class="sidenote"><sup class="sidenote-count"><a id="fn-1" href="#fn-ref-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><span><sup class="sidenote-count"><a id="fn-ref-1" href="#fn-1">1</a></sup>If we substitute</span></small><span class="sidenote-label">)</span></span><span class="qed"> q.e.d.</span></p>
+      <p><span class="title"><em>Proof</em>. </span>Observe that<span class="sidenote"><sup><a id="sn-ref-sn-1" href="#sn-def-sn-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><span><sup><a id="sn-def-sn-1" href="#sn-ref-sn-1">1</a></sup>If we substitute</span></small><span class="sidenote-label">)</span></span>.<span class="qed"> q.e.d.</span></p>
     </div>
   `);
 
@@ -1484,11 +1487,9 @@ test('syntax bug', async () => {
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
     ::: {#thm-1}
-
     $$
     \mathbf{a}
     $$
-
     :::
   `);
 
@@ -1794,7 +1795,6 @@ test('syntax bug 6', async () => {
 
     a)
     :   $H$ is normal.
-
     :::
   `);
 
@@ -1848,13 +1848,10 @@ test('syntax bug 7', async () => {
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
     ::: {#thm-1}
-
     1. there.
-
     :::
 
     ::: {.proof}
-
     1. The
 
     We claim

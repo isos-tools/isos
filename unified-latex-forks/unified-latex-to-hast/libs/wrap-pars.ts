@@ -33,6 +33,7 @@ export function wrapPars(
       'medskip',
       'bigskip',
       'hfill',
+      'tcblower',
     ],
     environmentsThatDontBreakPars = [],
   } = options || {};

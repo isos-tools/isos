@@ -86,7 +86,6 @@ test('maths equations', async () => {
   `;
 
   const markdown = await testProcessor.latex(latex);
-  // console.log(markdown);
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
     ## Hello

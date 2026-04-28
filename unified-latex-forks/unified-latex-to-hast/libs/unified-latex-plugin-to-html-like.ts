@@ -6,7 +6,7 @@ import {
   replaceNode,
   unifiedLatexReplaceStreamingCommands,
 } from '@unified-latex/unified-latex-util-replace';
-import { EXIT, visit } from '@unified-latex/unified-latex-util-visit';
+// import { EXIT, visit } from '@unified-latex/unified-latex-util-visit';
 import * as Hast from 'hast';
 import { Plugin, unified } from 'unified';
 
@@ -84,9 +84,9 @@ export const unifiedLatexToHtmlLike: Plugin<
 
     // Must be done *after* streaming commands are replaced.
     // We only wrap PARs if we *need* to. That is, if the content contains multiple paragraphs
-    if (shouldBeWrappedInPars(tree)) {
-      processor = processor.use(unifiedLatexWrapPars);
-    }
+    // if (shouldBeWrappedInPars(tree)) {
+    processor = processor.use(unifiedLatexWrapPars);
+    // }
     tree = processor.runSync(tree);
 
     // Replace text-mode environments and then macros. Environments *must* be processed first, since
@@ -133,20 +133,20 @@ export const unifiedLatexToHtmlLike: Plugin<
 /**
  * Does the content contain multiple paragraphs? If so, it should be wrapped in `p` tags.
  */
-function shouldBeWrappedInPars(tree: Ast.Root): boolean {
-  let content = tree.content;
-  visit(
-    tree,
-    (env) => {
-      if (match.anyEnvironment(env)) {
-        content = env.content;
-        return EXIT;
-      }
-    },
-    { test: (node) => match.environment(node, 'document') },
-  );
+// function shouldBeWrappedInPars(tree: Ast.Root): boolean {
+//   let content = tree.content;
+//   visit(
+//     tree,
+//     (env) => {
+//       if (match.anyEnvironment(env)) {
+//         content = env.content;
+//         return EXIT;
+//       }
+//     },
+//     { test: (node) => match.environment(node, 'document') },
+//   );
 
-  return content.some(
-    (node) => match.parbreak(node) || match.macro(node, 'par'),
-  );
-}
+//   return content.some(
+//     (node) => match.parbreak(node) || match.macro(node, 'par'),
+//   );
+// }

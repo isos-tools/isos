@@ -108,7 +108,6 @@ test('mixed counts', async () => {
     See @fig-ex-1.
 
     ![Example 1](ex1.png){#fig-ex-1}
-
     :::
 
     ### Charlie
@@ -127,7 +126,6 @@ test('mixed counts', async () => {
     See @fig-ex-3.
 
     ![Example 3](ex3.png){#fig-ex-3}
-
     :::
 
     | Col1 | Col2 | Col3 |
@@ -142,7 +140,6 @@ test('mixed counts', async () => {
     See @fig-ex-4.
 
     ![Example 4](fig/ex4.png){#fig-ex-4}
-
     :::
 
     | Col1 | Col2 | Col3 |

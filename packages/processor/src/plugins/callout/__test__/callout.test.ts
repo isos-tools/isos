@@ -12,9 +12,13 @@ test('callout', async () => {
     \begin{document}
 
     \notebox{I'm a note \emph{callout} box}
+
     \tipbox{I'm a tip \emph{callout} box}
+
     \warningbox{I'm a warning \emph{callout} box}
+
     \cautionbox{I'm a caution \emph{callout} box}
+
     \importantbox{I'm an important \emph{callout} box}
 
     \end{document}
@@ -22,6 +26,7 @@ test('callout', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
     ::: {.callout-note}
@@ -161,9 +166,13 @@ test('callout with icons', async () => {
     \begin{document}
 
     \notebox{I'm a note \emph{callout} box}
+
     \tipbox{I'm a tip \emph{callout} box}
+
     \warningbox{I'm a warning \emph{callout} box}
+
     \cautionbox{I'm a caution \emph{callout} box}
+
     \importantbox{I'm an important \emph{callout} box}
 
     \end{document}

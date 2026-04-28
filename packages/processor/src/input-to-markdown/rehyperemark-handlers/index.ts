@@ -1,6 +1,6 @@
-import { Element, Parents } from 'hast';
+import { Element } from 'hast';
 import { Handle, State } from 'hast-util-to-mdast';
-import { Image, Paragraph, PhrasingContent } from 'mdast';
+import { Image } from 'mdast';
 
 import { createCitation } from '../../plugins/bibliography/citation';
 import { displayQuoteToBlockQuote } from '../../plugins/blockquote';
@@ -9,28 +9,25 @@ import { createCallout } from '../../plugins/callout/rehype-remark-callout';
 import { rehypeRemarkPre } from '../../plugins/code/rehype-remark-pre';
 import { createMakeTitle } from '../../plugins/cover/create-maketitle';
 import { defListHastToMdast } from '../../plugins/definition-list';
-import {
-  createFootnote,
-  createFootnoteMark,
-  createFootnoteText,
-} from '../../plugins/footnotes/footnote';
-import { createFramed } from '../../plugins/framed/framed';
+import { createFramed } from '../../plugins/framed/input-to-md/html-to-md';
 import { createAppendices } from '../../plugins/headings/rehype-appendices';
 import { createSetCounter } from '../../plugins/headings/set-counter-to-directive';
-import { createFigure } from '../../plugins/images/create-figure';
+import { createFigure } from '../../plugins/images/input-to-md/create-figure';
 import { createInlineMaths, createMaths } from '../../plugins/maths/maths';
+import {
+  createEndnote,
+  createFootnote,
+  createPrintEndnotes,
+  createSidenote,
+} from '../../plugins/notes/input-to-md/html-to-md';
 import { createReference } from '../../plugins/refs-and-counts/reference';
 import { rehypeRemarkDel } from '../../plugins/strikethrough/rehypre-remark-del';
 import { superSubHandlers } from '../../plugins/super-sub';
-import { createTheorem } from '../../plugins/theorems-proofs/rehype-remark-theorem';
+import { createTheorem } from '../../plugins/theorems-proofs/input-to-md/html-to-md';
 import { createWarn, createWarnNode } from '../../plugins/warn/mdast-warn';
 import { Context } from '../context';
-// import { createFancySection, createFancyTitle } from './fancy';
 import { createLabel } from './label';
-import { createSideNote } from './sidenote';
 import { createTitle } from './title';
-
-// import { createUnderline } from './underline';
 
 export function createRehypeRemarkHandlers(
   ctx: Context,
@@ -70,12 +67,7 @@ export function createRehypeRemarkHandlers(
   };
 }
 
-function spanHandler(
-  ctx: Context,
-  state: State,
-  node: Element,
-  parents?: Parents,
-) {
+function spanHandler(ctx: Context, state: State, node: Element) {
   const { className } = node.properties;
 
   if (Array.isArray(className)) {
@@ -118,30 +110,26 @@ function spanHandler(
     }
 
     // footnotes/sidenotes
-    if (
-      className.includes('macro-sidenote') ||
-      className.includes('macro-framedsidenote') ||
-      className.includes('macro-marginnote')
-    ) {
-      const result = createSideNote(state, node);
-      state.patch(node, result);
-      return result;
-    }
-
     if (className.includes('macro-footnote')) {
       const result = createFootnote(state, node);
       state.patch(node, result);
       return result;
     }
 
-    if (className.includes('macro-footnotemark')) {
-      const result = createFootnoteMark(state, node);
+    if (className.includes('macro-sidenote')) {
+      const result = createSidenote(state, node);
       state.patch(node, result);
       return result;
     }
 
-    if (className.includes('macro-footnotetext')) {
-      const result = createFootnoteText(state, node, parents);
+    if (className.includes('macro-endnote')) {
+      const result = createEndnote(state, node);
+      state.patch(node, result);
+      return result;
+    }
+
+    if (className.includes('macro-printendnotes')) {
+      const result = createPrintEndnotes();
       state.patch(node, result);
       return result;
     }
@@ -229,6 +217,7 @@ function spanHandler(
     }
   }
 
+  // silently pass through
   return state.all(node);
 }
 
@@ -306,18 +295,8 @@ function divHandler(ctx: Context, state: State, node: Element) {
     }
   }
 
-  const children = state.all(node);
-
-  if (node.children?.length > 0) {
-    const result: Paragraph = {
-      type: 'paragraph',
-      children: children as PhrasingContent[],
-    };
-    state.patch(node, result);
-    return result;
-  }
-
-  return children;
+  // silently pass through
+  return state.all(node);
 }
 
 function figureHandler(state: State, node: Element) {
@@ -329,7 +308,7 @@ function figureHandler(state: State, node: Element) {
       const environmentName = String(classes[0]);
 
       if (environmentName === 'figure') {
-        // console.dir(node, { depth: null })
+        // console.dir(node, { depth: null });
         const result = createFigure(state, node);
         state.patch(node, result);
         return result;

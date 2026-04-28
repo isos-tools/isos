@@ -8,7 +8,7 @@ import { CalloutIcon } from '../../plugins/callout/mdx-callout-icon';
 // import { Authors } from '../../plugins/cover/mdx-authors';
 import { OrcidLink } from '../../plugins/cover/orcid-link';
 import { Maths } from '../../plugins/maths/mdx-handlers/Maths';
-import { ClickToShowTheorem } from '../../plugins/theorems-proofs/mdx-clicktoshow';
+import { ClickToShowTheorem } from '../../plugins/theorems-proofs/md-to-mdx/mdx-handlers';
 import { WarnSpan } from '../../plugins/warn/mdx-warn';
 import { Options } from '../options';
 import { MdxState } from './mdx-state';
@@ -112,19 +112,33 @@ export function createRunOptions(
           const className = classNames('maths', { 'env-equation': count });
           const inSidenote = (props.class || '').includes('in-sidenote');
 
-          // TODO: don't add paragraphs in sidenotes
-          return (
-            <p id={id} className={className}>
-              <Maths
-                expr={child.props.children}
-                format="display"
-                maths={maths}
-                article={article}
-                inSidenote={inSidenote}
-              />
-              {count}
-            </p>
-          );
+          if (inSidenote) {
+            return (
+              <span id={id} className={className}>
+                <Maths
+                  expr={child.props.children}
+                  format="display"
+                  maths={maths}
+                  article={article}
+                  inSidenote={inSidenote}
+                />
+                {count}
+              </span>
+            );
+          } else {
+            return (
+              <p id={id} className={className}>
+                <Maths
+                  expr={child.props.children}
+                  format="display"
+                  maths={maths}
+                  article={article}
+                  inSidenote={inSidenote}
+                />
+                {count}
+              </p>
+            );
+          }
         }
 
         return <pre {...props} />;

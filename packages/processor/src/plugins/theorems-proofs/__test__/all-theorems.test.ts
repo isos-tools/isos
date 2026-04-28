@@ -1144,17 +1144,6 @@ test('all theorems with custom names', async () => {
 
     \theoremstyle{definition}
     \newtheorem{theorem}{Theorem}
-    \newtheorem{lemma}{Lemma}
-    \newtheorem{corollary}{Corollary}
-    \newtheorem{proposition}{Proposition}
-    \newtheorem{conjecture}{Conjecture}
-    \newtheorem{definition}{Definition}
-    \newtheorem{example}{Example}
-    \newtheorem{exercise}{Exercise}
-
-    \theoremstyle{remark}
-    \newtheorem{solution}{Solution}
-    \newtheorem{remark}{Remark}
 
     \begin{document}
     \begin{theorem}[Alpha] Some text \end{theorem}
@@ -1216,6 +1205,7 @@ test('all theorems with custom names', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
     ::: {#thm-1 name="Alpha"}

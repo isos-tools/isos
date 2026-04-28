@@ -111,9 +111,6 @@ export function toHastWithLoggerFactory(
           )}\``,
           node,
         );
-        // if (node.content === 'sidenote') {
-        //   console.dir(node, { depth: null });
-        // }
         return h(
           'span',
           { className: ['macro', `macro-${node.content}`] },

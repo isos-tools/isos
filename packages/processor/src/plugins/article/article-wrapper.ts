@@ -6,10 +6,7 @@ export function articleWrapper(ctx: Context) {
   return (tree: Root) => {
     const properties: Properties = {};
 
-    if (
-      ctx.frontmatter.referenceLocation === 'margin' &&
-      ctx.hasSideNotes
-    ) {
+    if (ctx.hasSideNotes) {
       properties.className = 'has-sidenotes';
     }
 

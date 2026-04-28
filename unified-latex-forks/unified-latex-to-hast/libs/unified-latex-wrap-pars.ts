@@ -1,50 +1,58 @@
-import { Plugin } from "unified";
-import * as Ast from "@unified-latex/unified-latex-types";
-import { match } from "@unified-latex/unified-latex-util-match";
-import { EXIT, visit } from "@unified-latex/unified-latex-util-visit";
-import { wrapPars } from "./wrap-pars";
+import * as Ast from '@unified-latex/unified-latex-types';
+import { visit } from '@unified-latex/unified-latex-util-visit';
+import { Plugin } from 'unified';
+
+import { wrapPars } from './wrap-pars';
 
 type PluginOptions = {
-    macrosThatBreakPars?: string[];
-    environmentsThatDontBreakPars?: string[];
-} | void;
+  macrosThatBreakPars?: string[];
+  environmentsThatDontBreakPars?: string[];
+};
 
 /**
  * Unified plugin to wrap paragraphs in `\html-tag:p{...}` macros.
  * Because `-` and `:` cannot occur in regular macros, there is no risk of
  * a conflict.
  */
-export const unifiedLatexWrapPars: Plugin<PluginOptions[], Ast.Root, Ast.Root> =
-    function unifiedLatexWrapPars(options) {
-        const { macrosThatBreakPars, environmentsThatDontBreakPars } =
-            options || {};
-        return (tree) => {
-            // If \begin{document}...\end{document} is present, we only wrap pars inside of it.
-            let hasDocumentEnv = false;
-            visit(
-                tree,
-                (env) => {
-                    if (match.environment(env, "document")) {
-                        hasDocumentEnv = true;
+export const unifiedLatexWrapPars: Plugin<
+  PluginOptions[],
+  Ast.Root,
+  Ast.Root
+> = function unifiedLatexWrapPars(options) {
+  const { macrosThatBreakPars, environmentsThatDontBreakPars } =
+    options || {};
+  return (tree) => {
+    let hasDocumentEnv = false;
+    visit(tree, (node) => {
+      if (
+        node.type === 'environment' &&
+        ![
+          'enumerate',
+          'itemize',
+          'description',
+          'table',
+          'tabular',
+          'tabularx',
+          'verbatim',
+          'minted',
+        ].includes(node.env)
+      ) {
+        node.content = wrapPars(node.content, {
+          macrosThatBreakPars,
+          environmentsThatDontBreakPars,
+        });
 
-                        // While we're here, we might as well wrap the pars!
-                        env.content = wrapPars(env.content, {
-                            macrosThatBreakPars,
-                            environmentsThatDontBreakPars,
-                        });
+        if (node.env === 'document') {
+          hasDocumentEnv = true;
+        }
+      }
+    });
 
-                        return EXIT;
-                    }
-                },
-                { test: match.anyEnvironment }
-            );
-
-            if (!hasDocumentEnv) {
-                // If there is no \begin{document}...\end{document}, we wrap top-level pars only.
-                tree.content = wrapPars(tree.content, {
-                    macrosThatBreakPars,
-                    environmentsThatDontBreakPars,
-                });
-            }
-        };
-    };
+    if (!hasDocumentEnv) {
+      tree.content = wrapPars(tree.content, {
+        macrosThatBreakPars,
+        environmentsThatDontBreakPars,
+      });
+    }
+  };
+};
