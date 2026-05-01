@@ -23,9 +23,11 @@ export const unifiedLatexWrapPars: Plugin<
     options || {};
   return (tree) => {
     let hasDocumentEnv = false;
-    visit(tree, (node) => {
+    // console.dir(tree, { depth: null });
+    visit(tree, (node, info) => {
       if (
         node.type === 'environment' &&
+        !info.context.hasMathModeAncestor &&
         ![
           'enumerate',
           'itemize',

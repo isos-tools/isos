@@ -663,3 +663,41 @@ test('empty maths', async () => {
   // const quartoHtml = await markdownToQuartoHtml(markdown);
   // console.log(quartoHtml);
 });
+
+test('maths environments not wrapped in pars', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \begin{document}
+
+    $$
+    \begin{array}{c} a_{11} \end{array}
+    $$
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    $$
+    \begin{array}{c}a_{11}\end{array}
+    $$
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <p class="maths"><code class="latex">\begin{array}{c}a_{11}\end{array}</code></p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+
+  // const quartoHtml = await markdownToQuartoHtml(markdown);
+  // console.log(quartoHtml);
+});

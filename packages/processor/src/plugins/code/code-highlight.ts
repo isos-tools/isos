@@ -1,7 +1,10 @@
 import { ElementContent } from 'hast';
 import { Root } from 'mdast';
 import { refractor } from 'refractor';
+import matlab from 'refractor/matlab';
 import { visit } from 'unist-util-visit';
+
+refractor.register(matlab);
 
 export function codeHighlight() {
   return (tree: Root) => {
