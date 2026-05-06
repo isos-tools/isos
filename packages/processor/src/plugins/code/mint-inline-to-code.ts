@@ -15,18 +15,20 @@ export function mintInlineToCode() {
           const contentParent = node.children[1] as Parent;
           const content = contentParent.children as ElementContent[];
 
-          node.tagName = 'code';
-          node.children = [
-            {
-              type: 'text',
-              value: `{${language.value}} '`,
-            },
-            ...content,
-            {
-              type: 'text',
-              value: `'`,
-            },
-          ];
+          Object.assign(node, {
+            tagName: 'code',
+            children: [
+              {
+                type: 'text',
+                value: `{${language.value}} '`,
+              },
+              ...content,
+              {
+                type: 'text',
+                value: `'`,
+              },
+            ],
+          });
         }
       }
     });

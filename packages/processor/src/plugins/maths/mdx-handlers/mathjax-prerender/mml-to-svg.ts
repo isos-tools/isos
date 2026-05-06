@@ -15,7 +15,8 @@ import '@mathjax/mathjax-newcm-font/js/svg/dynamic/sans-serif.js';
 import '@mathjax/mathjax-newcm-font/js/svg/dynamic/shapes.js';
 import '@mathjax/mathjax-newcm-font/js/svg/dynamic/fraktur.js';
 import '@mathjax/mathjax-newcm-font/js/svg/dynamic/script.js';
-// import '@mathjax/mathjax-newcm-font/js/svg/dynamic/math.js';
+import '@mathjax/mathjax-newcm-font/js/svg/dynamic/monospace.js';
+import '@mathjax/mathjax-newcm-font/js/svg/dynamic/math.js';
 
 import { MathJaxFiraFont } from '@mathjax/mathjax-fira-font/js/svg.js';
 import '@mathjax/mathjax-fira-font/js/svg/dynamic/arrows.js';
@@ -25,6 +26,7 @@ import '@mathjax/mathjax-fira-font/js/svg/dynamic/sans-serif.js';
 import '@mathjax/mathjax-fira-font/js/svg/dynamic/shapes.js';
 import '@mathjax/mathjax-fira-font/js/svg/dynamic/fraktur.js';
 import '@mathjax/mathjax-fira-font/js/svg/dynamic/script.js';
+import '@mathjax/mathjax-fira-font/js/svg/dynamic/monospace.js';
 // import '@mathjax/mathjax-fira-font/js/svg/dynamic/math-other.js';
 
 import { LayoutOptions } from '.';
@@ -51,14 +53,18 @@ const packages = [
   'shapes',
   'fraktur',
   'script',
-  // 'math',
+  'monospace',
+  'math',
 ];
 
 packages.forEach((name) => {
   // @ts-expect-error Property 'dynamicFiles' is protected
   MathJaxNewcmFont.dynamicFiles[name].setup(NewcmFont);
-  // @ts-expect-error Property 'dynamicFiles' is protected
-  MathJaxFiraFont.dynamicFiles[name].setup(FiraFont);
+
+  if (name !== 'math') {
+    // @ts-expect-error Property 'dynamicFiles' is protected
+    MathJaxFiraFont.dynamicFiles[name].setup(FiraFont);
+  }
 });
 
 const fontOptions = {

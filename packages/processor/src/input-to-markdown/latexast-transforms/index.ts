@@ -8,7 +8,7 @@ import {
   fancyBoxedToSubSection,
   fancySectionToSection,
 } from '../../plugins/fancy/fancy-section-to-section';
-import { insertParbreaksAroundImage } from '../../plugins/images/input-to-md/block-elements';
+import { insertParbreaksAroundImage } from '../../plugins/images/input-to-md/space-around-images';
 import { warnOnHardcodedListLabels } from '../../plugins/lists/warn-hardcoded-list-labels';
 import { equationLabelToId } from '../../plugins/maths/equation-label-to-id';
 import { extractNotes } from '../../plugins/notes/input-to-md/latex-ast';
@@ -25,36 +25,86 @@ import { expandMacros } from './expand-macros';
 import { expandMathOperatorPlugin } from './expand-math-ops';
 import { removeAtLetter } from './remove-atletter';
 import { removeNewDocumentCommand } from './remove-new-document-command';
+import { removeArticleTextSizes } from './remove-text-sizes';
 
 export function createLatexastTransforms(ctx: Context): PluggableList {
-  return [
-    [documentClass, ctx],
+  const transforms: PluggableList = [[documentClass, ctx]];
 
+  transforms.push(
     // remove things before expansion
     removeAtLetter,
     removeNewDocumentCommand,
+    commentEnv,
+    removeArticleTextSizes,
 
     // expansion
     expandEnvironments,
     [expandMacros, ctx],
     expandMathOperatorPlugin,
+  );
 
+  // inline
+  transforms.push(
+    trimVerbatim,
+    convertHspace,
+    convertEmToEmph,
+    equationLabelToId,
+    insertParbreaksAroundImage,
+    tableCaptionToData,
+  );
+
+  // block
+  transforms.push(fancySectionToSection, fancyBoxedToSubSection);
+
+  // TODO custom
+
+  // extract data
+  transforms.push(
     [extractNotes, ctx],
-    [commentEnv, ctx],
     [theorems, ctx],
     [extractBibliography, ctx],
     [extractTopMatter, ctx],
     [extractTocContents, ctx],
+  );
 
-    trimVerbatim,
-    convertHspace,
-    convertEmToEmph,
-    [defWarn, ctx],
-    equationLabelToId,
-    insertParbreaksAroundImage,
-    tableCaptionToData,
-    fancySectionToSection,
-    fancyBoxedToSubSection,
-    warnOnHardcodedListLabels,
-  ];
+  // warnings
+  transforms.push([defWarn, ctx], warnOnHardcodedListLabels);
+
+  return transforms;
+
+  // return [
+  //   [documentClass, ctx],
+
+  //   // remove things before expansion
+  //   removeAtLetter,
+  //   removeNewDocumentCommand,
+  //   commentEnv,
+
+  //   // expansion
+  //   expandEnvironments,
+  //   [expandMacros, ctx],
+  //   expandMathOperatorPlugin,
+
+  //   // not for fragment parsing
+  //   // block
+  //   [extractNotes, ctx],
+  //   [theorems, ctx],
+  //   [extractBibliography, ctx],
+  //   [extractTopMatter, ctx],
+  //   [extractTocContents, ctx],
+  //   fancySectionToSection,
+  //   fancyBoxedToSubSection,
+
+  //   // inline
+  //   trimVerbatim,
+  //   convertHspace,
+  //   convertEmToEmph,
+  //   equationLabelToId,
+  //   insertParbreaksAroundImage,
+  //   tableCaptionToData,
+
+  //   // warnings last
+  //   [defWarn, ctx],
+  //   warnOnHardcodedListLabels,
+  // ];
 }

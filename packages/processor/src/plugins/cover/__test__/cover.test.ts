@@ -38,7 +38,7 @@ test('cover', async () => {
     date: 29 *May* 2025
     author:
       name: David *McArthur*
-    abstract: |
+    abstract: |-
       My abstract.
 
       Has multiple paragraphs.
@@ -594,7 +594,7 @@ test('title with formatting', async () => {
     ---
     title: LECTURES ON GALOIS THEORY
     date: |-
-      January – March 2026\
+      January -- March 2026\
       4H/5E Galois Theory
     author:
       name: |-

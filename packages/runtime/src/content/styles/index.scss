@@ -538,6 +538,7 @@ article {
   pre {
     background: hsl(from var(--textColor) h s calc(l - 80));
     border-left: 0.3em solid hsl(from var(--textColor) h s calc(l - 50));
+    white-space: pre-wrap;
     overflow-x: auto;
 
     code:not(.maths) {

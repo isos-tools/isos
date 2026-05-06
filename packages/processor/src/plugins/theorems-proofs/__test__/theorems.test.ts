@@ -1794,6 +1794,7 @@ test('syntax bug 6', async () => {
     Let $G$ be a group:
 
     a)
+
     :   $H$ is normal.
     :::
   `);
@@ -1810,7 +1811,8 @@ test('syntax bug 6', async () => {
       <p><span class="title"><strong>Lemma 1.1.</strong></span> Let <code class="latex">G</code> be a group:</p>
       <dl>
         <dt>a)</dt>
-        <dd><code class="latex">H</code> is normal.
+        <dd>
+          <p><code class="latex">H</code> is normal.</p>
         </dd>
       </dl>
     </div>

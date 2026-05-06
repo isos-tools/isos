@@ -39,6 +39,7 @@ export const unifiedLatexWrapPars: Plugin<
           'minted',
         ].includes(node.env)
       ) {
+        // console.log('hey!');
         node.content = wrapPars(node.content, {
           macrosThatBreakPars,
           environmentsThatDontBreakPars,
@@ -46,6 +47,25 @@ export const unifiedLatexWrapPars: Plugin<
 
         if (node.env === 'document') {
           hasDocumentEnv = true;
+        }
+      }
+
+      // list items
+      if (node.type === 'macro' && node.content === 'item') {
+        const parent = info.parents[0];
+        if (
+          parent &&
+          parent.type === 'environment' &&
+          ['enumerate', 'itemize', 'description'].includes(parent.env)
+        ) {
+          const args = node.args || [];
+          const lastArg = args[args.length - 1];
+          if (lastArg) {
+            lastArg.content = wrapPars(lastArg.content, {
+              macrosThatBreakPars,
+              environmentsThatDontBreakPars,
+            });
+          }
         }
       }
     });

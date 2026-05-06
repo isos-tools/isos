@@ -97,6 +97,7 @@ export const macroReplacements: Record<
       tag: 'br',
       attributes: { className: 'literal-newline' },
     }),
+  '\&': () => ({ type: 'string', content: '&' }),
   url: (node) => {
     const args = getArgsContent(node);
     const url = printRaw(args[0] || '#');

@@ -182,3 +182,10 @@ test('open and close double quotation marks', async () => {
   const html = await testProcessor.md(markdown);
   expect(html).toBe('<p>“obviously true”</p>');
 });
+
+test('escaped ampersand', async () => {
+  const markdown = await testProcessor.latex(String.raw`Trefethen \& Bau`);
+  expect(markdown).toBe('Trefethen & Bau');
+  const html = await testProcessor.md(markdown);
+  expect(html).toBe('<p>Trefethen &amp; Bau</p>');
+});

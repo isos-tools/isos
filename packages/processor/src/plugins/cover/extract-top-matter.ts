@@ -1,4 +1,3 @@
-import { convertToMarkdown } from '@unified-latex/unified-latex-to-mdast';
 import {
   Argument,
   Environment,
@@ -8,10 +7,17 @@ import {
 } from '@unified-latex/unified-latex-types';
 import { getArgsContent } from '@unified-latex/unified-latex-util-arguments';
 import { visit } from '@unified-latex/unified-latex-util-visit';
+import { Root as MdAstRoot } from 'mdast';
+import rehypeRemark from 'rehype-remark';
+import { unified } from 'unified';
 
+import { unifiedLatexToHast } from '@isos/unified-latex-to-hast';
 import { printRaw } from '@isos/unified-latex-util-print-raw';
 
 import { Context } from '../../input-to-markdown/context';
+import { createHastTransforms } from '../../input-to-markdown/hast-transforms';
+import { createRehypeRemarkHandlers } from '../../input-to-markdown/rehyperemark-handlers';
+import { createRemarkProcessor } from '../../remark-processor';
 
 export function extractTopMatter(ctx: Context) {
   return (tree: Root) => {
@@ -27,7 +33,7 @@ export function extractTopMatter(ctx: Context) {
 
           ctx.frontmatter.author[authIdx - 1] = {
             ...(ctx.frontmatter.author[authIdx - 1] || {}),
-            orcid: extractMarkdown(getLastArg(node)),
+            orcid: convertToMarkdown(getLastArg(node), ctx),
           };
           parent.content?.splice(idx, 1);
         }
@@ -46,10 +52,13 @@ export function extractTopMatter(ctx: Context) {
         if (node.content === 'title') {
           const titleImage = extractTitleImage(node);
           if (titleImage !== null) {
-            ctx.frontmatter.titleImage = extractMarkdown(titleImage);
+            ctx.frontmatter.titleImage = convertToMarkdown(
+              titleImage,
+              ctx,
+            );
           }
           const lastArg = getLastArg(node);
-          const title = extractMarkdown(lastArg);
+          const title = convertToMarkdown(lastArg, ctx);
           // remove line breaks from text
           const oneline = title.replace(/\\\n/gm, ' ');
           ctx.frontmatter.title = oneline;
@@ -58,7 +67,7 @@ export function extractTopMatter(ctx: Context) {
 
         if (node.content === 'author') {
           const authIdx = getAuthBlkIdx(node);
-          const name = extractMarkdown(getLastArg(node));
+          const name = convertToMarkdown(getLastArg(node), ctx);
           ctx.frontmatter.author[authIdx - 1] = {
             ...(ctx.frontmatter.author[authIdx - 1] || {}),
             name,
@@ -70,19 +79,20 @@ export function extractTopMatter(ctx: Context) {
           const authIdx = getAuthBlkIdx(node);
           ctx.frontmatter.author[authIdx - 1] = {
             ...(ctx.frontmatter.author[authIdx - 1] || {}),
-            affiliation: extractMarkdown(getLastArg(node)),
+            affiliation: convertToMarkdown(getLastArg(node), ctx),
           };
           parent.content?.splice(idx, 1);
         }
 
         if (node.content === 'date') {
-          ctx.frontmatter.date = extractMarkdown(getLastArg(node));
+          // console.log(getLastArg(node));
+          ctx.frontmatter.date = convertToMarkdown(getLastArg(node), ctx);
           parent.content?.splice(idx, 1);
         }
       }
 
       if (node.type === 'environment' && node.env === 'abstract') {
-        ctx.frontmatter.abstract = convertToMarkdown(node.content);
+        ctx.frontmatter.abstract = convertToMarkdown(node.content, ctx);
         const idx = info.index || 0;
         const parent = info.parents[0] as Environment;
         parent.content?.splice(idx, 1);
@@ -159,7 +169,17 @@ function getLastArg(node: Macro | Environment) {
   return args[args.length - 1] || [];
 }
 
-function extractMarkdown(arg: Node[]) {
-  const result = convertToMarkdown(arg).trim();
-  return result;
+function convertToMarkdown(arg: Node[], ctx: Context) {
+  const root: Root = {
+    type: 'root',
+    content: arg,
+  };
+  const hastTransforms = createHastTransforms(ctx);
+  const htmlAst = unified()
+    .use([unifiedLatexToHast, ...hastTransforms])
+    .runSync(root);
+  const handlers = createRehypeRemarkHandlers(ctx);
+  const processor = createRemarkProcessor([[rehypeRemark, { handlers }]]);
+  const mdAst = processor.runSync(htmlAst) as MdAstRoot;
+  return processor.stringify(mdAst).trim();
 }

@@ -45,20 +45,12 @@ export function splitForPars(
       continue;
     }
     if (match.anyEnvironment(node) && !isEnvThatShouldNotBreakPar(node)) {
-      // if (node.env !== 'theorem') {
-      // console.log(node.env);
       pushBody();
       ret.push({ content: [node], wrapInPar: false });
       continue;
-      // }
-      // console.log(node.env);
-      // pushBody();
-      // ret.push({ content: [node], wrapInPar: false });
-      // continue;
     }
-    // Display-math should always break pars
+    // Should always break pars
     if (['displaymath', 'verbatim'].includes(node.type)) {
-      // console.log('hey!');
       pushBody();
       ret.push({ content: [node], wrapInPar: false });
       continue;

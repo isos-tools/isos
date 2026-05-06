@@ -16,8 +16,6 @@ import cssesc from 'cssesc';
 import { htmlLike } from '@isos/unified-latex-util-html-like';
 import { printRaw } from '@isos/unified-latex-util-print-raw';
 
-import { wrapPars } from '../wrap-pars';
-
 const ITEM_ARG_NAMES_REG = ['label'] as const;
 const ITEM_ARG_NAMES_BEAMER = [null, 'label', null] as const;
 type ItemArgs = Record<
@@ -80,7 +78,7 @@ function enumerateFactory(parentTag = 'ol', className = 'enumerate') {
       const body = namedArgs.body;
       return htmlLike({
         tag: 'li',
-        content: wrapPars(body),
+        content: body,
         attributes,
       });
     });

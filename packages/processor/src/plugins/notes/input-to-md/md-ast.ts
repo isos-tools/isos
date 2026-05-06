@@ -15,6 +15,7 @@ import { BuildVisitor, visit } from 'unist-util-visit';
 import { unifiedLatexToHast } from '@isos/unified-latex-to-hast';
 
 import { Context } from '../../../input-to-markdown/context';
+import { createHastTransforms } from '../../../input-to-markdown/hast-transforms';
 import { createRehypeRemarkHandlers } from '../../../input-to-markdown/rehyperemark-handlers';
 import { createRemarkProcessor } from '../../../remark-processor';
 import { noteConfig } from '../config';
@@ -95,13 +96,28 @@ function createDirectiveLabel(mark: string): Paragraph {
 }
 
 function noteToMdAst(nodes: Node[], ctx: Context) {
+  // console.log(nodes);
+
+  // const latexAst: LatexAstRoot = {
+  //   type: 'root',
+  //   content: nodes,
+  // };
+  // const htmlAst = toHtml(latexAst, ctx)
+  // const mdAst = toMd(htmlAst, ctx)
+
   const root: LatexAstRoot = {
     type: 'root',
     content: nodes,
   };
-  const htmlAst = unified().use([unifiedLatexToHast]).runSync(root);
+  const hastTransforms = createHastTransforms(ctx);
+  const htmlAst = unified()
+    .use([unifiedLatexToHast, ...hastTransforms])
+    .runSync(root);
   const handlers = createRehypeRemarkHandlers(ctx);
   const processor = createRemarkProcessor([[rehypeRemark, { handlers }]]);
   const mdAst = processor.runSync(htmlAst) as Root;
+
+  // console.dir(mdAst, { depth: null });
+
   return mdAst.children as (BlockContent | DefinitionContent)[];
 }

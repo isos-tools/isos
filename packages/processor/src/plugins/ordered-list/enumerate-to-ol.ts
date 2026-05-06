@@ -2,7 +2,6 @@ import { Environment } from '@unified-latex/unified-latex-types';
 import { getArgsContent } from '@unified-latex/unified-latex-util-arguments';
 import { match } from '@unified-latex/unified-latex-util-match';
 
-import { wrapPars } from '@isos/unified-latex-to-hast';
 import { htmlLike } from '@isos/unified-latex-util-html-like';
 import { printRaw } from '@isos/unified-latex-util-print-raw';
 
@@ -20,7 +19,7 @@ export function enumerateToOl(node: Environment) {
 
         return htmlLike({
           tag: 'li',
-          content: wrapPars(content?.content),
+          content: content?.content,
         });
       }),
   });

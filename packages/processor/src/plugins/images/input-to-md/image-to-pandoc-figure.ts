@@ -5,10 +5,9 @@ import strip from 'strip-markdown';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
 
-import { Context } from '../../../input-to-markdown/context';
 import { serialiseAttributes } from '../formatted-caption';
 
-export function imageToPandocFigure(_ctx: Context) {
+export function imageToPandocFigure() {
   return (tree: Root) => {
     // console.log(ctx.base64Images);
     // console.log('mdast: imageToPandocFigure');

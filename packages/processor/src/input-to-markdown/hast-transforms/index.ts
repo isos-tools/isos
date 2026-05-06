@@ -12,20 +12,28 @@ import { centerEnvToDiv } from './centre-env-to-div';
 import { removePageStyle } from './remove-page-style';
 
 export function createHastTransforms(ctx: Context): PluggableList {
-  return [
-    [adjustHeadingDepth, ctx],
-    removePageStyle,
+  const transforms: PluggableList = [removePageStyle];
+
+  // inline
+  transforms.push(
     endashEmdashToDashes,
     mintInlineToCode,
-    figureToP,
+    scaleRelToMissingMaths,
+  );
+
+  // block
+  transforms.push(
+    [adjustHeadingDepth, ctx],
     [addTheoremClass, ctx],
+    figureToP,
     tablePropertiesToTextDirective,
     centerEnvToDiv,
-    scaleRelToMissingMaths,
     // () => {
     //   return (tree) => {
     //     console.dir(tree, { depth: null });
     //   };
     // },
-  ];
+  );
+
+  return transforms;
 }

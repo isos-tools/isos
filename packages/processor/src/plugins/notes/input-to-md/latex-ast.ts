@@ -111,7 +111,7 @@ export function extractNotes(ctx: Context) {
     });
 
     ctx.notes = noteMap;
-    // console.log('notes:', notes);
+    // console.log('notes:', noteMap);
   };
 }
 

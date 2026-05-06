@@ -31,7 +31,6 @@ import { Context } from './context';
 import { createHastTransforms } from './hast-transforms';
 import { createLatexastTransforms } from './latexast-transforms';
 import { createMdastTransforms } from './mdast-transforms';
-import { formatBreak } from './mdast-transforms/format-break';
 import { createRehypeRemarkHandlers } from './rehyperemark-handlers';
 import { nbspToSpace } from './string-transforms/nbsp-to-space';
 import { removeExcessNewline } from './string-transforms/remove-excess-newline';
@@ -79,10 +78,18 @@ export const latexAstFromStringOptions: LatexParseOptions = {
     numberwithin: { signature: 'm m' },
     // tcblower: { breakAround: true },
     counterwithin: { signature: 'm m' },
-    // huge: { signature: 'm' },
-    // Huge: { signature: 'm' },
-    // large: { signature: 'm' },
-    // Large: { signature: 'm' },
+
+    // text size macros
+    tiny: { signature: 'm' },
+    scriptsize: { signature: 'm' },
+    footnotesize: { signature: 'm' },
+    small: { signature: 'm' },
+    normalsize: { signature: 'm' },
+    large: { signature: 'm' },
+    Large: { signature: 'm' },
+    LARGE: { signature: 'm' },
+    huge: { signature: 'm' },
+    Huge: { signature: 'm' },
 
     footnote: { signature: 'o o m' },
     sidenote: { signature: 'o o m' },
@@ -194,7 +201,6 @@ function createLatexToHastHandlers(ctx: Context): LatexConvertOptions {
 
 function createLatexMdAstTransforms(ctx: Context): PluggableList {
   return [
-    formatBreak,
     [imageToPandocFigure, ctx],
     [noteContentBelowMark, ctx],
   ];

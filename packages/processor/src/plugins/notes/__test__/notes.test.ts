@@ -714,3 +714,33 @@ test('framedsidenote', async () => {
 
   expect(html).toBe(expectedHtml);
 });
+
+test('sidenote with \\mintinline', async () => {
+  const latex = String.raw`
+    Matrix\sidenote{inbuilt \mintinline{matlab}{H=hess(A)}} we.
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    Matrix:sidenote[sn-1] we.
+
+    :::sidenotecontent[sn-1]
+    inbuilt \`{matlab} 'H=hess(A)'\`
+    :::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <p>Matrix<span class="sidenote"><sup><a id="sn-ref-sn-1" href="#sn-def-sn-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><span><sup><a id="sn-def-sn-1" href="#sn-ref-sn-1">1</a></sup>inbuilt <code class="language-matlab">H<span class="token operator">=</span><span class="token function">hess</span><span class="token punctuation">(</span>A<span class="token punctuation">)</span></code></span></small><span class="sidenote-label">)</span></span> we.</p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});

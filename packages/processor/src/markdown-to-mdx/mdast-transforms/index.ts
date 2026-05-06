@@ -28,9 +28,14 @@ import { extractFrontmatter } from './extract-frontmatter';
 import { htmlToWarn } from './html-to-warn';
 import { removeComments } from './remove-comments';
 
+type NewOptions = {
+  fragment?: boolean;
+};
+
 export function createMdastTransforms(
   ctx: Context,
-  options: Pick<Options, 'noSections' | 'includeTocContents'>,
+  options?: Pick<Options, 'noSections' | 'includeTocContents'>,
+  newOptions?: NewOptions,
 ): PluggableList {
   const plugins: PluggableList = [
     dashesToEndashEmdash,
@@ -54,17 +59,21 @@ export function createMdastTransforms(
   ];
 
   // TODO: remove this (a lot of tests will need updating)
-  if (options.noSections === false) {
+  if (options && options.noSections === false) {
     plugins.push(headingSections); // theorems depends on this
   }
 
-  plugins.push(
-    [extractFrontmatter, ctx], // theorems depends on this
-    [theorems, ctx],
-    [cover, ctx],
-  );
+  if (!(newOptions && newOptions.fragment === true)) {
+    plugins.push(
+      [extractFrontmatter, ctx], // theorems depends on this
+    );
+  }
 
-  if (options.includeTocContents === true) {
+  // console.log(ctx.frontmatter);
+
+  plugins.push([theorems, ctx], [cover, ctx]);
+
+  if (options && options.includeTocContents === true) {
     plugins.push([includeTocContents, ctx]);
   }
 

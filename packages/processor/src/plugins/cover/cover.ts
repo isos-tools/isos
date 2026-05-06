@@ -6,10 +6,12 @@ import { visit } from 'unist-util-visit';
 import { inlineSvg } from '@isos/image-tools';
 
 import { Author, Context } from '../../markdown-to-mdx/context';
+import { createMdastTransforms } from '../../markdown-to-mdx/mdast-transforms';
 import { createRemarkProcessor } from '../../remark-processor';
 
-export function cover({ frontmatter }: Context) {
+export function cover(ctx: Context) {
   return (tree: Root) => {
+    const { frontmatter } = ctx;
     visit(tree, 'containerDirective', (node, idx = 0, parent) => {
       // console.dir(tree, { depth: null });
 
@@ -25,25 +27,25 @@ export function cover({ frontmatter }: Context) {
         }
 
         if (frontmatter.title) {
-          const title = createTitle(frontmatter.title);
+          const title = createTitle(frontmatter.title, ctx);
           if (title) {
             children.push(title);
           }
         }
         if (frontmatter.author.length) {
-          const author = createAuthor(frontmatter.author);
+          const author = createAuthor(frontmatter.author, ctx);
           if (author) {
             children.push(author);
           }
         }
         if (frontmatter.date) {
-          const date = createDate(frontmatter.date);
+          const date = createDate(frontmatter.date, ctx);
           if (date) {
             children.push(date);
           }
         }
         if (frontmatter.abstract) {
-          const abstract = createAbstract(frontmatter.abstract);
+          const abstract = createAbstract(frontmatter.abstract, ctx);
           if (abstract) {
             children.push(abstract);
           }
@@ -88,16 +90,16 @@ function createTitleImage(titleImage: string): Element {
   };
 }
 
-function createTitle(title: string): Element {
+function createTitle(title: string, ctx: Context): Element {
   return {
     type: 'element',
     tagName: 'h1',
     properties: {},
-    children: getInlineHast(title),
+    children: getInlineHast(title, ctx),
   };
 }
 
-function createAuthor(authors: Author[]): Element | null {
+function createAuthor(authors: Author[], ctx: Context): Element | null {
   if (authors.length === 1) {
     if (!authors[0].name.length) {
       return null;
@@ -113,7 +115,7 @@ function createAuthor(authors: Author[]): Element | null {
           type: 'text',
           value: 'Written by ',
         },
-        ...createAuthorContent(authors[0]),
+        ...createAuthorContent(authors[0], ctx),
       ],
     };
   }
@@ -144,15 +146,18 @@ function createAuthor(authors: Author[]): Element | null {
           type: 'element',
           tagName: 'li',
           properties: {},
-          children: createAuthorContent(author),
+          children: createAuthorContent(author, ctx),
         })),
       },
     ],
   };
 }
 
-function createAuthorContent(author: Author): ElementContent[] {
-  const children = getInlineHast(author.name);
+function createAuthorContent(
+  author: Author,
+  ctx: Context,
+): ElementContent[] {
+  const children = getInlineHast(author.name, ctx);
 
   if (author.orcid) {
     children.push(
@@ -190,7 +195,7 @@ function createAuthorContent(author: Author): ElementContent[] {
         properties: {
           className: ['affiliation'],
         },
-        children: getInlineHast(author.affiliation),
+        children: getInlineHast(author.affiliation, ctx),
       },
     );
   }
@@ -198,7 +203,7 @@ function createAuthorContent(author: Author): ElementContent[] {
   return children;
 }
 
-function createDate(date: string): Element {
+function createDate(date: string, ctx: Context): Element {
   // const time: Element = {
   //   type: 'element',
   //   tagName: 'time',
@@ -213,11 +218,11 @@ function createDate(date: string): Element {
     properties: {
       className: ['date'],
     },
-    children: getInlineHast(date),
+    children: getInlineHast(date, ctx),
   };
 }
 
-function createAbstract(abstract: string): Element {
+function createAbstract(abstract: string, ctx: Context): Element {
   return {
     type: 'element',
     tagName: 'aside',
@@ -239,23 +244,27 @@ function createAbstract(abstract: string): Element {
           },
         ],
       },
-      ...getBlockHast(abstract),
+      ...getBlockHast(abstract, ctx),
     ],
   };
 }
 
-function getBlockHast(str: string) {
-  const processor = createRemarkProcessor();
+function getBlockHast(str: string, ctx: Context) {
+  const transforms = createMdastTransforms(ctx, undefined, {
+    fragment: true,
+  });
+  const processor = createRemarkProcessor(transforms);
   const parsed = processor.parse(str);
+  const transformed = processor.runSync(parsed) as Root;
   const hast = toHast({
     type: 'root',
-    children: parsed.children,
+    children: transformed.children,
   }) as HastRoot;
   return hast.children as Element[];
 }
 
-function getInlineHast(str: string) {
-  const hast = getBlockHast(str);
+function getInlineHast(str: string, ctx: Context) {
+  const hast = getBlockHast(str, ctx);
   if (!hast.length) {
     return [];
   }

@@ -218,10 +218,13 @@ test('description to dl', async () => {
     Let.
 
     one
+
     :   two
+
     :   three
 
     four
+
     :   five
 
     me.
@@ -230,17 +233,22 @@ test('description to dl', async () => {
   expect(markdown).toBe(expectedMarkdown);
 
   const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
 
   const expectedHtml = unindentStringAndTrim(`
     <p>Let.</p>
     <dl>
       <dt>one</dt>
-      <dd>two
+      <dd>
+        <p>two</p>
       </dd>
-      <dd>three
+      <dd>
+        <p>three</p>
       </dd>
       <dt>four</dt>
-      <dd>five
+      <dd>
+        <p>five</p>
       </dd>
     </dl>
     <p>me.</p>
@@ -249,7 +257,7 @@ test('description to dl', async () => {
   expect(html).toBe(expectedHtml);
 });
 
-test.skip('description with newlines to dl', async () => {
+test('description with newlines to dl', async () => {
   const markdown = await testProcessor.latex(String.raw`
     \begin{description}
     \item[Nabla identities] $a$,\\
@@ -262,6 +270,7 @@ test.skip('description with newlines to dl', async () => {
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
     Nabla identities
+
     :   $a$,\
         $b$,\
         $c$.
@@ -271,13 +280,16 @@ test.skip('description with newlines to dl', async () => {
 
   const html = await testProcessor.md(markdown);
   // console.log(html);
+  // return;
 
   const expectedHtml = unindentStringAndTrim(`
     <dl>
       <dt>Nabla identities</dt>
-      <dd><code class="latex">a</code>,<br />
-        <code class="latex">b</code>,<br />
-        <code class="latex">c</code>.
+      <dd>
+        <p><code class="latex">a</code>,<br />
+          <code class="latex">b</code>,<br />
+          <code class="latex">c</code>.
+        </p>
       </dd>
     </dl>
   `);
@@ -406,6 +418,68 @@ test('warn on itemize with hardcoded labels', async () => {
       </li>
     </ul>
     <p>me.</p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('nested enumerate', async () => {
+  const markdown = await testProcessor.latex(String.raw`
+    \begin{enumerate}
+    \item Alpha
+
+    Bravo
+
+    Charlie
+    \begin{enumerate}
+    \item Delta
+    \item Echo
+    \end{enumerate}
+    \item Foxtrot
+    \end{enumerate}
+  `);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    1. Alpha
+
+       Bravo
+
+       Charlie
+
+       1. Delta
+
+       2. Echo
+
+    2. Foxtrot
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(`
+    <ol>
+    <li>
+      <p>Alpha</p>
+      <p>Bravo</p>
+      <p>Charlie</p>
+      <ol>
+        <li>
+          <p>Delta</p>
+        </li>
+        <li>
+          <p>Echo</p>
+        </li>
+      </ol>
+    </li>
+    <li>
+      <p>Foxtrot</p>
+    </li>
+  </ol>
   `);
 
   expect(html).toBe(expectedHtml);
