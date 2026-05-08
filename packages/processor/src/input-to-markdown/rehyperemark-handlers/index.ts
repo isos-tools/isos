@@ -261,7 +261,7 @@ function divHandler(ctx: Context, state: State, node: Element) {
       //   return result;
       // }
 
-      if (environmentName === 'framed') {
+      if (['framed', 'mdframed'].includes(environmentName)) {
         const result = createFramed(state, node);
         // console.log(result);
         state.patch(node, result);

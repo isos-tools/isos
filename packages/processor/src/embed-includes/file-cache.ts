@@ -97,7 +97,7 @@ export function createFileCache(fs: Fs): FileCache {
       return store[fp].data;
     },
     getContent(fp) {
-      return store[fp].content;
+      return store[fp] ? store[fp].content : null;
     },
     setContent(fp, content) {
       // console.log(`set content: ${fp}`);

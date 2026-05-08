@@ -198,13 +198,10 @@ function getNameAst(name: string) {
 
 function createTitleElements(theorem: Theorem, label: PhrasingContent[]) {
   switch (theorem.style) {
-    case 'plain':
-    case 'definition':
-      return createDefinitionTitle(label);
     case 'remark':
       return createRemarkTitle(label);
     default:
-      throw new Error(`theorem style "${theorem.style}" not supported`);
+      return createDefinitionTitle(label);
   }
 }
 

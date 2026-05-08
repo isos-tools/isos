@@ -26,7 +26,7 @@ export function headingLabels() {
 
       // append to heading text
       const lastChild = node.children[node.children.length - 1];
-      if (lastChild.type === 'text') {
+      if (lastChild && lastChild.type === 'text') {
         if (hasAttributes(lastChild.value)) {
           const { text, attributes } = parseAttributes(lastChild.value);
           attributes.id = id;
