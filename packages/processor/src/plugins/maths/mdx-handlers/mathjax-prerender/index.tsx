@@ -1,11 +1,15 @@
 import { useEffect, useMemo, useState } from 'preact/hooks';
 
+import {
+  mmlToBraille,
+  mmlToSpeech,
+  mmlToSvg,
+  texToMml,
+} from '@isos/maths';
+
 import { ArticleState } from '../../../article/mdx-state';
 import { WarnSpan } from '../../../warn/mdx-warn';
 import { MathsFormat, MathsState } from '../../mdx-state';
-import { mmlToSpeech } from './mml-to-speech';
-import { mmlToSvg } from './mml-to-svg';
-import { texToMml } from './tex-to-mml';
 
 type MathsProps = {
   expr: string;
@@ -42,8 +46,9 @@ export function MathJaxPrerender({
       const containerWidth = inSidenote
         ? article.marginWidth.value
         : article.mainWidth.value;
-      return mmlToSvg(mml.mml, maths, {
-        containerWidth: format === 'display' ? containerWidth : undefined,
+      return mmlToSvg(mml.mml, {
+        font: maths.mathsFontName.value,
+        width: format === 'display' ? containerWidth : undefined,
       });
     } else {
       return {
@@ -66,10 +71,23 @@ export function MathJaxPrerender({
       // so disabling in the Tauri app. should be solved when
       // processor is moved to a worker/thread
       if (!isTauri() && !mml.error && mml.mml !== undefined) {
-        const speech = await mmlToSpeech(mml.mml, maths);
-        setLabel(speech.label);
-        setBraille(speech.braille);
-        // console.log(speech.braille);
+        let label;
+        let braille;
+
+        if (maths.ariaMode.value !== 'braille-only') {
+          label = await mmlToSpeech(mml.mml, {
+            locale: maths.speechLocale.value,
+            domain: 'clearspeak',
+          });
+        }
+
+        if (maths.ariaMode.value !== 'speech-only') {
+          braille = await mmlToBraille(mml.mml, {
+            locale: maths.brailleLocale.value,
+          });
+        }
+        setLabel(label);
+        setBraille(braille);
       }
     })();
     return () => {};

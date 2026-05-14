@@ -1,0 +1,74 @@
+
+:root {
+  font-size: 18px;
+  font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro,
+    sans-serif;
+  background: white;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  shape-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+.maths {
+  svg {
+    max-width: 100%;
+    overflow: visible;
+  }
+}
+
+code.maths {
+  overflow: hidden;
+
+  // to avoid tests affecting other tests
+  display: inline-block;
+  padding: 5px;
+
+  .mathjax-error {
+    display: inline-block;
+    padding: 0 0.5em;
+    font-size: 0.8em;
+    font-weight: bold;
+    background: red;
+    color: white;
+    border-radius: 0.2em;
+  }
+  svg.missing-maths {
+    height: 2.5ex;
+    vertical-align: -0.75ex;
+    path {
+      stroke: currentcolor;
+      fill: currentcolor;
+      stroke-width: 0;
+    }
+  }
+}
+
+p.maths {
+  text-align: center;
+  code.maths, svg {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  code.maths {
+    display: inline-block;
+    padding: 2px;
+  }
+  svg {
+    display: block;
+  }
+  .eq-tag, .eq-count {
+    font-style: normal;
+  }
+}
+
+.env-equation {
+  display: flex;
+  align-items: center;
+  .maths {
+    flex: 1;
+  }
+}

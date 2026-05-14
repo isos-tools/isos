@@ -23,3 +23,5 @@ octokit
 runtime_old
 
 **/fixtures/**/test**
+
+.vitest-attachments

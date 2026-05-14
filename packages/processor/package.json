@@ -12,7 +12,7 @@
     "@isos/fs": "workspace:*",
     "@isos/image-tools": "workspace:*",
     "@isos/logger": "workspace:*",
-    "@isos/siunitx": "workspace:*",
+    "@isos/maths": "workspace:*",
     "@isos/test-utils": "workspace:*",
     "@isos/unified-latex-to-hast": "workspace:*",
     "@isos/unified-latex-util-html-like": "workspace:*",

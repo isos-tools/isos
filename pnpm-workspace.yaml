@@ -2,7 +2,10 @@ packages:
   - docs
   - packages/*
   - unified-latex-forks/*
-  - mathjax-extension-forks/*
+
+allowBuilds:
+  '@parcel/watcher': set this to true or false
+  esbuild: set this to true or false
 
 ignoredBuiltDependencies:
   - esbuild

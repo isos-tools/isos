@@ -1,0 +1,29 @@
+{
+  "name": "@isos/maths",
+  "private": false,
+  "version": "0.0.1",
+  "type": "module",
+  "files": [
+    "src"
+  ],
+  "exports": [
+    "./src/index.ts"
+  ],
+  "scripts": {
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@mathjax/mathjax-bbm-font-extension": "^4.1.1",
+    "@mathjax/mathjax-fira-font": "^4.1.1",
+    "@mathjax/mathjax-newcm-font": "^4.1.1",
+    "@mathjax/src": "^4.1.1",
+    "siunitx": "github:limefrogyank/siunitx-pcc",
+    "speech-rule-engine": "5.0.0-beta.6"
+  },
+  "devDependencies": {
+    "@isos/test-utils": "workspace:*",
+    "@vitest/browser-playwright": "^4.1.5",
+    "vite": "^7.3.1",
+    "vitest": "^4.1.5"
+  }
+}
