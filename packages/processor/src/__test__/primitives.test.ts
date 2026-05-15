@@ -189,3 +189,10 @@ test('escaped ampersand', async () => {
   const html = await testProcessor.md(markdown);
   expect(html).toBe('<p>Trefethen &amp; Bau</p>');
 });
+
+test('{\\bf x} in mathmode', async () => {
+  const markdown = await testProcessor.latex('obeying ${\\bf z}$.');
+  expect(markdown).toBe('obeying ${\\bf z}$.');
+  const html = await testProcessor.md(markdown);
+  expect(html).toBe('<p>obeying <code class="latex">{\\bf z}</code>.</p>');
+});

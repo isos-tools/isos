@@ -52,7 +52,7 @@ const tex = new TeX({
     bm: ['{\\boldsymbol #1}', 1],
     colonequals: '\\coloneq',
     hdots: '\\ldots',
-    ensuremath: '\\mathop',
+    ensuremath: ['#1', 1],
   },
 });
 
