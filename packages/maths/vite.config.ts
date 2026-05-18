@@ -18,7 +18,7 @@ export default defineConfig({
         test: {
           name: 'unit',
           environment: 'node',
-          include: ['**/*.test.ts', '!**/*.browser.test.ts'],
+          include: ['**/*.test.ts'],
           testTimeout: 60_000,
           hookTimeout: 60_000,
         },
@@ -26,11 +26,11 @@ export default defineConfig({
       {
         test: {
           name: 'browser',
-          include: ['**/*.browser.test.ts'],
-          setupFiles: ['./src/__test__/browser-setup.ts'],
-          css: {
-            include: /.+/,
-          },
+          include: ['**/*.browsertest.ts'],
+          // setupFiles: ['./src/__test__/browser-setup.ts'],
+          // css: {
+          //   include: /.+/,
+          // },
           browser: {
             enabled: true,
             provider: playwright(),

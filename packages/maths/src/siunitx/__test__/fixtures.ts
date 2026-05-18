@@ -2009,6 +2009,18 @@ const qtyCases: TestCase[] = [
     clearspeak:
       'Some text 4 kilograms More text 4 kilograms Still red here factorial',
   },
+  {
+    label: 'qty-21',
+    latex: String.raw`\qty{9.81}{\metre\per\second\squared}`,
+    mathspeak: '9.81 meters seconds Superscript negative 2',
+    clearspeak: '9.81 meters seconds to the negative 2 power',
+  },
+  {
+    label: 'qty-22',
+    latex: String.raw`\qty{9.81}{\metre\per\second^2}`,
+    mathspeak: '9.81 meters divided by seconds squared',
+    clearspeak: '9.81 meters divided by seconds to the second power',
+  },
 ];
 
 const listCases: TestCase[] = [

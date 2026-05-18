@@ -1,5 +1,6 @@
 // sort-imports-ignore
-import { liteAdaptor } from '@mathjax/src/js/adaptors/liteAdaptor.js';
+import { chooseAdaptor } from '@mathjax/src/js/adaptors/chooseAdaptor.js';
+import { DOMAdaptor } from '@mathjax/src/js/core/DOMAdaptor.js';
 import { RegisterHTMLHandler } from '@mathjax/src/js/handlers/html.js';
 import { MathML } from '@mathjax/src/js/input/mathml.js';
 import { mathjax } from '@mathjax/src/js/mathjax.js';
@@ -35,8 +36,8 @@ export type MmlToSvgOptions = {
   width?: number;
 };
 
-const adaptor = liteAdaptor();
-RegisterHTMLHandler(adaptor);
+const adaptor = chooseAdaptor();
+RegisterHTMLHandler(adaptor as DOMAdaptor<HTMLElement, Text, Document>);
 
 const htmlDoc = mathjax.document('', {
   InputJax: new MathML(),
@@ -72,6 +73,9 @@ packages.forEach((name) => {
 
 const fontOptions = {
   displayOverflow: 'linebreak',
+  // useXlink: false,
+  fontCache: 'none',
+  // localID: null,
 };
 
 const fonts: Record<MathsFont, any> = {
@@ -92,7 +96,6 @@ export function mmlToSvg(mml: string, options?: Partial<MmlToSvgOptions>) {
           : undefined,
     });
     const svg = htmlNode.children[0];
-
     const html = adaptor.outerHTML(svg);
 
     const match = html.match(/data-mjx-error="(.*?)"/);
