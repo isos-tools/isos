@@ -136,3 +136,42 @@ test('maths with def expansion with arguments', async () => {
 
   expect(html).toBe(expectedHtml);
 });
+
+test('maths with newcommand expansion out of order', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \newcommand{\bit}{\mathbf{I}_{\com}}
+    \newcommand{\com}{\overline{\mathbf{x}}}
+    \begin{document}
+
+    $$
+    \bit
+    $$
+
+    \end{document}
+  `;
+
+  // console.log(unindentStringAndTrim(latex));
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    $$
+    \mathbf{I}_{\overline{\mathbf{x}}}
+    $$
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <p class="maths"><code class="latex">\mathbf{I}_{\overline{\mathbf{x}}}</code></p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});

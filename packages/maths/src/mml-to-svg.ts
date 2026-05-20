@@ -1,6 +1,5 @@
 // sort-imports-ignore
-import { chooseAdaptor } from '@mathjax/src/js/adaptors/chooseAdaptor.js';
-import { DOMAdaptor } from '@mathjax/src/js/core/DOMAdaptor.js';
+import { liteAdaptor } from '@mathjax/src/js/adaptors/liteAdaptor.js';
 import { RegisterHTMLHandler } from '@mathjax/src/js/handlers/html.js';
 import { MathML } from '@mathjax/src/js/input/mathml.js';
 import { mathjax } from '@mathjax/src/js/mathjax.js';
@@ -36,8 +35,8 @@ export type MmlToSvgOptions = {
   width?: number;
 };
 
-const adaptor = chooseAdaptor();
-RegisterHTMLHandler(adaptor as DOMAdaptor<HTMLElement, Text, Document>);
+const adaptor = liteAdaptor();
+RegisterHTMLHandler(adaptor);
 
 const htmlDoc = mathjax.document('', {
   InputJax: new MathML(),
@@ -95,23 +94,28 @@ export function mmlToSvg(mml: string, options?: Partial<MmlToSvgOptions>) {
           ? options.width
           : undefined,
     });
-    const svg = htmlNode.children[0];
-    const html = adaptor.outerHTML(svg);
+    if (htmlNode?.children?.length > 0) {
+      const svg = htmlNode.children[0];
+      const html = adaptor.outerHTML(svg);
 
-    const match = html.match(/data-mjx-error="(.*?)"/);
-    if (match !== null) {
-      if (process.env.NODE_ENV !== 'test') {
-        console.log('mathjax:', match[1]);
+      const match = html.match(/data-mjx-error="(.*?)"/);
+      if (match !== null) {
+        if (process.env.NODE_ENV !== 'test') {
+          console.log('mathjax:', match[1]);
+        }
+        return {
+          error: true,
+          html: `mathjax: ${match[1]}`,
+        };
       }
       return {
-        error: true,
-        html: `mathjax: ${match[1]}`,
+        error: false,
+        html,
       };
     }
-
     return {
       error: false,
-      html,
+      html: '',
     };
   } catch (err) {
     return {

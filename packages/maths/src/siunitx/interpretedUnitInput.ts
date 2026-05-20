@@ -76,7 +76,7 @@ export function* elementsOfInterpretedUnitInput(
   while (subParser.i < subParser.string.length) {
     while (
       subParser.i < subParser.string.length &&
-      isSkippableSpace(subParser.string.charAt(subParser.i))
+      isSkippableSpace(subParser.string, subParser.i)
     ) {
       subParser.i++;
     }

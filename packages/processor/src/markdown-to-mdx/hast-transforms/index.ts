@@ -19,6 +19,7 @@ import { displayNoteContents } from '../../plugins/notes/md-to-mdx/html-ast';
 import { addPreambleWarnings } from '../../plugins/preamble-warnings/add-preamble-warnings';
 import { atReferenceToLink } from '../../plugins/refs-and-counts/at-reference-to-link';
 import { addCounts } from '../../plugins/refs-and-counts/hast-add-counts';
+import { refToHrefMaths } from '../../plugins/refs-and-counts/ref-to-href-maths';
 import {
   exSolSolutionTitle,
   insertQed,
@@ -85,6 +86,7 @@ function createRehypeFragmentPlugins(
     [addCounts, ctx],
     [atCitationToLink, ctx], // depends on addCounts
     [atReferenceToLink, ctx], // depends on addCounts
+    [refToHrefMaths, ctx], // depends on addCounts
     [exSolSolutionTitle, ctx], // depends on addCounts
 
     // () => (tree: Root) => {
