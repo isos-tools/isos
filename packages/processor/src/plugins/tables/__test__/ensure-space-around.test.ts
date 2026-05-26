@@ -33,10 +33,17 @@ test('tables', async () => {
   // return;
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
-    :::: {#thm-1}
+    ---
+    theorems:
+      theorem:
+        style: definition
+        heading: Theorem
+    ---
+
+    ::::theorem
     Hi.
 
-    ::: {.fig}
+    :::figure
     | Date gilt matures | Coupon |       Price      |
     | :---------------: | :----: | :--------------: |
     | 7th December 2028 |  $6\%$ | $\pounds 120.66$ |
@@ -54,7 +61,7 @@ test('tables', async () => {
   // return;
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <div class="definition theorem" id="thm-1">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem 1.</strong></span> Hi.</p>
       <figure>
         <div class="fig-content">
@@ -93,6 +100,11 @@ test('tables', async () => {
 
 test('table syntax bug', async () => {
   const latex = String.raw`
+    \documentclass{article}
+    \usepackage{amsthm}
+    \theoremstyle{definition}
+    \newtheorem{theorem}{Theorem}
+    \begin{document}
     \begin{theorem}
     has truth table
     \begin{center}
@@ -106,6 +118,7 @@ test('table syntax bug', async () => {
     \end{tabular}.
     \end{center}
     \end{theorem}
+    \end{document}
   `;
 
   const markdown = await testProcessor.latex(latex);
@@ -113,7 +126,14 @@ test('table syntax bug', async () => {
   // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
-    ::: {#thm-1}
+    ---
+    theorems:
+      theorem:
+        style: definition
+        heading: Theorem
+    ---
+
+    :::theorem
     has truth table
 
     | $P$ | $Q$ | $P \\implies Q$ |
@@ -133,7 +153,7 @@ test('table syntax bug', async () => {
   // console.log(html);
 
   const expected = unindentStringAndTrim(`
-    <div class="definition theorem" id="thm-1">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem 1.</strong></span> has truth table</p>
       <table>
         <thead>

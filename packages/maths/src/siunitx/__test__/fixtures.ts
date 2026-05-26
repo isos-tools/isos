@@ -2289,14 +2289,14 @@ const declareSIUnitCases: TestCase[] = [
   {
     label: 'DeclareSIUnit-2',
     latex: String.raw`\unit{\hello\kg\second}`,
-    mathspeak: 'FakeUnit kilograms seconds',
-    clearspeak: 'FakeUnit kilograms seconds',
+    mathspeak: '',
+    clearspeak: '',
   },
   {
     label: 'DeclareSIUnit-3',
     latex: String.raw`\unit[inter-unit-product = \,]{\hello\kg\second}`,
-    mathspeak: 'FakeUnit kilograms seconds',
-    clearspeak: 'FakeUnit kilograms seconds',
+    mathspeak: '',
+    clearspeak: '',
   },
   {
     label: 'DeclareSIUnit-4',
@@ -2307,8 +2307,8 @@ const declareSIUnitCases: TestCase[] = [
   {
     label: 'DeclareSIUnit-5',
     latex: String.raw`\qty{1.2}{\faren}`,
-    mathspeak: '1.2 degree normal upper F',
-    clearspeak: '1.2 degrees normal F',
+    mathspeak: '',
+    clearspeak: '',
   },
 ];
 

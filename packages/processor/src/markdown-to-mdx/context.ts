@@ -4,7 +4,7 @@
 // };
 import { Reference } from '../plugins/bibliography/extract-bibliography';
 import { Warning } from '../plugins/preamble-warnings/def-warn';
-import { RefObjectsYaml } from '../plugins/refs-and-counts/default-objects';
+import { RefObjects } from '../plugins/refs-and-counts/default-objects';
 
 // export type Context = {
 //   cacheDir: string;
@@ -29,7 +29,10 @@ export type Frontmatter = {
   abstract: string;
   documentClass?: string;
   hasPart?: boolean;
-  theorems: RefObjectsYaml;
+  theorems: RefObjects;
+  equation?: RefObjects;
+  figure?: RefObjects;
+  table?: RefObjects;
   'reference-location': 'below' | 'margin' | 'document';
   references: Reference[];
   preambleWarnings: Warning[];
@@ -43,7 +46,10 @@ export type Context = {
     author: Author[];
     tableOfContentsPrefix?: string;
     abstract: string;
-    theorems: RefObjectsYaml;
+    theorems: RefObjects;
+    equation?: RefObjects;
+    figure?: RefObjects;
+    table?: RefObjects;
     refMap: Record<string, Reference>;
     referenceLocation: string;
     documentClass?: string;

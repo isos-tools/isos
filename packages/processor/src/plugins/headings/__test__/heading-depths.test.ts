@@ -210,29 +210,33 @@ test('theorem with article documentclass', async () => {
     title: Alpha
     theorems:
       theorem:
+        style: definition
+        heading: Theorem
         numberWithin: h2
       lemma:
+        style: definition
+        heading: Lemma
         referenceCounter: theorem
     ---
 
     :::make-title
     :::
 
-    ::: {#thm-1}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-1}
+    :::lemma
     Some text
     :::
 
     ## My section
 
-    ::: {#thm-2}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-2}
+    :::lemma
     Some text
     :::
   `);
@@ -247,17 +251,17 @@ test('theorem with article documentclass', async () => {
     <header>
       <h1>Alpha</h1>
     </header>
-    <div class="definition theorem" id="thm-1">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem 0.1.</strong></span> Some text</p>
     </div>
-    <div class="definition lemma" id="lem-1">
+    <div class="theorem lemma style-definition">
       <p><span class="title"><strong>Lemma 0.2.</strong></span> Some text</p>
     </div>
     <h2 id="my-section"><span class="count">1</span> My section</h2>
-    <div class="definition theorem" id="thm-2">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem 1.1.</strong></span> Some text</p>
     </div>
-    <div class="definition lemma" id="lem-2">
+    <div class="theorem lemma style-definition">
       <p><span class="title"><strong>Lemma 1.2.</strong></span> Some text</p>
     </div>
   `);
@@ -295,29 +299,33 @@ test('theorem with report documentclass', async () => {
     documentClass: report
     theorems:
       theorem:
+        style: definition
+        heading: Theorem
         numberWithin: h3
       lemma:
+        style: definition
+        heading: Lemma
         referenceCounter: theorem
     ---
 
     :::make-title
     :::
 
-    ::: {#thm-1}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-1}
+    :::lemma
     Some text
     :::
 
     ### My section
 
-    ::: {#thm-2}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-2}
+    :::lemma
     Some text
     :::
   `);
@@ -332,17 +340,17 @@ test('theorem with report documentclass', async () => {
     <header>
       <h1>Alpha</h1>
     </header>
-    <div class="definition theorem" id="thm-1">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem 0.0.1.</strong></span> Some text</p>
     </div>
-    <div class="definition lemma" id="lem-1">
+    <div class="theorem lemma style-definition">
       <p><span class="title"><strong>Lemma 0.0.2.</strong></span> Some text</p>
     </div>
     <h3 id="my-section"><span class="count">0.1</span> My section</h3>
-    <div class="definition theorem" id="thm-2">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem 0.1.1.</strong></span> Some text</p>
     </div>
-    <div class="definition lemma" id="lem-2">
+    <div class="theorem lemma style-definition">
       <p><span class="title"><strong>Lemma 0.1.2.</strong></span> Some text</p>
     </div>
   `);
@@ -381,8 +389,12 @@ test('theorem with report documentclass and part', async () => {
     documentClass: report
     theorems:
       theorem:
+        style: definition
+        heading: Theorem
         numberWithin: h2
       lemma:
+        style: definition
+        heading: Lemma
         referenceCounter: theorem
     ---
 
@@ -391,24 +403,23 @@ test('theorem with report documentclass and part', async () => {
 
     ## In the beginning
 
-    ::: {#thm-1}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-1}
+    :::lemma
     Some text
     :::
 
     #### My section
 
-    ::: {#thm-2}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-2}
+    :::lemma
     Some text
     :::
-
   `);
 
   expect(markdown).toBe(expectedMarkdown);
@@ -422,17 +433,17 @@ test('theorem with report documentclass and part', async () => {
       <h1>Alpha</h1>
     </header>
     <h2 id="in-the-beginning"><span class="count">1</span> In the beginning</h2>
-    <div class="definition theorem" id="thm-1">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem 1.1.</strong></span> Some text</p>
     </div>
-    <div class="definition lemma" id="lem-1">
+    <div class="theorem lemma style-definition">
       <p><span class="title"><strong>Lemma 1.2.</strong></span> Some text</p>
     </div>
     <h4 id="my-section"><span class="count">1.0.1</span> My section</h4>
-    <div class="definition theorem" id="thm-2">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem 1.3.</strong></span> Some text</p>
     </div>
-    <div class="definition lemma" id="lem-2">
+    <div class="theorem lemma style-definition">
       <p><span class="title"><strong>Lemma 1.4.</strong></span> Some text</p>
     </div>
   `);

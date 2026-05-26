@@ -42,12 +42,13 @@ test('newframedtheorem', async () => {
     documentClass: report
     theorems:
       exercise:
+        style: definition
         heading: Example
         numberWithin: h2
         framed: true
     ---
 
-    ::: {#exr-1}
+    :::exercise
     Hello
     :::
   `);
@@ -58,7 +59,7 @@ test('newframedtheorem', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
-    <div class="definition exercise framed" id="exr-1">
+    <div class="theorem exercise style-definition framed">
       <p><span class="title"><strong>Example 0.1.</strong></span> Hello</p>
     </div>
   `);

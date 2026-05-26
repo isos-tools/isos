@@ -7,87 +7,74 @@ import {
 import { getArgsContent } from '@unified-latex/unified-latex-util-arguments';
 import { visit } from '@unified-latex/unified-latex-util-visit';
 
-// import { wrapPars } from '@isos/unified-latex-to-hast';
 import { printRaw } from '@isos/unified-latex-util-print-raw';
 
 import { Context } from '../../../input-to-markdown/context';
-import { createDefaultObjectsYaml } from '../../refs-and-counts/default-objects';
-import { Theorem } from '../default-theorems';
+import {
+  RefObject,
+  RefObjects,
+  createDefaultObjects,
+} from '../../refs-and-counts/default-objects';
 
-export function theorems(ctx: Context) {
+export function extractTheoremDefinitions(ctx: Context) {
   return (tree: Root) => {
-    const { custom, ...obj } = extractTheoremDefinitions(tree);
-    // console.log('theorem definitions:', theorems);
-    ctx.frontmatter.theorems = obj;
+    const defaultObjects = createDefaultObjects();
+    const theorems = extract(tree);
+    ctx.frontmatter.theorems = { ...defaultObjects, ...theorems };
   };
 }
 
-function extractTheoremDefinitions(tree: Root) {
-  let style: Theorem['style'] = 'plain';
-  let theorems = createDefaultObjectsYaml();
+function extract(tree: Root) {
+  let style: RefObject['style'] = 'plain';
+  let theorems: RefObjects = {};
 
   visit(tree, (node) => {
     if (node.type === 'macro') {
       if (node.content === 'theoremstyle') {
         const args = getArgsContent(node);
-        style = printRaw(args[args.length - 1] || []) as Theorem['style'];
-      }
-
-      if (node.content === 'numberwithin') {
-        const args = extractNumberWithin(node);
-        if (args !== null) {
-          const { name, numberWithin } = args;
-          theorems = {
-            ...theorems,
-            [name]: {
-              ...(theorems[name] || {}),
-              numberWithin,
-            },
-          };
-        }
+        style = printRaw(
+          args[args.length - 1] || [],
+        ) as RefObject['style'];
       }
 
       if (node.content === 'newtheorem') {
-        const thm = extractTheorem(node, style);
-        if (thm !== null) {
-          const { name, ...theorem } = thm;
+        const theorem = extractTheorem(node, style);
+        // console.log(theorem);
+        if (theorem !== null) {
           theorems = {
             ...theorems,
-            [name]: {
-              ...(theorems[name] || {}),
+            [theorem.name]: {
+              ...(theorems[theorem.name] || {}),
               ...theorem,
-              type: 'theorem',
             },
           };
         }
       }
 
       if (node.content === 'newframedtheorem') {
-        const thm = extractFramedTheorem(node, style);
-        if (thm !== null) {
-          const { name, ...theorem } = thm;
+        const theorem = extractFramedTheorem(node, style);
+        if (theorem !== null) {
           theorems = {
             ...theorems,
-            [name]: {
-              ...(theorems[name] || {}),
+            [theorem.name]: {
+              ...(theorems[theorem.name] || {}),
               ...theorem,
-              type: 'theorem',
             },
           };
         }
       }
 
       if (node.content === 'newexsol') {
-        const { name, ...theorem } = extractExSol(node, style);
-
-        theorems = {
-          ...theorems,
-          [name]: {
-            ...(theorems[name] || {}),
-            ...theorem,
-            type: 'theorem',
-          },
-        };
+        const theorem = extractExSol(node, style);
+        if (theorem !== null) {
+          theorems = {
+            ...theorems,
+            [theorem.name]: {
+              ...(theorems[theorem.name] || {}),
+              ...theorem,
+            },
+          };
+        }
       }
 
       if (node.content === 'counterwithin') {
@@ -114,8 +101,8 @@ function extractTheoremDefinitions(tree: Root) {
 
 function extractFramedTheorem(
   node: Macro,
-  style: Theorem['style'],
-): Theorem | null {
+  style: RefObject['style'],
+): RefObject | null {
   const theorem = extractTheorem(node, style);
   if (theorem !== null) {
     theorem.framed = true;
@@ -123,14 +110,15 @@ function extractFramedTheorem(
   return theorem;
 }
 
-function extractExSol(node: Macro, style: Theorem['style']): Theorem {
+function extractExSol(node: Macro, style: RefObject['style']): RefObject {
   const _args = node.args || [];
   const args = _args.map((arg: Argument) => ({
     openMark: arg.openMark,
     content: printRaw(arg.content),
   }));
 
-  const theorem: Theorem = {
+  const theorem: RefObject = {
+    type: 'theorem',
     style,
     framed: true,
     unnumbered: args[0].content === '*',
@@ -161,37 +149,13 @@ function normaliseFlag(flag: string) {
   }
 }
 
-function extractNumberWithin(node: Macro) {
-  // const args = getArgsContent(node);
-  const args = node.args || [];
-  // console.dir(args, { depth: null });
-
-  if (args.length !== 2) {
-    return null;
-  }
-
-  const [name, numberWithin] = args;
-
-  if (
-    name.content[0].type !== 'string' ||
-    numberWithin.content[0].type !== 'string'
-  ) {
-    return null;
-  }
-
-  return {
-    name: name.content[0].content,
-    numberWithin: numberWithin.content[0].content,
-  };
-}
-
 // Theorem definitions are defined in section 3.4 of:
 // https://anorien.csc.warwick.ac.uk/mirrors/CTAN/info/amscls-doc/Author_Handbook_ProcColl.pdf
 
 function extractTheorem(
   node: Macro,
-  style: Theorem['style'],
-): Theorem | null {
+  style: RefObject['style'],
+): RefObject | null {
   const _args = node.args || [];
 
   // starred
@@ -213,6 +177,7 @@ function extractTheorem(
     args[1].openMark === '{'
   ) {
     return {
+      type: 'theorem',
       style,
       name: args[0].content,
       heading: args[1].content,
@@ -227,6 +192,7 @@ function extractTheorem(
     args[2].openMark === '['
   ) {
     return {
+      type: 'theorem',
       style,
       name: args[0].content,
       heading: args[1].content,
@@ -242,6 +208,7 @@ function extractTheorem(
     args[2].openMark === '{'
   ) {
     return {
+      type: 'theorem',
       style,
       name: args[0].content,
       heading: args[2].content,

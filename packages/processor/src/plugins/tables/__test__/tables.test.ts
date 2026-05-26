@@ -169,3 +169,67 @@ test('tables', async () => {
   // const quartoHtml = await markdownToQuartoHtml(expectedMarkdown);
   // console.log(quartoHtml);
 });
+
+test('syntax bug', async () => {
+  const markdown = unindentStringAndTrim(`
+    ## Introduction {#sec-introduction}
+
+    :::table{#tbl-table}
+
+    ![](table.png)
+
+    An *image* treated like a table
+
+    :::
+
+    :::table{#tbl-chair}
+
+    | A | B |
+    |---|---|
+    | C | D |
+
+    A *table* treated like a table
+
+    :::
+
+    See @sec-introduction and @tbl-table and @tbl-chair.
+  `);
+
+  const html = await testProcessor.md(markdown, {
+    noSections: false,
+  });
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(`
+    <section id="sec-introduction">
+      <h2><span class="count">1</span> Introduction</h2>
+      <figure id="tbl-table" class="table">
+        <figcaption><strong>Table 1:</strong> An <em>image</em> treated like a table</figcaption>
+        <div class="fig-content"><img src="table.png" alt="Image" /></div>
+      </figure>
+      <figure id="tbl-chair" class="table">
+        <figcaption><strong>Table 2:</strong> A <em>table</em> treated like a table</figcaption>
+        <div class="fig-content">
+          <table>
+            <thead>
+              <tr>
+                <th>A</th>
+                <th>B</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>C</td>
+                <td>D</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </figure>
+      <p>See <a href="#sec-introduction" class="ref">Section 1</a> and <a href="#tbl-table" class="ref">Table 1</a> and <a href="#tbl-chair" class="ref">Table 2</a>.</p>
+    </section>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});

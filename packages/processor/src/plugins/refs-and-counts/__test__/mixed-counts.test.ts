@@ -99,12 +99,14 @@ test('mixed counts', async () => {
     documentClass: report
     theorems:
       solution:
+        style: remark
+        heading: Solution
         numberWithin: h3
     ---
 
     ### Bravo
 
-    ::: {#sol-1}
+    :::solution
     See @fig-ex-1.
 
     ![Example 1](ex1.png){#fig-ex-1}
@@ -122,7 +124,7 @@ test('mixed counts', async () => {
 
     ## Delta
 
-    ::: {#sol-2}
+    :::solution
     See @fig-ex-3.
 
     ![Example 3](ex3.png){#fig-ex-3}
@@ -136,7 +138,7 @@ test('mixed counts', async () => {
 
     See @tbl-letters-2.
 
-    ::: {#sol-3}
+    :::solution
     See @fig-ex-4.
 
     ![Example 4](fig/ex4.png){#fig-ex-4}
@@ -159,7 +161,7 @@ test('mixed counts', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <h3 id="bravo"><span class="count">0.1</span> Bravo</h3>
-    <div class="remark solution" id="sol-1">
+    <div class="theorem solution style-remark">
       <p><span class="title"><em>Solution 0.1.1</em>. </span>See <a href="#fig-ex-1" class="ref">Figure 1</a>.</p>
       <figure id="fig-ex-1">
         <div class="fig-content">
@@ -191,7 +193,7 @@ test('mixed counts', async () => {
 
     <p>See <a href="#tbl-letters-1" class="ref">Table 1</a>.</p>
     <h2 id="delta"><span class="count">1</span> Delta</h2>
-    <div class="remark solution" id="sol-2">
+    <div class="theorem solution style-remark">
       <p><span class="title"><em>Solution 1.0.1</em>. </span>See <a href="#fig-ex-3" class="ref">Figure 1.1</a>.</p>
       <figure id="fig-ex-3">
         <div class="fig-content">
@@ -221,7 +223,7 @@ test('mixed counts', async () => {
     </figure>
 
     <p>See <a href="#tbl-letters-2" class="ref">Table 1.1</a>.</p>
-    <div class="remark solution" id="sol-3">
+    <div class="theorem solution style-remark">
       <p><span class="title"><em>Solution 1.0.2</em>. </span>See <a href="#fig-ex-4" class="ref">Figure 1.2</a>.</p>
       <figure id="fig-ex-4">
         <div class="fig-content">

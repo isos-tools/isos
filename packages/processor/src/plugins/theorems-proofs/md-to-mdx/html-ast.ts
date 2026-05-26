@@ -1,9 +1,8 @@
 import { Element, Root, Text } from 'hast';
-// import { toString } from 'hast-util-to-string';
 import { visit } from 'unist-util-visit';
 
 import { Context } from '../../../markdown-to-mdx/context';
-import { Theorem } from '../default-theorems';
+import { RefObject } from '../../refs-and-counts/default-objects';
 
 export function exSolSolutionTitle(ctx: Context) {
   return (tree: Root) => {
@@ -82,18 +81,18 @@ function copyTitle(theorem: Element) {
 }
 
 function getTheorem(title: Element, ctx: Context) {
-  let thm: Partial<Theorem> | null = null;
+  const { theorems } = ctx.frontmatter;
+  let thm: Partial<RefObject> | null = null;
   visit(title, (node) => {
     // @ts-expect-error
     const properties = node.properties || {};
 
-    if (properties['data-id']) {
-      const id = properties['data-id'];
-      const abbr = id.split('-')[0];
-      const { theorems } = ctx.frontmatter;
-      const theorem = Object.values(theorems).find(
-        (o) => !Array.isArray(o) && o.abbr === abbr,
-      );
+    if (
+      Array.isArray(properties.className) &&
+      properties.className.length > 1
+    ) {
+      const name = properties.className[1];
+      const theorem = theorems[name];
       if (theorem && !Array.isArray(theorem)) {
         thm = {
           heading: theorem.heading,
@@ -107,7 +106,7 @@ function getTheorem(title: Element, ctx: Context) {
   return thm;
 }
 
-function replaceTitle(title: Element, thm: Partial<Theorem>) {
+function replaceTitle(title: Element, thm: Partial<RefObject>) {
   visit(title, 'text', (node) => {
     if (node.value === thm.heading) {
       node.value = thm.lowerTitle || '';
@@ -119,7 +118,7 @@ function replaceTitle(title: Element, thm: Partial<Theorem>) {
 function prependToSolution(
   theorem: Element,
   title: Element,
-  thm: Partial<Theorem>,
+  thm: Partial<RefObject>,
 ) {
   visit(theorem, 'element', (node) => {
     if (node.tagName === 'div') {

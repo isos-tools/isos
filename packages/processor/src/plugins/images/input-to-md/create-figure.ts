@@ -14,7 +14,7 @@ export function createFigure(
   if (id) {
     attributes.id = id;
   } else {
-    attributes.class = 'fig';
+    // attributes.class = 'fig';
   }
 
   const children = state.all(figure) as BlockContent[];
@@ -23,7 +23,7 @@ export function createFigure(
 
   return {
     type: 'containerDirective',
-    name: ' ', // Pandoc divs
+    name: 'figure',
     attributes,
     children,
   };

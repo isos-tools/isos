@@ -90,91 +90,125 @@ test('all theorems with default styles', async () => {
   // console.log(markdown);
 
   const expectedMarkdown = unindentStringAndTrim(`
-    ::: {#thm-1}
+    ---
+    theorems:
+      theorem:
+        style: definition
+        heading: Theorem
+      lemma:
+        style: definition
+        heading: Lemma
+      corollary:
+        style: definition
+        heading: Corollary
+      proposition:
+        style: definition
+        heading: Proposition
+      conjecture:
+        style: definition
+        heading: Conjecture
+      definition:
+        style: definition
+        heading: Definition
+      example:
+        style: definition
+        heading: Example
+      exercise:
+        style: definition
+        heading: Exercise
+      solution:
+        style: remark
+        heading: Solution
+      remark:
+        style: remark
+        heading: Remark
+    ---
+
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-1}
+    :::lemma
     Some text
     :::
 
-    ::: {#cor-1}
+    :::corollary
     Some text
     :::
 
-    ::: {#prp-1}
+    :::proposition
     Some text
     :::
 
-    ::: {#cnj-1}
+    :::conjecture
     Some text
     :::
 
-    ::: {#def-1}
+    :::definition
     Some text
     :::
 
-    ::: {#exm-1}
+    :::example
     Some text
     :::
 
-    ::: {#exr-1}
+    :::exercise
     Some text
     :::
 
-    ::: {#sol-1}
+    :::solution
     Some text
     :::
 
-    ::: {#rem-1}
+    :::remark
     Some text
     :::
 
-    ::: {.proof}
+    :::proof
     Some text
     :::
 
-    ::: {#thm-2}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-2}
+    :::lemma
     Some text
     :::
 
-    ::: {#cor-2}
+    :::corollary
     Some text
     :::
 
-    ::: {#prp-2}
+    :::proposition
     Some text
     :::
 
-    ::: {#cnj-2}
+    :::conjecture
     Some text
     :::
 
-    ::: {#def-2}
+    :::definition
     Some text
     :::
 
-    ::: {#exm-2}
+    :::example
     Some text
     :::
 
-    ::: {#exr-2}
+    :::exercise
     Some text
     :::
 
-    ::: {#sol-2}
+    :::solution
     Some text
     :::
 
-    ::: {#rem-2}
+    :::remark
     Some text
     :::
 
-    ::: {.proof}
+    :::proof
     Some text
     :::
   `);
@@ -259,70 +293,70 @@ test('all theorems with default styles', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
-    <div class="definition theorem" id="thm-1">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem 1.</strong></span> Some text</p>
     </div>
-    <div class="definition lemma" id="lem-1">
+    <div class="theorem lemma style-definition">
       <p><span class="title"><strong>Lemma 1.</strong></span> Some text</p>
     </div>
-    <div class="definition corollary" id="cor-1">
+    <div class="theorem corollary style-definition">
       <p><span class="title"><strong>Corollary 1.</strong></span> Some text</p>
     </div>
-    <div class="definition proposition" id="prp-1">
+    <div class="theorem proposition style-definition">
       <p><span class="title"><strong>Proposition 1.</strong></span> Some text</p>
     </div>
-    <div class="definition conjecture" id="cnj-1">
+    <div class="theorem conjecture style-definition">
       <p><span class="title"><strong>Conjecture 1.</strong></span> Some text</p>
     </div>
-    <div class="definition" id="def-1">
+    <div class="theorem definition style-definition">
       <p><span class="title"><strong>Definition 1.</strong></span> Some text</p>
     </div>
-    <div class="definition example" id="exm-1">
+    <div class="theorem example style-definition">
       <p><span class="title"><strong>Example 1.</strong></span> Some text</p>
     </div>
-    <div class="definition exercise" id="exr-1">
+    <div class="theorem exercise style-definition">
       <p><span class="title"><strong>Exercise 1.</strong></span> Some text</p>
     </div>
-    <div class="remark solution" id="sol-1">
+    <div class="theorem solution style-remark">
       <p><span class="title"><em>Solution 1</em>. </span>Some text</p>
     </div>
-    <div class="remark" id="rem-1">
+    <div class="theorem remark style-remark">
       <p><span class="title"><em>Remark 1</em>. </span>Some text</p>
     </div>
-    <div class="remark proof">
+    <div class="theorem proof style-remark">
       <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
     </div>
-    <div class="definition theorem" id="thm-2">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem 2.</strong></span> Some text</p>
     </div>
-    <div class="definition lemma" id="lem-2">
+    <div class="theorem lemma style-definition">
       <p><span class="title"><strong>Lemma 2.</strong></span> Some text</p>
     </div>
-    <div class="definition corollary" id="cor-2">
+    <div class="theorem corollary style-definition">
       <p><span class="title"><strong>Corollary 2.</strong></span> Some text</p>
     </div>
-    <div class="definition proposition" id="prp-2">
+    <div class="theorem proposition style-definition">
       <p><span class="title"><strong>Proposition 2.</strong></span> Some text</p>
     </div>
-    <div class="definition conjecture" id="cnj-2">
+    <div class="theorem conjecture style-definition">
       <p><span class="title"><strong>Conjecture 2.</strong></span> Some text</p>
     </div>
-    <div class="definition" id="def-2">
+    <div class="theorem definition style-definition">
       <p><span class="title"><strong>Definition 2.</strong></span> Some text</p>
     </div>
-    <div class="definition example" id="exm-2">
+    <div class="theorem example style-definition">
       <p><span class="title"><strong>Example 2.</strong></span> Some text</p>
     </div>
-    <div class="definition exercise" id="exr-2">
+    <div class="theorem exercise style-definition">
       <p><span class="title"><strong>Exercise 2.</strong></span> Some text</p>
     </div>
-    <div class="remark solution" id="sol-2">
+    <div class="theorem solution style-remark">
       <p><span class="title"><em>Solution 2</em>. </span>Some text</p>
     </div>
-    <div class="remark" id="rem-2">
+    <div class="theorem remark style-remark">
       <p><span class="title"><em>Remark 2</em>. </span>Some text</p>
     </div>
-    <div class="remark proof">
+    <div class="theorem proof style-remark">
       <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
     </div>
   `);
@@ -406,117 +440,118 @@ test('all theorems with plain styles', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
     ---
     theorems:
       theorem:
-        style: plain
+        heading: Theorem
       lemma:
-        style: plain
+        heading: Lemma
       corollary:
-        style: plain
+        heading: Corollary
       proposition:
-        style: plain
+        heading: Proposition
       conjecture:
-        style: plain
+        heading: Conjecture
       definition:
-        style: plain
+        heading: Definition
       example:
-        style: plain
+        heading: Example
       exercise:
-        style: plain
+        heading: Exercise
       solution:
-        style: plain
+        heading: Solution
       remark:
-        style: plain
+        heading: Remark
     ---
 
-    ::: {#thm-1}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-1}
+    :::lemma
     Some text
     :::
 
-    ::: {#cor-1}
+    :::corollary
     Some text
     :::
 
-    ::: {#prp-1}
+    :::proposition
     Some text
     :::
 
-    ::: {#cnj-1}
+    :::conjecture
     Some text
     :::
 
-    ::: {#def-1}
+    :::definition
     Some text
     :::
 
-    ::: {#exm-1}
+    :::example
     Some text
     :::
 
-    ::: {#exr-1}
+    :::exercise
     Some text
     :::
 
-    ::: {#sol-1}
+    :::solution
     Some text
     :::
 
-    ::: {#rem-1}
+    :::remark
     Some text
     :::
 
-    ::: {.proof}
+    :::proof
     Some text
     :::
 
-    ::: {#thm-2}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-2}
+    :::lemma
     Some text
     :::
 
-    ::: {#cor-2}
+    :::corollary
     Some text
     :::
 
-    ::: {#prp-2}
+    :::proposition
     Some text
     :::
 
-    ::: {#cnj-2}
+    :::conjecture
     Some text
     :::
 
-    ::: {#def-2}
+    :::definition
     Some text
     :::
 
-    ::: {#exm-2}
+    :::example
     Some text
     :::
 
-    ::: {#exr-2}
+    :::exercise
     Some text
     :::
 
-    ::: {#sol-2}
+    :::solution
     Some text
     :::
 
-    ::: {#rem-2}
+    :::remark
     Some text
     :::
 
-    ::: {.proof}
+    :::proof
     Some text
     :::
   `);
@@ -525,72 +560,73 @@ test('all theorems with plain styles', async () => {
 
   const html = await testProcessor.md(markdown);
   // console.log(html);
+  // return;
 
   const expectedHtml = unindentStringAndTrim(`
-    <div class="plain theorem" id="thm-1">
+    <div class="theorem">
       <p><span class="title"><strong>Theorem 1.</strong></span> Some text</p>
     </div>
-    <div class="plain lemma" id="lem-1">
+    <div class="theorem lemma">
       <p><span class="title"><strong>Lemma 1.</strong></span> Some text</p>
     </div>
-    <div class="plain corollary" id="cor-1">
+    <div class="theorem corollary">
       <p><span class="title"><strong>Corollary 1.</strong></span> Some text</p>
     </div>
-    <div class="plain proposition" id="prp-1">
+    <div class="theorem proposition">
       <p><span class="title"><strong>Proposition 1.</strong></span> Some text</p>
     </div>
-    <div class="plain conjecture" id="cnj-1">
+    <div class="theorem conjecture">
       <p><span class="title"><strong>Conjecture 1.</strong></span> Some text</p>
     </div>
-    <div class="plain definition" id="def-1">
+    <div class="theorem definition">
       <p><span class="title"><strong>Definition 1.</strong></span> Some text</p>
     </div>
-    <div class="plain example" id="exm-1">
+    <div class="theorem example">
       <p><span class="title"><strong>Example 1.</strong></span> Some text</p>
     </div>
-    <div class="plain exercise" id="exr-1">
+    <div class="theorem exercise">
       <p><span class="title"><strong>Exercise 1.</strong></span> Some text</p>
     </div>
-    <div class="plain solution" id="sol-1">
+    <div class="theorem solution">
       <p><span class="title"><strong>Solution 1.</strong></span> Some text</p>
     </div>
-    <div class="plain remark" id="rem-1">
+    <div class="theorem remark">
       <p><span class="title"><strong>Remark 1.</strong></span> Some text</p>
     </div>
-    <div class="remark proof">
+    <div class="theorem proof style-remark">
       <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
     </div>
-    <div class="plain theorem" id="thm-2">
+    <div class="theorem">
       <p><span class="title"><strong>Theorem 2.</strong></span> Some text</p>
     </div>
-    <div class="plain lemma" id="lem-2">
+    <div class="theorem lemma">
       <p><span class="title"><strong>Lemma 2.</strong></span> Some text</p>
     </div>
-    <div class="plain corollary" id="cor-2">
+    <div class="theorem corollary">
       <p><span class="title"><strong>Corollary 2.</strong></span> Some text</p>
     </div>
-    <div class="plain proposition" id="prp-2">
+    <div class="theorem proposition">
       <p><span class="title"><strong>Proposition 2.</strong></span> Some text</p>
     </div>
-    <div class="plain conjecture" id="cnj-2">
+    <div class="theorem conjecture">
       <p><span class="title"><strong>Conjecture 2.</strong></span> Some text</p>
     </div>
-    <div class="plain definition" id="def-2">
+    <div class="theorem definition">
       <p><span class="title"><strong>Definition 2.</strong></span> Some text</p>
     </div>
-    <div class="plain example" id="exm-2">
+    <div class="theorem example">
       <p><span class="title"><strong>Example 2.</strong></span> Some text</p>
     </div>
-    <div class="plain exercise" id="exr-2">
+    <div class="theorem exercise">
       <p><span class="title"><strong>Exercise 2.</strong></span> Some text</p>
     </div>
-    <div class="plain solution" id="sol-2">
+    <div class="theorem solution">
       <p><span class="title"><strong>Solution 2.</strong></span> Some text</p>
     </div>
-    <div class="plain remark" id="rem-2">
+    <div class="theorem remark">
       <p><span class="title"><strong>Remark 2.</strong></span> Some text</p>
     </div>
-    <div class="remark proof">
+    <div class="theorem proof style-remark">
       <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
     </div>
   `);
@@ -678,117 +714,128 @@ test('all theorems with custom headings', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
     ---
     theorems:
       theorem:
+        style: definition
         heading: Alfa
       lemma:
+        style: definition
         heading: Bravo
       corollary:
+        style: definition
         heading: Charlie
       proposition:
+        style: definition
         heading: Delta
       conjecture:
+        style: definition
         heading: Echo
       definition:
+        style: definition
         heading: Foxtrot
       example:
+        style: definition
         heading: Golf
       exercise:
+        style: definition
         heading: Hotel
       solution:
+        style: remark
         heading: India
       remark:
+        style: remark
         heading: Juliett
     ---
 
-    ::: {#thm-1}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-1}
+    :::lemma
     Some text
     :::
 
-    ::: {#cor-1}
+    :::corollary
     Some text
     :::
 
-    ::: {#prp-1}
+    :::proposition
     Some text
     :::
 
-    ::: {#cnj-1}
+    :::conjecture
     Some text
     :::
 
-    ::: {#def-1}
+    :::definition
     Some text
     :::
 
-    ::: {#exm-1}
+    :::example
     Some text
     :::
 
-    ::: {#exr-1}
+    :::exercise
     Some text
     :::
 
-    ::: {#sol-1}
+    :::solution
     Some text
     :::
 
-    ::: {#rem-1}
+    :::remark
     Some text
     :::
 
-    ::: {.proof}
+    :::proof
     Some text
     :::
 
-    ::: {#thm-2}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-2}
+    :::lemma
     Some text
     :::
 
-    ::: {#cor-2}
+    :::corollary
     Some text
     :::
 
-    ::: {#prp-2}
+    :::proposition
     Some text
     :::
 
-    ::: {#cnj-2}
+    :::conjecture
     Some text
     :::
 
-    ::: {#def-2}
+    :::definition
     Some text
     :::
 
-    ::: {#exm-2}
+    :::example
     Some text
     :::
 
-    ::: {#exr-2}
+    :::exercise
     Some text
     :::
 
-    ::: {#sol-2}
+    :::solution
     Some text
     :::
 
-    ::: {#rem-2}
+    :::remark
     Some text
     :::
 
-    ::: {.proof}
+    :::proof
     Some text
     :::
   `);
@@ -797,72 +844,73 @@ test('all theorems with custom headings', async () => {
 
   const html = await testProcessor.md(markdown);
   // console.log(html);
+  // return;
 
   const expectedHtml = unindentStringAndTrim(`
-    <div class="definition theorem" id="thm-1">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Alfa 1.</strong></span> Some text</p>
     </div>
-    <div class="definition lemma" id="lem-1">
+    <div class="theorem lemma style-definition">
       <p><span class="title"><strong>Bravo 1.</strong></span> Some text</p>
     </div>
-    <div class="definition corollary" id="cor-1">
+    <div class="theorem corollary style-definition">
       <p><span class="title"><strong>Charlie 1.</strong></span> Some text</p>
     </div>
-    <div class="definition proposition" id="prp-1">
+    <div class="theorem proposition style-definition">
       <p><span class="title"><strong>Delta 1.</strong></span> Some text</p>
     </div>
-    <div class="definition conjecture" id="cnj-1">
+    <div class="theorem conjecture style-definition">
       <p><span class="title"><strong>Echo 1.</strong></span> Some text</p>
     </div>
-    <div class="definition" id="def-1">
+    <div class="theorem definition style-definition">
       <p><span class="title"><strong>Foxtrot 1.</strong></span> Some text</p>
     </div>
-    <div class="definition example" id="exm-1">
+    <div class="theorem example style-definition">
       <p><span class="title"><strong>Golf 1.</strong></span> Some text</p>
     </div>
-    <div class="definition exercise" id="exr-1">
+    <div class="theorem exercise style-definition">
       <p><span class="title"><strong>Hotel 1.</strong></span> Some text</p>
     </div>
-    <div class="remark solution" id="sol-1">
+    <div class="theorem solution style-remark">
       <p><span class="title"><em>India 1</em>. </span>Some text</p>
     </div>
-    <div class="remark" id="rem-1">
+    <div class="theorem remark style-remark">
       <p><span class="title"><em>Juliett 1</em>. </span>Some text</p>
     </div>
-    <div class="remark proof">
+    <div class="theorem proof style-remark">
       <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
     </div>
-    <div class="definition theorem" id="thm-2">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Alfa 2.</strong></span> Some text</p>
     </div>
-    <div class="definition lemma" id="lem-2">
+    <div class="theorem lemma style-definition">
       <p><span class="title"><strong>Bravo 2.</strong></span> Some text</p>
     </div>
-    <div class="definition corollary" id="cor-2">
+    <div class="theorem corollary style-definition">
       <p><span class="title"><strong>Charlie 2.</strong></span> Some text</p>
     </div>
-    <div class="definition proposition" id="prp-2">
+    <div class="theorem proposition style-definition">
       <p><span class="title"><strong>Delta 2.</strong></span> Some text</p>
     </div>
-    <div class="definition conjecture" id="cnj-2">
+    <div class="theorem conjecture style-definition">
       <p><span class="title"><strong>Echo 2.</strong></span> Some text</p>
     </div>
-    <div class="definition" id="def-2">
+    <div class="theorem definition style-definition">
       <p><span class="title"><strong>Foxtrot 2.</strong></span> Some text</p>
     </div>
-    <div class="definition example" id="exm-2">
+    <div class="theorem example style-definition">
       <p><span class="title"><strong>Golf 2.</strong></span> Some text</p>
     </div>
-    <div class="definition exercise" id="exr-2">
+    <div class="theorem exercise style-definition">
       <p><span class="title"><strong>Hotel 2.</strong></span> Some text</p>
     </div>
-    <div class="remark solution" id="sol-2">
+    <div class="theorem solution style-remark">
       <p><span class="title"><em>India 2</em>. </span>Some text</p>
     </div>
-    <div class="remark" id="rem-2">
+    <div class="theorem remark style-remark">
       <p><span class="title"><em>Juliett 2</em>. </span>Some text</p>
     </div>
-    <div class="remark proof">
+    <div class="theorem proof style-remark">
       <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
     </div>
   `);
@@ -949,113 +997,136 @@ test('all theorems with custom counters', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
     ---
     theorems:
+      theorem:
+        style: definition
+        heading: Theorem
       lemma:
+        style: definition
+        heading: Lemma
         referenceCounter: theorem
       corollary:
+        style: definition
+        heading: Corollary
         referenceCounter: theorem
       proposition:
+        style: definition
+        heading: Proposition
         referenceCounter: theorem
       conjecture:
+        style: definition
+        heading: Conjecture
         referenceCounter: theorem
+      definition:
+        style: definition
+        heading: Definition
       example:
+        style: definition
+        heading: Example
         referenceCounter: definition
       exercise:
+        style: definition
+        heading: Exercise
         referenceCounter: definition
       solution:
+        style: remark
+        heading: Solution
         referenceCounter: definition
       remark:
+        style: remark
+        heading: Remark
         referenceCounter: definition
     ---
 
-    ::: {#thm-1}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-1}
+    :::lemma
     Some text
     :::
 
-    ::: {#cor-1}
+    :::corollary
     Some text
     :::
 
-    ::: {#prp-1}
+    :::proposition
     Some text
     :::
 
-    ::: {#cnj-1}
+    :::conjecture
     Some text
     :::
 
-    ::: {#def-1}
+    :::definition
     Some text
     :::
 
-    ::: {#exm-1}
+    :::example
     Some text
     :::
 
-    ::: {#exr-1}
+    :::exercise
     Some text
     :::
 
-    ::: {#sol-1}
+    :::solution
     Some text
     :::
 
-    ::: {#rem-1}
+    :::remark
     Some text
     :::
 
-    ::: {.proof}
+    :::proof
     Some text
     :::
 
-    ::: {#thm-2}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-2}
+    :::lemma
     Some text
     :::
 
-    ::: {#cor-2}
+    :::corollary
     Some text
     :::
 
-    ::: {#prp-2}
+    :::proposition
     Some text
     :::
 
-    ::: {#cnj-2}
+    :::conjecture
     Some text
     :::
 
-    ::: {#def-2}
+    :::definition
     Some text
     :::
 
-    ::: {#exm-2}
+    :::example
     Some text
     :::
 
-    ::: {#exr-2}
+    :::exercise
     Some text
     :::
 
-    ::: {#sol-2}
+    :::solution
     Some text
     :::
 
-    ::: {#rem-2}
+    :::remark
     Some text
     :::
 
-    ::: {.proof}
+    :::proof
     Some text
     :::
   `);
@@ -1064,72 +1135,73 @@ test('all theorems with custom counters', async () => {
 
   const html = await testProcessor.md(markdown);
   // console.log(html);
+  // return;
 
   const expectedHtml = unindentStringAndTrim(`
-    <div class="definition theorem" id="thm-1">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem 1.</strong></span> Some text</p>
     </div>
-    <div class="definition lemma" id="lem-1">
+    <div class="theorem lemma style-definition">
       <p><span class="title"><strong>Lemma 2.</strong></span> Some text</p>
     </div>
-    <div class="definition corollary" id="cor-1">
+    <div class="theorem corollary style-definition">
       <p><span class="title"><strong>Corollary 3.</strong></span> Some text</p>
     </div>
-    <div class="definition proposition" id="prp-1">
+    <div class="theorem proposition style-definition">
       <p><span class="title"><strong>Proposition 4.</strong></span> Some text</p>
     </div>
-    <div class="definition conjecture" id="cnj-1">
+    <div class="theorem conjecture style-definition">
       <p><span class="title"><strong>Conjecture 5.</strong></span> Some text</p>
     </div>
-    <div class="definition" id="def-1">
+    <div class="theorem definition style-definition">
       <p><span class="title"><strong>Definition 1.</strong></span> Some text</p>
     </div>
-    <div class="definition example" id="exm-1">
+    <div class="theorem example style-definition">
       <p><span class="title"><strong>Example 2.</strong></span> Some text</p>
     </div>
-    <div class="definition exercise" id="exr-1">
+    <div class="theorem exercise style-definition">
       <p><span class="title"><strong>Exercise 3.</strong></span> Some text</p>
     </div>
-    <div class="remark solution" id="sol-1">
+    <div class="theorem solution style-remark">
       <p><span class="title"><em>Solution 4</em>. </span>Some text</p>
     </div>
-    <div class="remark" id="rem-1">
+    <div class="theorem remark style-remark">
       <p><span class="title"><em>Remark 5</em>. </span>Some text</p>
     </div>
-    <div class="remark proof">
+    <div class="theorem proof style-remark">
       <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
     </div>
-    <div class="definition theorem" id="thm-2">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem 6.</strong></span> Some text</p>
     </div>
-    <div class="definition lemma" id="lem-2">
+    <div class="theorem lemma style-definition">
       <p><span class="title"><strong>Lemma 7.</strong></span> Some text</p>
     </div>
-    <div class="definition corollary" id="cor-2">
+    <div class="theorem corollary style-definition">
       <p><span class="title"><strong>Corollary 8.</strong></span> Some text</p>
     </div>
-    <div class="definition proposition" id="prp-2">
+    <div class="theorem proposition style-definition">
       <p><span class="title"><strong>Proposition 9.</strong></span> Some text</p>
     </div>
-    <div class="definition conjecture" id="cnj-2">
+    <div class="theorem conjecture style-definition">
       <p><span class="title"><strong>Conjecture 10.</strong></span> Some text</p>
     </div>
-    <div class="definition" id="def-2">
+    <div class="theorem definition style-definition">
       <p><span class="title"><strong>Definition 6.</strong></span> Some text</p>
     </div>
-    <div class="definition example" id="exm-2">
+    <div class="theorem example style-definition">
       <p><span class="title"><strong>Example 7.</strong></span> Some text</p>
     </div>
-    <div class="definition exercise" id="exr-2">
+    <div class="theorem exercise style-definition">
       <p><span class="title"><strong>Exercise 8.</strong></span> Some text</p>
     </div>
-    <div class="remark solution" id="sol-2">
+    <div class="theorem solution style-remark">
       <p><span class="title"><em>Solution 9</em>. </span>Some text</p>
     </div>
-    <div class="remark" id="rem-2">
+    <div class="theorem remark style-remark">
       <p><span class="title"><em>Remark 10</em>. </span>Some text</p>
     </div>
-    <div class="remark proof">
+    <div class="theorem proof style-remark">
       <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
     </div>
   `);
@@ -1144,6 +1216,17 @@ test('all theorems with custom names', async () => {
 
     \theoremstyle{definition}
     \newtheorem{theorem}{Theorem}
+    \newtheorem{lemma}{Lemma}
+    \newtheorem{corollary}{Corollary}
+    \newtheorem{proposition}{Proposition}
+    \newtheorem{conjecture}{Conjecture}
+    \newtheorem{definition}{Definition}
+    \newtheorem{example}{Example}
+    \newtheorem{exercise}{Exercise}
+
+    \theoremstyle{remark}
+    \newtheorem{solution}{Solution}
+    \newtheorem{remark}{Remark}
 
     \begin{document}
     \begin{theorem}[Alpha] Some text \end{theorem}
@@ -1208,91 +1291,125 @@ test('all theorems with custom names', async () => {
   // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
-    ::: {#thm-1 name="Alpha"}
+    ---
+    theorems:
+      theorem:
+        style: definition
+        heading: Theorem
+      lemma:
+        style: definition
+        heading: Lemma
+      corollary:
+        style: definition
+        heading: Corollary
+      proposition:
+        style: definition
+        heading: Proposition
+      conjecture:
+        style: definition
+        heading: Conjecture
+      definition:
+        style: definition
+        heading: Definition
+      example:
+        style: definition
+        heading: Example
+      exercise:
+        style: definition
+        heading: Exercise
+      solution:
+        style: remark
+        heading: Solution
+      remark:
+        style: remark
+        heading: Remark
+    ---
+
+    :::theorem[Alpha]
     Some text
     :::
 
-    ::: {#lem-1 name="Bravo"}
+    :::lemma[Bravo]
     Some text
     :::
 
-    ::: {#cor-1 name="Charlie"}
+    :::corollary[Charlie]
     Some text
     :::
 
-    ::: {#prp-1 name="Delta"}
+    :::proposition[Delta]
     Some text
     :::
 
-    ::: {#cnj-1 name="Echo Beco"}
+    :::conjecture[Echo Beco]
     Some text
     :::
 
-    ::: {#def-1 name="Foxtrot"}
+    :::definition[Foxtrot]
     Some text
     :::
 
-    ::: {#exm-1 name="Golf"}
+    :::example[Golf]
     Some text
     :::
 
-    ::: {#exr-1 name="Hotel"}
+    :::exercise[Hotel]
     Some text
     :::
 
-    ::: {#sol-1 name="India"}
+    :::solution[India]
     Some text
     :::
 
-    ::: {#rem-1 name="Juliett"}
+    :::remark[Juliett]
     Some text
     :::
 
-    ::: {.proof name="Kilo"}
+    :::proof[Kilo]
     Some text
     :::
 
-    ::: {#thm-2 name="Lima"}
+    :::theorem[Lima]
     Some text
     :::
 
-    ::: {#lem-2 name="Mike"}
+    :::lemma[Mike]
     Some text
     :::
 
-    ::: {#cor-2 name="November"}
+    :::corollary[November]
     Some text
     :::
 
-    ::: {#prp-2 name="Oscar"}
+    :::proposition[Oscar]
     Some text
     :::
 
-    ::: {#cnj-2 name="Papa"}
+    :::conjecture[Papa]
     Some text
     :::
 
-    ::: {#def-2 name="Quebec"}
+    :::definition[Quebec]
     Some text
     :::
 
-    ::: {#exm-2 name="Romeo"}
+    :::example[Romeo]
     Some text
     :::
 
-    ::: {#exr-2 name="Sierra"}
+    :::exercise[Sierra]
     Some text
     :::
 
-    ::: {#sol-2 name="Tango"}
+    :::solution[Tango]
     Some text
     :::
 
-    ::: {#rem-2 name="Uniform"}
+    :::remark[Uniform]
     Some text
     :::
 
-    ::: {.proof name="Victor"}
+    :::proof[Victor]
     Some text
     :::
   `);
@@ -1306,70 +1423,70 @@ test('all theorems with custom names', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
-    <div class="definition theorem" id="thm-1">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem 1 (Alpha).</strong></span> Some text</p>
     </div>
-    <div class="definition lemma" id="lem-1">
+    <div class="theorem lemma style-definition">
       <p><span class="title"><strong>Lemma 1 (Bravo).</strong></span> Some text</p>
     </div>
-    <div class="definition corollary" id="cor-1">
+    <div class="theorem corollary style-definition">
       <p><span class="title"><strong>Corollary 1 (Charlie).</strong></span> Some text</p>
     </div>
-    <div class="definition proposition" id="prp-1">
+    <div class="theorem proposition style-definition">
       <p><span class="title"><strong>Proposition 1 (Delta).</strong></span> Some text</p>
     </div>
-    <div class="definition conjecture" id="cnj-1">
+    <div class="theorem conjecture style-definition">
       <p><span class="title"><strong>Conjecture 1 (Echo Beco).</strong></span> Some text</p>
     </div>
-    <div class="definition" id="def-1">
+    <div class="theorem definition style-definition">
       <p><span class="title"><strong>Definition 1 (Foxtrot).</strong></span> Some text</p>
     </div>
-    <div class="definition example" id="exm-1">
+    <div class="theorem example style-definition">
       <p><span class="title"><strong>Example 1 (Golf).</strong></span> Some text</p>
     </div>
-    <div class="definition exercise" id="exr-1">
+    <div class="theorem exercise style-definition">
       <p><span class="title"><strong>Exercise 1 (Hotel).</strong></span> Some text</p>
     </div>
-    <div class="remark solution" id="sol-1">
+    <div class="theorem solution style-remark">
       <p><span class="title"><em>Solution 1 (India)</em>. </span>Some text</p>
     </div>
-    <div class="remark" id="rem-1">
+    <div class="theorem remark style-remark">
       <p><span class="title"><em>Remark 1 (Juliett)</em>. </span>Some text</p>
     </div>
-    <div class="remark proof">
+    <div class="theorem proof style-remark">
       <p><span class="title"><em>Kilo</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
     </div>
-    <div class="definition theorem" id="thm-2">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem 2 (Lima).</strong></span> Some text</p>
     </div>
-    <div class="definition lemma" id="lem-2">
+    <div class="theorem lemma style-definition">
       <p><span class="title"><strong>Lemma 2 (Mike).</strong></span> Some text</p>
     </div>
-    <div class="definition corollary" id="cor-2">
+    <div class="theorem corollary style-definition">
       <p><span class="title"><strong>Corollary 2 (November).</strong></span> Some text</p>
     </div>
-    <div class="definition proposition" id="prp-2">
+    <div class="theorem proposition style-definition">
       <p><span class="title"><strong>Proposition 2 (Oscar).</strong></span> Some text</p>
     </div>
-    <div class="definition conjecture" id="cnj-2">
+    <div class="theorem conjecture style-definition">
       <p><span class="title"><strong>Conjecture 2 (Papa).</strong></span> Some text</p>
     </div>
-    <div class="definition" id="def-2">
+    <div class="theorem definition style-definition">
       <p><span class="title"><strong>Definition 2 (Quebec).</strong></span> Some text</p>
     </div>
-    <div class="definition example" id="exm-2">
+    <div class="theorem example style-definition">
       <p><span class="title"><strong>Example 2 (Romeo).</strong></span> Some text</p>
     </div>
-    <div class="definition exercise" id="exr-2">
+    <div class="theorem exercise style-definition">
       <p><span class="title"><strong>Exercise 2 (Sierra).</strong></span> Some text</p>
     </div>
-    <div class="remark solution" id="sol-2">
+    <div class="theorem solution style-remark">
       <p><span class="title"><em>Solution 2 (Tango)</em>. </span>Some text</p>
     </div>
-    <div class="remark" id="rem-2">
+    <div class="theorem remark style-remark">
       <p><span class="title"><em>Remark 2 (Uniform)</em>. </span>Some text</p>
     </div>
-    <div class="remark proof">
+    <div class="theorem proof style-remark">
       <p><span class="title"><em>Victor</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
     </div>
   `);
@@ -1434,73 +1551,94 @@ test('all theorems unnumbered', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
     ---
     theorems:
       theorem:
+        style: definition
+        heading: Theorem
         unnumbered: true
       lemma:
+        style: definition
+        heading: Lemma
         unnumbered: true
       corollary:
+        style: definition
+        heading: Corollary
         unnumbered: true
       proposition:
+        style: definition
+        heading: Proposition
         unnumbered: true
       conjecture:
+        style: definition
+        heading: Conjecture
         unnumbered: true
       definition:
+        style: definition
+        heading: Definition
         unnumbered: true
       example:
+        style: definition
+        heading: Example
         unnumbered: true
       exercise:
+        style: definition
+        heading: Exercise
         unnumbered: true
       solution:
+        style: remark
+        heading: Solution
         unnumbered: true
       remark:
+        style: remark
+        heading: Remark
         unnumbered: true
     ---
 
-    ::: {.thm.unnumbered}
+    :::theorem
     Some text
     :::
 
-    ::: {.lem.unnumbered}
+    :::lemma
     Some text
     :::
 
-    ::: {.cor.unnumbered}
+    :::corollary
     Some text
     :::
 
-    ::: {.prp.unnumbered}
+    :::proposition
     Some text
     :::
 
-    ::: {.cnj.unnumbered}
+    :::conjecture
     Some text
     :::
 
-    ::: {.def.unnumbered}
+    :::definition
     Some text
     :::
 
-    ::: {.exm.unnumbered}
+    :::example
     Some text
     :::
 
-    ::: {.exr.unnumbered}
+    :::exercise
     Some text
     :::
 
-    ::: {.sol.unnumbered}
+    :::solution
     Some text
     :::
 
-    ::: {.rem.unnumbered}
+    :::remark
     Some text
     :::
 
-    ::: {.proof}
+    :::proof
     Some text
     :::
   `);
@@ -1514,37 +1652,37 @@ test('all theorems unnumbered', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
-    <div class="definition theorem">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem.</strong></span> Some text</p>
     </div>
-    <div class="definition lemma">
+    <div class="theorem lemma style-definition">
       <p><span class="title"><strong>Lemma.</strong></span> Some text</p>
     </div>
-    <div class="definition corollary">
+    <div class="theorem corollary style-definition">
       <p><span class="title"><strong>Corollary.</strong></span> Some text</p>
     </div>
-    <div class="definition proposition">
+    <div class="theorem proposition style-definition">
       <p><span class="title"><strong>Proposition.</strong></span> Some text</p>
     </div>
-    <div class="definition conjecture">
+    <div class="theorem conjecture style-definition">
       <p><span class="title"><strong>Conjecture.</strong></span> Some text</p>
     </div>
-    <div class="definition">
+    <div class="theorem definition style-definition">
       <p><span class="title"><strong>Definition.</strong></span> Some text</p>
     </div>
-    <div class="definition example">
+    <div class="theorem example style-definition">
       <p><span class="title"><strong>Example.</strong></span> Some text</p>
     </div>
-    <div class="definition exercise">
+    <div class="theorem exercise style-definition">
       <p><span class="title"><strong>Exercise.</strong></span> Some text</p>
     </div>
-    <div class="remark solution">
+    <div class="theorem solution style-remark">
       <p><span class="title"><em>Solution</em>. </span>Some text</p>
     </div>
-    <div class="remark">
+    <div class="theorem remark style-remark">
       <p><span class="title"><em>Remark</em>. </span>Some text</p>
     </div>
-    <div class="remark proof">
+    <div class="theorem proof style-remark">
       <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
     </div>
   `);

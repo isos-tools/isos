@@ -2,7 +2,7 @@ import { FileCache } from '../embed-includes/file-cache';
 import { Reference } from '../plugins/bibliography/extract-bibliography';
 import { NoteMap } from '../plugins/notes/input-to-md/latex-ast';
 import { Warning } from '../plugins/preamble-warnings/def-warn';
-import { RefObjectsYaml } from '../plugins/refs-and-counts/default-objects';
+import { RefObjects } from '../plugins/refs-and-counts/default-objects';
 import { FileType, parseFilePath } from './utils/parse-file-path';
 
 type Author = {
@@ -33,7 +33,10 @@ export type Context = {
     date: string;
     author: Author[];
     abstract: string;
-    theorems: RefObjectsYaml;
+    theorems: RefObjects;
+    equation?: RefObjects;
+    figure?: RefObjects;
+    table?: RefObjects;
     'reference-location': 'below' | 'margin' | 'document';
     references: Reference[];
     preambleWarnings: Warning[];

@@ -129,3 +129,49 @@ test('add section if none exist', async () => {
   // const quartoHtml = await markdownToQuartoHtml(markdown);
   // console.log(quartoHtml);
 });
+
+test('section with id', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{hyperref}
+    \usepackage[noabbrev, capitalise, nameinlink]{cleveref}
+    \begin{document}
+
+    \section{Hello}
+    \label{sec:hi}
+
+    See \cref{sec:hi}.
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ## Hello {#sec-hi}
+
+    See @sec-hi.
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown, {
+    noSections: false,
+  });
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(`
+    <section id="sec-hi">
+      <h2><span class="count">1</span> Hello</h2>
+      <p>See <a href="#sec-hi" class="ref">Section 1</a>.</p>
+    </section>
+  `);
+
+  expect(html).toBe(expectedHtml);
+
+  // const pandocHtml = await markdownToPandocHtml(expectedMarkdown);
+  // console.log(pandocHtml);
+
+  // const quartoHtml = await markdownToQuartoHtml(expectedMarkdown);
+  // console.log(quartoHtml);
+});

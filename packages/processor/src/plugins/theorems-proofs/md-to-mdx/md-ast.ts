@@ -1,93 +1,33 @@
 import { ElementContent, Properties, Text } from 'hast';
-import { Parent, PhrasingContent, Root } from 'mdast';
+import { Paragraph, PhrasingContent, Root } from 'mdast';
 import { ContainerDirective } from 'mdast-util-directive';
 import { toHast } from 'mdast-util-to-hast';
 import { visit } from 'unist-util-visit';
 
 import { Context } from '../../../markdown-to-mdx/context';
-import { createRemarkProcessor } from '../../../remark-processor';
-import { Theorem } from '../default-theorems';
+import { RefObject } from '../../refs-and-counts/default-objects';
 
 export function theorems(ctx: Context) {
   return (tree: Root) => {
-    // const theorems = prepareTheorems(ctx);
     const { theorems } = ctx.frontmatter;
 
-    const refArr = Object.entries(theorems).map(([name, theorem]) => {
-      return { name, ...theorem };
-    }) as Theorem[];
-
-    const theoremArr = refArr.filter((o) => o.type === 'theorem');
-
     visit(tree, 'containerDirective', (node) => {
-      // Pandoc divs
-      if (node.name === ' ') {
-        const id = node.attributes?.id;
-        if (id) {
-          const [abbr] = id.split('-');
-          const theorem = theoremArr.findLast((o) => o.abbr === abbr);
-
-          if (theorem) {
-            createTheorem(node, theorem, theorem.name, id);
-          }
-        }
-
-        const classes = node.attributes?.class?.split(' ');
-        if (Array.isArray(classes)) {
-          if (classes.includes('unnumbered')) {
-            const abbr = classes
-              .filter((s) => s !== 'unnumbered')
-              .map((s) => s.replace(/\-star$/, '*'))
-              .find((s) => theoremArr.find((o) => o.abbr === s));
-            const theorem = theoremArr.findLast((o) => o.abbr === abbr);
-
-            if (theorem) {
-              createTheorem(node, theorem, theorem.name);
-            }
-          } else if (classes.includes('proof')) {
-            const proof = theoremArr.find(
-              (o) => o.name === 'proof',
-            ) as Theorem;
-            createTheorem(node, proof, 'proof');
-          }
-        }
+      const ref = theorems[node.name];
+      if (ref && ref.type === 'theorem') {
+        // console.log({ theorem });
+        createTheorem(node, ref);
       }
     });
   };
 }
 
-export function exSolSolutionDirective() {
-  return (tree: Root) => {
-    visit(tree, 'containerDirective', (node) => {
-      if (node.name === 'solution') {
-        node.data = {
-          hProperties: {
-            className: ['exsol-solution'],
-          },
-        };
-      }
-    });
-  };
-}
-
-// function prepareTheorems(ctx: Context) {
-//   const { custom, ...theorems } = ctx.frontmatter.theorems;
-//   return [
-//     ...Object.entries(theorems).map(([name, theorem]) => ({
-//       name,
-//       ...theorem,
-//     })),
-//     ...(custom || []),
-//   ] as Theorem[];
-// }
-
-function createTheorem(
-  node: ContainerDirective,
-  theorem: Theorem,
-  theoremName: string,
-  id?: string,
-) {
-  const className = [theorem.style || '', theoremName];
+function createTheorem(node: ContainerDirective, theorem: RefObject) {
+  const theoremName = node.name;
+  const id = node.attributes?.id || undefined;
+  const className = ['theorem', theoremName];
+  if (theorem.style) {
+    className.push(`style-${theorem.style}`);
+  }
   if (theorem.framed) {
     className.push('framed');
   }
@@ -114,7 +54,16 @@ function createTheorem(
     },
   };
 
-  const customName = node.attributes?.name || undefined;
+  const customName = node.children.find(
+    (o) => o.type === 'paragraph' && o.data?.directiveLabel,
+  ) as Paragraph | undefined;
+
+  if (customName) {
+    node.children = node.children.filter(
+      (o) => !(o.type === 'paragraph' && o.data?.directiveLabel),
+    );
+  }
+
   const label = createTitle(theorem, theoremName, customName, id);
   const title = createTitleElements(theorem, label);
   const firstP = node.children[0];
@@ -127,21 +76,31 @@ function createTheorem(
       children: title,
     });
   }
+}
 
-  // if (theoremName === 'proof') {
-  //   createQed(node);
-  // }
+export function exSolSolutionDirective() {
+  return (tree: Root) => {
+    visit(tree, 'containerDirective', (node) => {
+      if (node.name === 'solution') {
+        node.data = {
+          hProperties: {
+            className: ['exsol-solution'],
+          },
+        };
+      }
+    });
+  };
 }
 
 function createTitle(
-  theorem: Theorem,
+  theorem: RefObject,
   theoremName: string,
-  name?: string,
+  name?: Paragraph,
   id?: string,
 ) {
   if (theoremName === 'proof') {
     if (name) {
-      return getNameAst(name);
+      return name.children;
     } else {
       return [
         {
@@ -177,7 +136,7 @@ function createTitle(
         type: 'text',
         value: ' (',
       },
-      ...getNameAst(name),
+      ...name.children,
       {
         type: 'text',
         value: ')',
@@ -188,15 +147,10 @@ function createTitle(
   return result;
 }
 
-function getNameAst(name: string) {
-  const processor = createRemarkProcessor();
-  const parsed = processor.parse(String(name));
-  const transformed = processor.runSync(parsed) as Parent;
-  const firstChild = transformed.children[0] as Parent;
-  return firstChild.children as PhrasingContent[];
-}
-
-function createTitleElements(theorem: Theorem, label: PhrasingContent[]) {
+function createTitleElements(
+  theorem: RefObject,
+  label: PhrasingContent[],
+) {
   switch (theorem.style) {
     case 'remark':
       return createRemarkTitle(label);
@@ -262,41 +216,6 @@ function createRemarkTitle(label: PhrasingContent[]): PhrasingContent[] {
     },
   ];
 }
-
-// function createQed(node: ContainerDirective) {
-//   const proofBox: Text = {
-//     type: 'text',
-//     value: ' ◻',
-//     data: {
-//       hName: 'span',
-//       hProperties: {
-//         className: ['qed'],
-//       },
-//       hChildren: [
-//         {
-//           type: 'text',
-//           value: ' q.e.d.',
-//         },
-//       ],
-//     },
-//   };
-
-//   console.log(node.children);
-
-//   const last = node.children.findLast(
-//     (o) => o.type !== 'footnoteDefinition',
-//   );
-//   // console.log(node);
-
-//   if (last?.type === 'paragraph') {
-//     last.children.push(proofBox);
-//   } else {
-//     node.children.push({
-//       type: 'paragraph',
-//       children: [proofBox],
-//     });
-//   }
-// }
 
 function removeDupes(arr: string[]) {
   return arr.reduce((acc: string[], s) => {

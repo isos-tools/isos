@@ -24,7 +24,7 @@ export default defineConfig({
       },
       {
         test: {
-          name: 'browser',
+          name: 'visual',
           include: ['**/*.browsertest.ts'],
           // setupFiles: ['./src/__test__/browser-setup.ts'],
           // css: {

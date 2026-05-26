@@ -60,15 +60,17 @@ test('newexsol show', async () => {
     ---
     theorems:
       exercise:
+        style: definition
         framed: true
         hideable: show
+        heading: Exercise
         lowerTitle: Solution
         numberWithin: h2
     ---
 
     ## Alpha
 
-    :::: {#exr-1}
+    ::::exercise
     abc
 
     ***
@@ -88,7 +90,7 @@ test('newexsol show', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <h2 id="alpha"><span class="count">1</span> Alpha</h2>
-    <div class="definition exercise framed hideable-show" id="exr-1">
+    <div class="theorem exercise style-definition framed hideable-show">
       <p><span class="title"><strong>Exercise 1.1.</strong></span> abc</p>
       <hr />
       <p><span class="title"><strong>Solution 1.1.</strong></span> def</p>
@@ -156,15 +158,17 @@ test('newexsol', async () => {
     ---
     theorems:
       exercise:
+        style: definition
         framed: true
         hideable: clicktoshow
+        heading: Exercise
         lowerTitle: Solution
         numberWithin: h2
     ---
 
     ## Alpha
 
-    :::: {#exr-1}
+    ::::exercise
     abc
 
     ***
@@ -184,7 +188,7 @@ test('newexsol', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <h2 id="alpha"><span class="count">1</span> Alpha</h2>
-    <div class="definition exercise framed hideable-clicktoshow" id="exr-1">
+    <div class="theorem exercise style-definition framed hideable-clicktoshow">
       <p><span class="title"><strong>Exercise 1.1.</strong></span> abc</p>
       <hr />
       <p><button class="clicktoshow">Show Solution</button></p>
@@ -252,16 +256,18 @@ test('newexsol unnumbered', async () => {
     ---
     theorems:
       exercise:
-        unnumbered: true
+        style: definition
         framed: true
+        unnumbered: true
         hideable: clicktoshow
+        heading: Exercise
         lowerTitle: Solution
         numberWithin: h2
     ---
 
     ## Alpha
 
-    :::: {.exr.unnumbered}
+    ::::exercise
     abc
 
     ***
@@ -281,7 +287,7 @@ test('newexsol unnumbered', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <h2 id="alpha"><span class="count">1</span> Alpha</h2>
-    <div class="definition exercise framed hideable-clicktoshow">
+    <div class="theorem exercise style-definition framed hideable-clicktoshow">
       <p><span class="title"><strong>Exercise.</strong></span> abc</p>
       <hr />
       <p><button class="clicktoshow">Show Solution</button></p>
@@ -349,15 +355,17 @@ test('newexsol emptybox', async () => {
     ---
     theorems:
       exercise:
+        style: definition
         framed: true
         hideable: hide
+        heading: Exercise
         lowerTitle: Solution
         numberWithin: h2
     ---
 
     ## Alpha
 
-    ::: {#exr-1}
+    :::exercise
     abc
     :::
   `);
@@ -371,7 +379,7 @@ test('newexsol emptybox', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <h2 id="alpha"><span class="count">1</span> Alpha</h2>
-    <div class="definition exercise framed hideable-hide" id="exr-1">
+    <div class="theorem exercise style-definition framed hideable-hide">
       <p><span class="title"><strong>Exercise 1.1.</strong></span> abc</p>
     </div>
   `);
@@ -437,15 +445,17 @@ test('newexsol with label', async () => {
     ---
     theorems:
       exercise:
+        style: definition
         framed: true
         hideable: show
+        heading: Exercise
         lowerTitle: Solution
         numberWithin: h2
     ---
 
     ## Alpha
 
-    :::: {#exr-curl}
+    ::::exercise{#exr-curl}
     abc
 
     ***
@@ -465,7 +475,7 @@ test('newexsol with label', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <h2 id="alpha"><span class="count">1</span> Alpha</h2>
-    <div class="definition exercise framed hideable-show" id="exr-curl">
+    <div class="theorem exercise style-definition framed hideable-show" id="exr-curl">
       <p><span class="title"><strong>Exercise 1.1.</strong></span> abc</p>
       <hr />
       <p><span class="title"><strong>Solution 1.1.</strong></span> def</p>

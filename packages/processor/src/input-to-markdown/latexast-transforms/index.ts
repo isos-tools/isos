@@ -8,14 +8,16 @@ import {
   fancyBoxedToSubSection,
   fancySectionToSection,
 } from '../../plugins/fancy/fancy-section-to-section';
+import { extractHeadingDepths } from '../../plugins/headings/extract-heading-depths';
 import { insertParbreaksAroundImage } from '../../plugins/images/input-to-md/space-around-images';
 import { warnOnHardcodedListLabels } from '../../plugins/lists/warn-hardcoded-list-labels';
 import { equationLabelToId } from '../../plugins/maths/equation-label-to-id';
 import { extractNotes } from '../../plugins/notes/input-to-md/latex-ast';
 import { defWarn } from '../../plugins/preamble-warnings/def-warn';
+import { extractNumberWithin } from '../../plugins/refs-and-counts/number-within';
 import { extractTocContents } from '../../plugins/table-of-contents/extract-toc-contents';
 import { tableCaptionToData } from '../../plugins/tables/table-caption-to-data';
-import { theorems } from '../../plugins/theorems-proofs/input-to-md/latex-ast';
+import { extractTheoremDefinitions } from '../../plugins/theorems-proofs/input-to-md/latex-ast';
 import { Context } from '../context';
 import { convertEmToEmph } from './convert-em-to-emph';
 import { convertHspace } from './convert-hspace';
@@ -60,8 +62,10 @@ export function createLatexastTransforms(ctx: Context): PluggableList {
 
   // extract data
   transforms.push(
+    [extractHeadingDepths, ctx],
     [extractNotes, ctx],
-    [theorems, ctx],
+    [extractNumberWithin, ctx],
+    [extractTheoremDefinitions, ctx],
     [extractBibliography, ctx],
     [extractTopMatter, ctx],
     [extractTocContents, ctx],

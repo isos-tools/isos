@@ -47,18 +47,19 @@ test('image with counter', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
     ---
     theorems:
       theorem:
-        style: plain
+        heading: Theorem
         numberWithin: h2
     ---
 
     ## Hello {#hi}
 
-    ::: {#thm-1}
+    :::theorem
     Some text
     :::
 
@@ -83,7 +84,7 @@ test('image with counter', async () => {
   const expectedHtml = unindentStringAndTrim(`
     <section id="hi">
       <h2><span class="count">1</span> Hello</h2>
-      <div class="plain theorem" id="thm-1">
+      <div class="theorem">
         <p><span class="title"><strong>Theorem 1.1.</strong></span> Some text</p>
       </div>
       <p><img src="image.pdf" alt="my alt text" /></p>
@@ -153,26 +154,27 @@ test('image with counterWithin', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
     ---
+    figure:
+      counterWithin: theorem
     theorems:
       theorem:
-        style: plain
+        heading: Theorem
         counterWithin: section
-      figure:
-        counterWithin: theorem
     ---
 
     ## Hello {#hi}
 
-    ::: {#thm-1}
+    :::theorem
     Some text
     :::
 
     ![My **caption**](image.pdf){alt="my alt text"}
 
-    ::: {#thm-2}
+    :::theorem
     Some text
     :::
 

@@ -2,14 +2,11 @@ import { Root } from 'hast';
 import { visit } from 'unist-util-visit';
 
 import { Context } from '../../input-to-markdown/context';
-import { createHeadingDepths } from './heading-depths';
 
 export function adjustHeadingDepth(ctx: Context) {
   return (tree: Root) => {
-    const hasPart = hasPartHeading(tree);
-    const { documentClass: doc } = ctx.frontmatter;
-    ctx.sectionToHeading = createHeadingDepths(doc || '', hasPart);
-
+    const { sectionToHeading } = ctx;
+    // console.log(sectionToHeading);
     visit(tree, 'element', (node) => {
       if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(node.tagName)) {
         const className = node.properties.className;
@@ -20,7 +17,7 @@ export function adjustHeadingDepth(ctx: Context) {
 
           if (klass) {
             const headingType = klass.replace(/^section-/, '');
-            node.tagName = ctx.sectionToHeading[headingType];
+            node.tagName = sectionToHeading[headingType];
           }
 
           if (classes.includes('starred')) {
@@ -33,25 +30,4 @@ export function adjustHeadingDepth(ctx: Context) {
       }
     });
   };
-}
-
-function hasPartHeading(tree: Root) {
-  let hasPart = false;
-  visit(tree, 'element', (node) => {
-    if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(node.tagName)) {
-      const className = node.properties.className;
-      if (Array.isArray(className)) {
-        const klass = className
-          .map(String)
-          .find((s) => s.startsWith('section-'));
-        if (klass) {
-          const headingType = klass.replace(/^section-/, '');
-          if (headingType === 'part') {
-            hasPart = true;
-          }
-        }
-      }
-    }
-  });
-  return hasPart;
 }

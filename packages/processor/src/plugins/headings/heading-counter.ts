@@ -1,4 +1,4 @@
-type HeadingCounter = {
+export type HeadingCounter = {
   get: (depth: number) => number;
   getCounts: (depth: number) => number[];
   setCount: (depth: number, value: number) => void;

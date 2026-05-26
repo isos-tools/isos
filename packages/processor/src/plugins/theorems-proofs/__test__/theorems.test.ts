@@ -32,9 +32,17 @@ test('theorem', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
-    ::: {#thm-1}
+    ---
+    theorems:
+      theorem:
+        style: definition
+        heading: Theorem
+    ---
+
+    :::theorem
     An \`example\\n\` of *this*!
     :::
   `);
@@ -56,7 +64,7 @@ test('theorem', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
-    <div class="definition theorem" id="thm-1">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem 1.</strong></span> An <code>example\\n</code> of <em>this</em>!</p>
     </div>
   `);
@@ -81,9 +89,17 @@ test('theorem with name', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
-    ::: {#thm-1 name="Pythagorean"}
+    ---
+    theorems:
+      theorem:
+        style: definition
+        heading: Theorem
+    ---
+
+    :::theorem[Pythagorean]
     Cras mattis.
 
     Cras justo odio.
@@ -94,9 +110,10 @@ test('theorem with name', async () => {
 
   const html = await testProcessor.md(markdown);
   // console.log(html);
+  // return;
 
   const expectedHtml = unindentStringAndTrim(`
-    <div class="definition theorem" id="thm-1">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem 1 (Pythagorean).</strong></span> Cras mattis.</p>
       <p>Cras justo odio.</p>
     </div>
@@ -119,9 +136,17 @@ test('theorem with math in the name', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
-    ::: {#thm-1 name="Order for $\\mathbb{R}$"}
+    ---
+    theorems:
+      theorem:
+        style: definition
+        heading: Theorem
+    ---
+
+    :::theorem[Order for $\\mathbb{R}$]
     a
     :::
   `);
@@ -130,9 +155,10 @@ test('theorem with math in the name', async () => {
 
   const html = await testProcessor.md(markdown);
   // console.log(html);
+  // return;
 
   const expectedHtml = unindentStringAndTrim(`
-    <div class="definition theorem" id="thm-1">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem 1 (Order for <code class="latex">\\mathbb{R}</code>).</strong></span> a</p>
     </div>
   `);
@@ -175,9 +201,17 @@ test('theorem with id', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
-    ::: {#thm-line name="Ho ha"}
+    ---
+    theorems:
+      theorem:
+        style: definition
+        heading: Theorem
+    ---
+
+    :::theorem[Ho ha]{#thm-line}
     Cras mattis.
 
     Cras justo odio.
@@ -205,7 +239,7 @@ test('theorem with id', async () => {
   // // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
-    <div class="definition theorem" id="thm-line">
+    <div class="theorem style-definition" id="thm-line">
       <p><span class="title"><strong>Theorem 1 (Ho ha).</strong></span> Cras mattis.</p>
       <p>Cras justo odio.</p>
     </div>
@@ -271,61 +305,66 @@ test('theorems with section counter', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
     ---
     theorems:
       theorem:
+        style: definition
+        heading: Theorem
         numberWithin: h2
       lemma:
+        style: definition
+        heading: Lemma
         referenceCounter: theorem
     ---
 
-    ::: {#thm-1}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-1}
-    Some text
-    :::
-
-    ## My section
-
-    ::: {#thm-2}
-    Some text
-    :::
-
-    ::: {#lem-2}
-    Some text
-    :::
-
-    ### My subsection
-
-    ::: {#thm-3}
-    Some text
-    :::
-
-    ::: {#lem-3}
+    :::lemma
     Some text
     :::
 
     ## My section
 
-    ::: {#thm-4}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-4}
+    :::lemma
     Some text
     :::
 
     ### My subsection
 
-    ::: {#thm-5}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-5}
+    :::lemma
+    Some text
+    :::
+
+    ## My section
+
+    :::theorem
+    Some text
+    :::
+
+    :::lemma
+    Some text
+    :::
+
+    ### My subsection
+
+    :::theorem
+    Some text
+    :::
+
+    :::lemma
     Some text
     :::
   `);
@@ -334,49 +373,50 @@ test('theorems with section counter', async () => {
 
   const html = await testProcessor.md(markdown, { noSections: false });
   // console.log(html);
+  // return;
 
   const expectedHtml = unindentStringAndTrim(`
     <section>
-      <div class="definition theorem" id="thm-1">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 0.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-1">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 0.2.</strong></span> Some text</p>
       </div>
     </section>
     <section id="my-section">
       <h2><span class="count">1</span> My section</h2>
-      <div class="definition theorem" id="thm-2">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 1.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-2">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 1.2.</strong></span> Some text</p>
       </div>
     </section>
     <section id="my-subsection">
       <h3><span class="count">1.1</span> My subsection</h3>
-      <div class="definition theorem" id="thm-3">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 1.3.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-3">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 1.4.</strong></span> Some text</p>
       </div>
     </section>
     <section id="my-section-1">
       <h2><span class="count">2</span> My section</h2>
-      <div class="definition theorem" id="thm-4">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 2.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-4">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 2.2.</strong></span> Some text</p>
       </div>
     </section>
     <section id="my-subsection-1">
       <h3><span class="count">2.1</span> My subsection</h3>
-      <div class="definition theorem" id="thm-5">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 2.3.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-5">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 2.4.</strong></span> Some text</p>
       </div>
     </section>
@@ -441,61 +481,66 @@ test('theorems with subsection counter', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
     ---
     theorems:
       theorem:
+        style: definition
+        heading: Theorem
         numberWithin: h3
       lemma:
+        style: definition
+        heading: Lemma
         referenceCounter: theorem
     ---
 
-    ::: {#thm-1}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-1}
-    Some text
-    :::
-
-    ## My section
-
-    ::: {#thm-2}
-    Some text
-    :::
-
-    ::: {#lem-2}
-    Some text
-    :::
-
-    ### My subsection
-
-    ::: {#thm-3}
-    Some text
-    :::
-
-    ::: {#lem-3}
+    :::lemma
     Some text
     :::
 
     ## My section
 
-    ::: {#thm-4}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-4}
+    :::lemma
     Some text
     :::
 
     ### My subsection
 
-    ::: {#thm-5}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-5}
+    :::lemma
+    Some text
+    :::
+
+    ## My section
+
+    :::theorem
+    Some text
+    :::
+
+    :::lemma
+    Some text
+    :::
+
+    ### My subsection
+
+    :::theorem
+    Some text
+    :::
+
+    :::lemma
     Some text
     :::
   `);
@@ -507,46 +552,46 @@ test('theorems with subsection counter', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <section>
-      <div class="definition theorem" id="thm-1">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 0.0.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-1">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 0.0.2.</strong></span> Some text</p>
       </div>
     </section>
     <section id="my-section">
       <h2><span class="count">1</span> My section</h2>
-      <div class="definition theorem" id="thm-2">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 1.0.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-2">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 1.0.2.</strong></span> Some text</p>
       </div>
     </section>
     <section id="my-subsection">
       <h3><span class="count">1.1</span> My subsection</h3>
-      <div class="definition theorem" id="thm-3">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 1.1.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-3">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 1.1.2.</strong></span> Some text</p>
       </div>
     </section>
     <section id="my-section-1">
       <h2><span class="count">2</span> My section</h2>
-      <div class="definition theorem" id="thm-4">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 2.0.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-4">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 2.0.2.</strong></span> Some text</p>
       </div>
     </section>
     <section id="my-subsection-1">
       <h3><span class="count">2.1</span> My subsection</h3>
-      <div class="definition theorem" id="thm-5">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 2.1.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-5">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 2.1.2.</strong></span> Some text</p>
       </div>
     </section>
@@ -611,61 +656,66 @@ test('theorems with subsubsection counter', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
     ---
     theorems:
       theorem:
+        style: definition
+        heading: Theorem
         numberWithin: h4
       lemma:
+        style: definition
+        heading: Lemma
         referenceCounter: theorem
     ---
 
-    ::: {#thm-1}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-1}
+    :::lemma
     Some text
     :::
 
     ## My section
 
-    ::: {#thm-2}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-2}
+    :::lemma
     Some text
     :::
 
     ### My subsection
 
-    ::: {#thm-3}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-3}
+    :::lemma
     Some text
     :::
 
     #### My subsubsection
 
-    ::: {#thm-4}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-4}
+    :::lemma
     Some text
     :::
 
     ### My subsection
 
-    ::: {#thm-5}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-5}
+    :::lemma
     Some text
     :::
   `);
@@ -674,49 +724,50 @@ test('theorems with subsubsection counter', async () => {
 
   const html = await testProcessor.md(markdown, { noSections: false });
   // console.log(html);
+  // return
 
   const expectedHtml = unindentStringAndTrim(`
     <section>
-      <div class="definition theorem" id="thm-1">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 0.0.0.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-1">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 0.0.0.2.</strong></span> Some text</p>
       </div>
     </section>
     <section id="my-section">
       <h2><span class="count">1</span> My section</h2>
-      <div class="definition theorem" id="thm-2">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 1.0.0.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-2">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 1.0.0.2.</strong></span> Some text</p>
       </div>
     </section>
     <section id="my-subsection">
       <h3><span class="count">1.1</span> My subsection</h3>
-      <div class="definition theorem" id="thm-3">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 1.1.0.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-3">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 1.1.0.2.</strong></span> Some text</p>
       </div>
     </section>
     <section id="my-subsubsection">
       <h4><span class="count">1.1.1</span> My subsubsection</h4>
-      <div class="definition theorem" id="thm-4">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 1.1.1.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-4">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 1.1.1.2.</strong></span> Some text</p>
       </div>
     </section>
     <section id="my-subsection-1">
       <h3><span class="count">1.2</span> My subsection</h3>
-      <div class="definition theorem" id="thm-5">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 1.2.0.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-5">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 1.2.0.2.</strong></span> Some text</p>
       </div>
     </section>
@@ -781,61 +832,66 @@ test('theorems with paragraph counter', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
     ---
     theorems:
       theorem:
+        style: definition
+        heading: Theorem
         numberWithin: h5
       lemma:
+        style: definition
+        heading: Lemma
         referenceCounter: theorem
     ---
 
-    ::: {#thm-1}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-1}
+    :::lemma
     Some text
     :::
 
     ## My section
 
-    ::: {#thm-2}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-2}
+    :::lemma
     Some text
     :::
 
     ### My subsection
 
-    ::: {#thm-3}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-3}
+    :::lemma
     Some text
     :::
 
     #### My subsubsection
 
-    ::: {#thm-4}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-4}
+    :::lemma
     Some text
     :::
 
     ### My subsection
 
-    ::: {#thm-5}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-5}
+    :::lemma
     Some text
     :::
   `);
@@ -847,46 +903,46 @@ test('theorems with paragraph counter', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <section>
-      <div class="definition theorem" id="thm-1">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 0.0.0.0.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-1">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 0.0.0.0.2.</strong></span> Some text</p>
       </div>
     </section>
     <section id="my-section">
       <h2><span class="count">1</span> My section</h2>
-      <div class="definition theorem" id="thm-2">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 1.0.0.0.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-2">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 1.0.0.0.2.</strong></span> Some text</p>
       </div>
     </section>
     <section id="my-subsection">
       <h3><span class="count">1.1</span> My subsection</h3>
-      <div class="definition theorem" id="thm-3">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 1.1.0.0.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-3">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 1.1.0.0.2.</strong></span> Some text</p>
       </div>
     </section>
     <section id="my-subsubsection">
       <h4><span class="count">1.1.1</span> My subsubsection</h4>
-      <div class="definition theorem" id="thm-4">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 1.1.1.0.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-4">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 1.1.1.0.2.</strong></span> Some text</p>
       </div>
     </section>
     <section id="my-subsection-1">
       <h3><span class="count">1.2</span> My subsection</h3>
-      <div class="definition theorem" id="thm-5">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 1.2.0.0.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-5">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 1.2.0.0.2.</strong></span> Some text</p>
       </div>
     </section>
@@ -956,71 +1012,76 @@ test('theorems with subparagraph counter', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
     ---
     theorems:
       theorem:
+        style: definition
+        heading: Theorem
         numberWithin: h6
       lemma:
+        style: definition
+        heading: Lemma
         referenceCounter: theorem
     ---
 
-    ::: {#thm-1}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-1}
+    :::lemma
     Some text
     :::
 
     ## My section
 
-    ::: {#thm-2}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-2}
+    :::lemma
     Some text
     :::
 
     ### My subsection
 
-    ::: {#thm-3}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-3}
+    :::lemma
     Some text
     :::
 
     #### My subsubsection
 
-    ::: {#thm-4}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-4}
+    :::lemma
     Some text
     :::
 
     ##### My paragraph
 
-    ::: {#thm-5}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-5}
+    :::lemma
     Some text
     :::
 
     ###### My subparagraph
 
-    ::: {#thm-6}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-6}
+    :::lemma
     Some text
     :::
   `);
@@ -1032,55 +1093,55 @@ test('theorems with subparagraph counter', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <section>
-      <div class="definition theorem" id="thm-1">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 0.0.0.0.0.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-1">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 0.0.0.0.0.2.</strong></span> Some text</p>
       </div>
     </section>
     <section id="my-section">
       <h2><span class="count">1</span> My section</h2>
-      <div class="definition theorem" id="thm-2">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 1.0.0.0.0.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-2">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 1.0.0.0.0.2.</strong></span> Some text</p>
       </div>
     </section>
     <section id="my-subsection">
       <h3><span class="count">1.1</span> My subsection</h3>
-      <div class="definition theorem" id="thm-3">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 1.1.0.0.0.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-3">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 1.1.0.0.0.2.</strong></span> Some text</p>
       </div>
     </section>
     <section id="my-subsubsection">
       <h4><span class="count">1.1.1</span> My subsubsection</h4>
-      <div class="definition theorem" id="thm-4">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 1.1.1.0.0.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-4">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 1.1.1.0.0.2.</strong></span> Some text</p>
       </div>
     </section>
     <section id="my-paragraph">
       <h5>My paragraph</h5>
-      <div class="definition theorem" id="thm-5">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 1.1.1.1.0.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-5">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 1.1.1.1.0.2.</strong></span> Some text</p>
       </div>
     </section>
     <section id="my-subparagraph">
       <h6>My subparagraph</h6>
-      <div class="definition theorem" id="thm-6">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 1.1.1.1.1.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-6">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 1.1.1.1.1.2.</strong></span> Some text</p>
       </div>
     </section>
@@ -1159,27 +1220,49 @@ test('theorems with reference and section counters', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
     ---
     theorems:
       theorem:
+        style: definition
+        heading: Theorem
         numberWithin: h3
       lemma:
+        style: definition
+        heading: Lemma
         numberWithin: h2
       corollary:
+        style: definition
+        heading: Corollary
         referenceCounter: theorem
       proposition:
+        style: definition
+        heading: Proposition
         referenceCounter: theorem
       conjecture:
+        style: definition
+        heading: Conjecture
         referenceCounter: lemma
+      definition:
+        style: definition
+        heading: Definition
       example:
+        style: definition
+        heading: Example
         unnumbered: true
       exercise:
+        style: definition
+        heading: Exercise
         referenceCounter: theorem
       solution:
+        style: remark
+        heading: Solution
         referenceCounter: lemma
       remark:
+        style: remark
+        heading: Remark
         unnumbered: true
     ---
 
@@ -1187,59 +1270,59 @@ test('theorems with reference and section counters', async () => {
 
     ### My subsection
 
-    ::: {#thm-1}
+    :::theorem
     Some text
     :::
 
-    ::: {#lem-1}
+    :::lemma
     Some text
     :::
 
-    ::: {#cor-1}
+    :::corollary
     Some text
     :::
 
-    ::: {#prp-1}
+    :::proposition
     Some text
     :::
 
-    ::: {#cnj-1}
+    :::conjecture
     Some text
     :::
 
     ## My section {.unnumbered}
 
-    ::: {#def-1}
+    :::definition
     Some text
     :::
 
-    ::: {.exm.unnumbered}
+    :::example
     Some text
     :::
 
-    ::: {#exr-1}
+    :::exercise
     Some text
     :::
 
-    ::: {.rem.unnumbered}
+    :::remark
     Some text
     :::
 
     ### My subsection
 
-    ::: {#sol-1}
+    :::solution
     Some text
     :::
 
-    ::: {#exr-2}
+    :::exercise
     Some text
     :::
 
-    ::: {.proof}
+    :::proof
     Some text
     :::
 
-    ::: {#sol-2}
+    :::solution
     Some text
     :::
   `);
@@ -1251,6 +1334,7 @@ test('theorems with reference and section counters', async () => {
 
   const html = await testProcessor.md(markdown, { noSections: false });
   // console.log(html);
+  // return;
 
   const expectedHtml = unindentStringAndTrim(`
     <section id="my-section">
@@ -1258,49 +1342,49 @@ test('theorems with reference and section counters', async () => {
     </section>
     <section id="my-subsection">
       <h3><span class="count">1.1</span> My subsection</h3>
-      <div class="definition theorem" id="thm-1">
+      <div class="theorem style-definition">
         <p><span class="title"><strong>Theorem 1.1.1.</strong></span> Some text</p>
       </div>
-      <div class="definition lemma" id="lem-1">
+      <div class="theorem lemma style-definition">
         <p><span class="title"><strong>Lemma 1.1.</strong></span> Some text</p>
       </div>
-      <div class="definition corollary" id="cor-1">
+      <div class="theorem corollary style-definition">
         <p><span class="title"><strong>Corollary 1.1.2.</strong></span> Some text</p>
       </div>
-      <div class="definition proposition" id="prp-1">
+      <div class="theorem proposition style-definition">
         <p><span class="title"><strong>Proposition 1.1.3.</strong></span> Some text</p>
       </div>
-      <div class="definition conjecture" id="cnj-1">
+      <div class="theorem conjecture style-definition">
         <p><span class="title"><strong>Conjecture 1.2.</strong></span> Some text</p>
       </div>
     </section>
     <section id="my-section-1">
       <h2>My section</h2>
-      <div class="definition" id="def-1">
+      <div class="theorem definition style-definition">
         <p><span class="title"><strong>Definition 1.</strong></span> Some text</p>
       </div>
-      <div class="definition example">
+      <div class="theorem example style-definition">
         <p><span class="title"><strong>Example.</strong></span> Some text</p>
       </div>
-      <div class="definition exercise" id="exr-1">
+      <div class="theorem exercise style-definition">
         <p><span class="title"><strong>Exercise 1.1.4.</strong></span> Some text</p>
       </div>
-      <div class="remark">
+      <div class="theorem remark style-remark">
         <p><span class="title"><em>Remark</em>. </span>Some text</p>
       </div>
     </section>
     <section id="my-subsection-1">
       <h3><span class="count">1.2</span> My subsection</h3>
-      <div class="remark solution" id="sol-1">
+      <div class="theorem solution style-remark">
         <p><span class="title"><em>Solution 1.3</em>. </span>Some text</p>
       </div>
-      <div class="definition exercise" id="exr-2">
+      <div class="theorem exercise style-definition">
         <p><span class="title"><strong>Exercise 1.2.1.</strong></span> Some text</p>
       </div>
-      <div class="remark proof">
+      <div class="theorem proof style-remark">
         <p><span class="title"><em>Proof</em>. </span>Some text<span class="qed"> q.e.d.</span></p>
       </div>
-      <div class="remark solution" id="sol-2">
+      <div class="theorem solution style-remark">
         <p><span class="title"><em>Solution 1.4</em>. </span>Some text</p>
       </div>
     </section>
@@ -1313,7 +1397,6 @@ test('ignore an unsupported boxout', async () => {
   const latex = String.raw`
     \documentclass{article}
     \usepackage{amsthm}
-    \theoremstyle{definition}
     \begin{document}
     \begin{theorem2}
     An \verb|example\n| of \emph{this}!
@@ -1355,14 +1438,21 @@ test('nested theorems', async () => {
   // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
-    :::: {#prp-1}
+    ---
+    theorems:
+      proposition:
+        style: definition
+        heading: Proposition
+    ---
+
+    ::::proposition
     Let $S$.
 
     a
 
     b
 
-    ::: {.proof}
+    :::proof
     Let:
     :::
 
@@ -1396,7 +1486,7 @@ test('qed placement', async () => {
   // return;
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
-    ::: {.proof}
+    :::proof
     We must:
 
     1. Let:
@@ -1415,7 +1505,7 @@ test('qed placement', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <div class="remark proof">
+    <div class="theorem proof style-remark">
       <p><span class="title"><em>Proof</em>. </span>We must:</p>
       <ol>
         <li>
@@ -1443,7 +1533,7 @@ test('qed placement 2', async () => {
   // console.log(markdown);
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
-    :::: {.proof}
+    ::::proof
     Observe that:sidenote[sn-1].
 
     :::sidenotecontent[sn-1]
@@ -1458,7 +1548,7 @@ test('qed placement 2', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <div class="remark proof">
+    <div class="theorem proof style-remark">
       <p><span class="title"><em>Proof</em>. </span>Observe that<span class="sidenote"><sup><a id="sn-ref-sn-1" href="#sn-def-sn-1">1</a></sup><span class="sidenote-label"> (sidenote: </span><small class="sidenote-content"><span><sup><a id="sn-def-sn-1" href="#sn-ref-sn-1">1</a></sup>If we substitute</span></small><span class="sidenote-label">)</span></span>.<span class="qed"> q.e.d.</span></p>
     </div>
   `);
@@ -1486,7 +1576,14 @@ test('syntax bug', async () => {
   // return;
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
-    ::: {#thm-1}
+    ---
+    theorems:
+      theorem:
+        style: definition
+        heading: Theorem
+    ---
+
+    :::theorem
     $$
     \mathbf{a}
     $$
@@ -1500,7 +1597,7 @@ test('syntax bug', async () => {
   // return;
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <div class="definition theorem" id="thm-1">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem 1.</strong></span> </p>
       <p class="maths"><code class="latex">\mathbf{a}</code></p>
     </div>
@@ -1529,17 +1626,13 @@ test('syntax bug 2', async () => {
   const expectedMarkdown = unindentStringAndTrim(String.raw`
     ---
     theorems:
-      custom:
-        - name: thm
-          abbr: thm
-          style: definition
-          heading: Theorem
-          numberWithin: section
-          unnumbered: false
-          type: theorem
+      thm:
+        style: definition
+        heading: Theorem
+        numberWithin: h2
     ---
 
-    ::: {#thm-1 name="Clairaut's Theroem"}
+    :::thm[Clairaut's Theroem]
     abc \[Roughly speaking] Then
     :::
   `);
@@ -1551,7 +1644,7 @@ test('syntax bug 2', async () => {
   // return;
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <div class="definition thm" id="thm-1">
+    <div class="theorem thm style-definition">
       <p><span class="title"><strong>Theorem 0.1 (Clairaut's Theroem).</strong></span> abc [Roughly speaking] Then</p>
     </div>
   `);
@@ -1583,10 +1676,12 @@ test('syntax bug 3', async () => {
     ---
     theorems:
       theorem:
+        style: definition
+        heading: Theorem
         numberWithin: h2
     ---
 
-    ::: {#thm-1}
+    :::theorem
     a
 
     ### Remark
@@ -1602,7 +1697,7 @@ test('syntax bug 3', async () => {
   // return;
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <div class="definition theorem" id="thm-1">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem 0.1.</strong></span> a</p>
       <h3 id="remark"><span class="count">0.1</span> Remark</h3>
       <p>b</p>
@@ -1637,28 +1732,19 @@ test('syntax bug 4', async () => {
   const expectedMarkdown = unindentStringAndTrim(String.raw`
     ---
     theorems:
-      custom:
-        - name: dfn
-          abbr: dfn
-          style: plain
-          heading: Definition
-          numberWithin: section
-          unnumbered: false
-          type: theorem
-        - name: lem
-          abbr: lem
-          style: plain
-          heading: Lemma
-          referenceCounter: dfn
-          unnumbered: false
-          type: theorem
+      dfn:
+        heading: Definition
+        numberWithin: h2
+      lem:
+        heading: Lemma
+        referenceCounter: dfn
     ---
 
-    ::: {#lem-rolle name="Rolle's Theorem"}
+    :::lem[Rolle's Theorem]{#lem-rolle}
     Suppose that
     :::
 
-    ::: {.proof name="Proof of @lem-rolle."}
+    :::proof[Proof of @lem-rolle.]
     By the extremal value theorem
     :::
   `);
@@ -1670,10 +1756,10 @@ test('syntax bug 4', async () => {
   // return;
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <div class="plain lem" id="lem-rolle">
+    <div class="theorem lem" id="lem-rolle">
       <p><span class="title"><strong>Lemma 0.1 (Rolle's Theorem).</strong></span> Suppose that</p>
     </div>
-    <div class="remark proof">
+    <div class="theorem proof style-remark">
       <p><span class="title"><em>Proof of <a href="#lem-rolle" class="ref">Lemma 0.1</a>.</em>. </span>By the extremal value theorem<span class="qed"> q.e.d.</span></p>
     </div>
   `);
@@ -1707,32 +1793,23 @@ test('syntax bug 5', async () => {
   const expectedMarkdown = unindentStringAndTrim(String.raw`
     ---
     theorems:
-      custom:
-        - name: dfn
-          abbr: dfn
-          style: plain
-          heading: Definition2
-          numberWithin: section
-          unnumbered: false
-          type: theorem
-        - name: thm
-          abbr: thm
-          style: plain
-          heading: Theorem2
-          referenceCounter: dfn
-          unnumbered: false
-          type: theorem
+      dfn:
+        heading: Definition2
+        numberWithin: h2
+      thm:
+        heading: Theorem2
+        referenceCounter: dfn
     ---
 
     ::set-counter{type="h2" value="4"}
 
     ## Alpha {.unnumbered}
 
-    ::: {#dfn-1}
+    :::dfn
     Bravo.
     :::
 
-    ::: {#thm-1}
+    :::thm
     Charlie.
     :::
   `);
@@ -1745,10 +1822,10 @@ test('syntax bug 5', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <h2 id="alpha">Alpha</h2>
-    <div class="plain dfn" id="dfn-1">
+    <div class="theorem dfn">
       <p><span class="title"><strong>Definition2 4.1.</strong></span> Bravo.</p>
     </div>
-    <div class="plain thm" id="thm-1">
+    <div class="theorem thm">
       <p><span class="title"><strong>Theorem2 4.2.</strong></span> Charlie.</p>
     </div>
   `);
@@ -1783,14 +1860,18 @@ test('syntax bug 6', async () => {
     ---
     theorems:
       theorem:
+        style: definition
+        heading: Theorem
         numberWithin: h2
       lemma:
+        style: definition
+        heading: Lemma
         referenceCounter: theorem
     ---
 
     ## Alpha
 
-    ::: {#lem-normalremark}
+    :::lemma{#lem-normalremark}
     Let $G$ be a group:
 
     a)
@@ -1807,7 +1888,7 @@ test('syntax bug 6', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <h2 id="alpha"><span class="count">1</span> Alpha</h2>
-    <div class="definition lemma" id="lem-normalremark">
+    <div class="theorem lemma style-definition" id="lem-normalremark">
       <p><span class="title"><strong>Lemma 1.1.</strong></span> Let <code class="latex">G</code> be a group:</p>
       <dl>
         <dt>a)</dt>
@@ -1849,11 +1930,18 @@ test('syntax bug 7', async () => {
   // return;
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
-    ::: {#thm-1}
+    ---
+    theorems:
+      theorem:
+        style: definition
+        heading: Theorem
+    ---
+
+    :::theorem
     1. there.
     :::
 
-    ::: {.proof}
+    :::proof
     1. The
 
     We claim
@@ -1867,13 +1955,13 @@ test('syntax bug 7', async () => {
   // return;
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <div class="definition theorem" id="thm-1">
+    <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem 1.</strong></span> </p>
       <ol>
         <li>there.</li>
       </ol>
     </div>
-    <div class="remark proof">
+    <div class="theorem proof style-remark">
       <p><span class="title"><em>Proof</em>. </span></p>
       <ol>
         <li>The</li>
@@ -1905,16 +1993,12 @@ test('theorem name with star at the end', async () => {
   const expectedMarkdown = unindentStringAndTrim(String.raw`
     ---
     theorems:
-      custom:
-        - name: theorem*
-          abbr: theorem*
-          style: plain
-          heading: Theorem
-          unnumbered: true
-          type: theorem
+      theorem-star:
+        heading: Theorem
+        unnumbered: true
     ---
 
-    ::: {.theorem-star.unnumbered}
+    :::theorem-star
     A holomorphic function
     :::
   `);
@@ -1926,8 +2010,57 @@ test('theorem name with star at the end', async () => {
   // return;
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <div class="plain theorem-star">
+    <div class="theorem theorem-star">
       <p><span class="title"><strong>Theorem.</strong></span> A holomorphic function</p>
+    </div>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('ligatures in theorem names', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{amsthm}
+    \newtheorem{proposition}{Proposition}
+    \begin{document}
+
+    l'H\^opital's rule.
+
+    \begin{proposition}[l'H\^opital's rule]
+    If
+    \end{proposition}
+
+    \end{document}
+  `;
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ---
+    theorems:
+      proposition:
+        heading: Proposition
+    ---
+
+    l’Hôpital’s rule.
+
+    :::proposition[l’Hôpital’s rule]
+    If
+    :::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(`
+    <p>l’Hôpital’s rule.</p>
+    <div class="theorem proposition">
+      <p><span class="title"><strong>Proposition 1 (l’Hôpital’s rule).</strong></span> If</p>
     </div>
   `);
 

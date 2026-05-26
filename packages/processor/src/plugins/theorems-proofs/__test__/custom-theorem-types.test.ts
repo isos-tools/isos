@@ -44,20 +44,14 @@ test('custom theorem', async () => {
   // console.log(markdown);
   // return;
 
-  // TODO: default theorem attributes under custom should be removed
   const expectedMarkdown = unindentStringAndTrim(`
     ---
     theorems:
-      custom:
-        - name: conv
-          abbr: conv
-          style: plain
-          heading: Convention
-          unnumbered: false
-          type: theorem
+      conv:
+        heading: Convention
     ---
 
-    ::: {#conv-line name="Pythagorean"}
+    :::conv[Pythagorean]{#conv-line}
     Cras mattis.
 
     Cras justo odio.
@@ -85,7 +79,7 @@ test('custom theorem', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(`
-    <div class="plain conv" id="conv-line">
+    <div class="theorem conv" id="conv-line">
       <p><span class="title"><strong>Convention 1 (Pythagorean).</strong></span> Cras mattis.</p>
       <p>Cras justo odio.</p>
     </div>

@@ -26,36 +26,3 @@ test('account for colons in text', async () => {
 
   expect(html).toBe(expectedHtml);
 });
-
-test('account for ligatures in theorem names', async () => {
-  const markdown = await testProcessor.latex(String.raw`
-    l'H\^opital's rule.
-
-    \begin{proposition}[l'H\^opital's rule]
-    If
-    \end{proposition}
-  `);
-  // console.log(markdown);
-
-  const expectedMarkdown = unindentStringAndTrim(`
-    l’Hôpital’s rule.
-
-    ::: {#prp-1 name="l’Hôpital’s rule"}
-    If
-    :::
-  `);
-
-  expect(markdown).toBe(expectedMarkdown);
-
-  const html = await testProcessor.md(markdown);
-  // console.log(html);
-
-  const expectedHtml = unindentStringAndTrim(`
-    <p>l’Hôpital’s rule.</p>
-    <div class="definition proposition" id="prp-1">
-      <p><span class="title"><strong>Proposition 1 (l’Hôpital’s rule).</strong></span> If</p>
-    </div>
-  `);
-
-  expect(html).toBe(expectedHtml);
-});

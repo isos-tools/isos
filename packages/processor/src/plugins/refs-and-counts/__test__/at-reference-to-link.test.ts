@@ -37,10 +37,11 @@ test('ignore email addresses', async () => {
   expect(html).toBe(expectedHtml);
 });
 
-test.skip('prefix for theorems not required', async () => {
+test('prefix for theorems not required', async () => {
   const latex = String.raw`
     \documentclass{article}
     \usepackage{amsthm}
+
     \usepackage[overload]{keytheorems}
     \usepackage{zref-clever}
     \usepackage[colorlinks]{hyperref}
@@ -52,14 +53,14 @@ test.skip('prefix for theorems not required', async () => {
 
     \begin{document}
 
-    \section{Revision*}\label{revision}
+    \section{Revision}\label{revision}
 
     \subsection{Functions}
 
     \begin{definition} \label{hello}
     Alpha
     \end{definition}
-    \clearpage
+    % \clearpage
 
     \subsection{Polynomials}
 
@@ -69,49 +70,49 @@ test.skip('prefix for theorems not required', async () => {
       x
     \end{equation}
     \end{definition}
-    \clearpage
+    % \clearpage
 
-    See \zcref{revision}.
-    See \zcref{hello}.
-    See \zcref{hello2}.
-    See \autoref{one}.
+    See \zcref{revision}, \zcref{hello}, \zcref{hello2} and \autoref{one}.
 
     \end{document}
   `;
 
   const markdown = await testProcessor.latex(latex);
-  console.log(markdown);
+  // console.log(markdown);
   // return;
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
     ---
     theorems:
       theorem:
+        style: definition
+        heading: Theorem
         numberWithin: h3
       definition:
+        style: definition
+        heading: Definition
         referenceCounter: theorem
     ---
 
-    ## Revision\* {#revision}
+    ## Revision {#revision}
 
     ### Functions
 
-    :::definition {#hello}
+    :::definition{#hello}
     Alpha
     :::
 
     ### Polynomials
 
-    :::definition {#hello-2}
+    :::definition{#hello-2}
     Bravo
 
     $$
     \begin{equation}x\end{equation}
     $$ {#one}
-
     :::
 
-    See @revision. See @hello. See @hello-2. See @one.
+    See @revision, @hello, @hello-2 and @one.
   `);
 
   expect(markdown).toBe(expectedMarkdown);
@@ -121,17 +122,17 @@ test.skip('prefix for theorems not required', async () => {
   // return;
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <h2 id="revision"><span class="count">1</span> Revision*</h2>
+    <h2 id="revision"><span class="count">1</span> Revision</h2>
     <h3 id="functions"><span class="count">1.1</span> Functions</h3>
-    <div class="definition" id="def-hello">
+    <div class="theorem definition style-definition" id="hello">
       <p><span class="title"><strong>Definition 1.1.1.</strong></span> Alpha</p>
     </div>
     <h3 id="polynomials"><span class="count">1.2</span> Polynomials</h3>
-    <div class="definition" id="def-hello-2">
+    <div class="theorem definition style-definition" id="hello-2">
       <p><span class="title"><strong>Definition 1.2.1.</strong></span> Bravo</p>
       <p id="one" class="maths env-equation"><code class="latex">\begin{equation}x\end{equation}</code><span class="eq-count">(1)</span></p>
     </div>
-    <p>See <a href="#revision" class="ref">Section 1</a>. See <a href="#def-hello" class="ref">Definition 1.1.1</a>. See <a href="#def-hello-2" class="ref">Definition 1.2.1</a>. See <a href="#one" class="ref">Equation 1</a>.</p>
+    <p>See <a href="#revision" class="ref">Section 1</a>, <a href="#hello" class="ref">Definition 1.1.1</a>, <a href="#hello-2" class="ref">Definition 1.2.1</a> and <a href="#one" class="ref">Equation 1</a>.</p>
   `);
 
   expect(html).toBe(expectedHtml);

@@ -655,6 +655,11 @@ test('footnote referencing other footnote', async () => {
 
 test('framedsidenote', async () => {
   const latex = String.raw`
+    \documentclass{article}
+    \usepackage{amsthm}
+    \newtheorem{definition}{Definition}
+    \begin{document}
+
     \begin{framed}
     \begin{definition}
     Let $S$ be a set.
@@ -664,6 +669,8 @@ test('framedsidenote', async () => {
     \end{enumerate}
     \end{definition}
     \end{framed}
+
+    \end{document}
   `;
 
   const markdown = await testProcessor.latex(latex);
@@ -671,8 +678,14 @@ test('framedsidenote', async () => {
   // return;
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
+    ---
+    theorems:
+      definition:
+        heading: Definition
+    ---
+
     :::::framed
-    :::: {#def-1}
+    ::::definition
     Let $S$ be a set.
 
     1. We say that:sidenote[sn-1].
@@ -698,7 +711,7 @@ test('framedsidenote', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <div class="framed">
-      <div class="definition" id="def-1">
+      <div class="theorem definition">
         <p><span class="title"><strong>Definition 1.</strong></span> Let <code class="latex">S</code> be a set.</p>
         <ol>
           <li>

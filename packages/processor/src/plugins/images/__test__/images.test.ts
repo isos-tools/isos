@@ -298,7 +298,7 @@ test('figure with image and text', async () => {
   // return;
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
-    ::: {#fig-f-x-y}
+    :::figure{#fig-f-x-y}
     ![](image.png)
 
     [Interactive plot $\rightarrow$](https://moodle.gla.ac.uk)
@@ -357,7 +357,7 @@ test('figure with two images with alt text and caption', async () => {
   // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
-    ::: {.fig}
+    :::figure
     ![](image.png){alt="My alt text"}
 
     ![](image2.png){alt="My alt text2"}
@@ -402,7 +402,7 @@ test('figure with two images with alt text, caption and label', async () => {
   // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
-    ::: {#fig-logo}
+    :::figure{#fig-logo}
     ![](image.png){alt="My alt text"}
 
     ![](image2.png){alt="My alt text2"}
@@ -470,10 +470,13 @@ test('figure with only label', async () => {
   expect(html).toBe(expectedHtml);
 });
 
-test('center inside theorem causes error', async () => {
+test('center inside theorem', async () => {
   const latex = String.raw`
     \documentclass{article}
+    \usepackage{amsthm}
     \usepackage{graphicx}
+    \theoremstyle{remark}
+    \newtheorem{solution}{Solution}
     \begin{document}
 
     \begin{solution}
@@ -490,9 +493,17 @@ test('center inside theorem causes error', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
-    ::: {#sol-fig-sphere}
+    ---
+    theorems:
+      solution:
+        style: remark
+        heading: Solution
+    ---
+
+    :::solution{#fig-sphere}
     as shown in @fig-sphere.
 
     ![](fig/ex1-1.png)
@@ -504,8 +515,8 @@ test('center inside theorem causes error', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <div class="remark solution" id="sol-fig-sphere">
-      <p><span class="title"><em>Solution 1</em>. </span>as shown in <span class="warn"><strong>unknown ref:</strong> <code>fig-sphere</code></span> .</p>
+    <div class="theorem solution style-remark" id="fig-sphere">
+      <p><span class="title"><em>Solution 1</em>. </span>as shown in <a href="#fig-sphere" class="ref">Solution 1</a>.</p>
       <p><img src="fig/ex1-1.png" alt="Image" /></p>
     </div>
   `);
@@ -516,7 +527,10 @@ test('center inside theorem causes error', async () => {
 test('figure inside theorem', async () => {
   const latex = String.raw`
     \documentclass{article}
+    \usepackage{amsthm}
     \usepackage{graphicx}
+    \theoremstyle{remark}
+    \newtheorem{solution}{Solution}
     \begin{document}
 
     \begin{solution}
@@ -533,9 +547,17 @@ test('figure inside theorem', async () => {
 
   const markdown = await testProcessor.latex(latex);
   // console.log(markdown);
+  // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
-    ::: {#sol-1}
+    ---
+    theorems:
+      solution:
+        style: remark
+        heading: Solution
+    ---
+
+    :::solution
     as shown in @fig-sphere.
 
     ![](fig/ex1-1.png){#fig-sphere}
@@ -547,7 +569,7 @@ test('figure inside theorem', async () => {
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <div class="remark solution" id="sol-1">
+    <div class="theorem solution style-remark">
       <p><span class="title"><em>Solution 1</em>. </span>as shown in <a href="#fig-sphere" class="ref">Figure 1</a>.</p>
       <figure id="fig-sphere">
         <div class="fig-content">
@@ -634,7 +656,7 @@ test('images with no label or caption', async () => {
   // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
-    ::: {.fig}
+    :::figure
     ![](fig/ex1-2a.png)
 
     ![](fig/ex1-2b.png)
@@ -680,7 +702,7 @@ test('images with includegraphics*', async () => {
   // console.log(markdown);
 
   const expectedMarkdown = unindentStringAndTrim(`
-    ::: {.fig}
+    :::figure
     ![](fig/ex1-2a.png){alt="Alpha"}
 
     ![](fig/ex1-2b.png){alt="Bravo"}
@@ -787,7 +809,7 @@ test('figure with three subfigures with captions', async () => {
   // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
-    ::: {.fig}
+    :::figure
     ![injective\\n’don’t lose information’](figures/fig1){.unnumbered width="30%"}
 
     ![surjective\\n’hit everything’](figures/fig2){.unnumbered width="30%"}

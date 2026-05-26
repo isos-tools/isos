@@ -15,6 +15,9 @@ export function addFrontmatter(ctx: Context) {
       abstract,
       tableOfContentsPrefix,
       preambleWarnings,
+      equation,
+      figure,
+      table,
     } = ctx.frontmatter;
 
     // console.log(ctx.frontmatter);
@@ -66,6 +69,18 @@ export function addFrontmatter(ctx: Context) {
 
     if (preambleWarnings.length) {
       toExport.preambleWarnings = preambleWarnings;
+    }
+
+    if (equation) {
+      toExport.equation = equation;
+    }
+
+    if (figure) {
+      toExport.figure = figure;
+    }
+
+    if (table) {
+      toExport.table = table;
     }
 
     const theoremsYaml = theoremsToFrontmatter(ctx);

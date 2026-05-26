@@ -40,13 +40,13 @@ test('newcommands with theorem expansion are not supported', async () => {
           vice versa).  A supported alternative is \\newenvironment.
     theorems:
       theorem:
-        style: plain
+        heading: Theorem
         numberWithin: h2
     ---
 
     :warn[**lost label:** \`thm:sr\`] Let $A$ be a Banach algebra.
 
-    ::: {.proof name="Proof of @thm-sr"}
+    :::proof[Proof of @thm-sr]
     Assume by contradiction
     :::
   `);
@@ -67,7 +67,7 @@ test('newcommands with theorem expansion are not supported', async () => {
       </dl>
     </section>
     <p> <span class="warn"><strong>lost label:</strong> <code>thm:sr</code></span> Let <code class="latex">A</code> be a Banach algebra.</p>
-    <div class="remark proof">
+    <div class="theorem proof style-remark">
       <p><span class="title"><em>Proof of  <span class="warn"><strong>unknown ref:</strong> <code>thm-sr</code></span> </em>. </span>Assume by contradiction<span class="qed"> q.e.d.</span></p>
     </div>
   `);

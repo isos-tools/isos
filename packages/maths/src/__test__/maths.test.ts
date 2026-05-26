@@ -49,20 +49,22 @@ test('maths with references', async () => {
     ---
     theorems:
       theorem:
+        style: definition
+        heading: Theorem
         numberWithin: h2
     ---
 
     ## Alpha
 
-    ::: {#thm-one name="Bravo"}
+    :::theorem[Bravo]{#thm-one}
     Charlie.
     :::
 
-    ::: {#thm-two name="Bravo"}
+    :::theorem[Bravo]{#thm-two}
     Charlie.
     :::
 
-    ::: {#thm-three name="Bravo"}
+    :::theorem[Bravo]{#thm-three}
     Charlie.
     :::
 
@@ -79,13 +81,13 @@ test('maths with references', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <h2 id="alpha"><span class="count">1</span> Alpha</h2>
-    <div class="definition theorem" id="thm-one">
+    <div class="theorem style-definition" id="thm-one">
       <p><span class="title"><strong>Theorem 1.1 (Bravo).</strong></span> Charlie.</p>
     </div>
-    <div class="definition theorem" id="thm-two">
+    <div class="theorem style-definition" id="thm-two">
       <p><span class="title"><strong>Theorem 1.2 (Bravo).</strong></span> Charlie.</p>
     </div>
-    <div class="definition theorem" id="thm-three">
+    <div class="theorem style-definition" id="thm-three">
       <p><span class="title"><strong>Theorem 1.3 (Bravo).</strong></span> Charlie.</p>
     </div>
     <p class="maths"><code class="latex">\begin{aligned}(by~\href{#thm-one}{Theorem 1.1}~and~\href{#thm-two}{Theorem 1.2}~and~\href{#thm-three}{Theorem 1.3})\end{aligned}</code></p>
@@ -125,13 +127,13 @@ test('maths with cleveref references', async () => {
     ---
     theorems:
       theorem:
-        style: plain
+        heading: Theorem
         numberWithin: h2
     ---
 
     ## Alpha
 
-    ::: {#thm-one name="Bravo"}
+    :::theorem[Bravo]{#thm-one}
     Charlie.
     :::
 
@@ -146,7 +148,7 @@ test('maths with cleveref references', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <h2 id="alpha"><span class="count">1</span> Alpha</h2>
-    <div class="plain theorem" id="thm-one">
+    <div class="theorem" id="thm-one">
       <p><span class="title"><strong>Theorem 1.1 (Bravo).</strong></span> Charlie.</p>
     </div>
     <p class="maths"><code class="latex">(by~\href{#thm-one}{Theorem 1.1})</code></p>
@@ -186,13 +188,13 @@ test('maths with ref', async () => {
     ---
     theorems:
       theorem:
-        style: plain
+        heading: Theorem
         numberWithin: h2
     ---
 
     ## Alpha
 
-    ::: {#thm-one name="Bravo"}
+    :::theorem[Bravo]{#thm-one}
     Charlie.
     :::
 
@@ -207,7 +209,7 @@ test('maths with ref', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <h2 id="alpha"><span class="count">1</span> Alpha</h2>
-    <div class="plain theorem" id="thm-one">
+    <div class="theorem" id="thm-one">
       <p><span class="title"><strong>Theorem 1.1 (Bravo).</strong></span> Charlie.</p>
     </div>
     <p class="maths"> <span class="warn"><strong>unhandled macro: ref</strong></span> </p>

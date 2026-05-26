@@ -11,6 +11,7 @@ export function createTheorem(
   type: string,
   ctx: Context,
 ): ContainerDirective {
+  const name = prepareName(type);
   const attributes: Record<string, string> = {
     class: type,
   };
@@ -34,12 +35,12 @@ export function createTheorem(
       if (theorem?.hideable === 'hide') {
         return {
           type: 'containerDirective',
-          name: ' ', // Pandoc divs
+          name,
           attributes,
           children: upper as BlockContent[],
         };
       } else {
-        const clickToShow = {
+        const solution = {
           type: 'containerDirective',
           name: 'solution',
           // attributes: {
@@ -50,13 +51,9 @@ export function createTheorem(
 
         return {
           type: 'containerDirective',
-          name: ' ', // Pandoc divs
+          name,
           attributes,
-          children: [
-            ...upper,
-            children[idx],
-            clickToShow,
-          ] as BlockContent[],
+          children: [...upper, children[idx], solution] as BlockContent[],
         };
       }
     }
@@ -66,8 +63,12 @@ export function createTheorem(
 
   return {
     type: 'containerDirective',
-    name: ' ', // Pandoc divs
+    name,
     attributes,
     children,
   };
+}
+
+function prepareName(name: string) {
+  return name.replace(/\*$/, '-star');
 }

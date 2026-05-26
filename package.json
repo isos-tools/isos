@@ -8,6 +8,7 @@
     "check-types": "tsc",
     "tauri": "pnpm --filter @isos/runtime run build && pnpm --filter @isos/tauri run tauri",
     "test": "vitest --project unit",
+    "test:visual": "vitest --project visual",
     "test-all": "vitest",
     "e2e": "NODE_ENV=test playwright test",
     "prettier": "prettier",

@@ -5,9 +5,9 @@ import { Context } from '../../../input-to-markdown/context';
 
 export function addTheoremClass(ctx: Context) {
   return (tree: Root) => {
-    const { custom, ...obj } = ctx.frontmatter.theorems;
+    const theorems = ctx.frontmatter.theorems;
 
-    const theoremNames = Object.entries(obj)
+    const theoremNames = Object.entries(theorems)
       .filter(([_k, v]) => v.type === 'theorem')
       .map(([k, _v]) => k);
 

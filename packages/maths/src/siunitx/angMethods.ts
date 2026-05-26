@@ -163,15 +163,20 @@ function displayAngleMml(parser: TexParser, ang: IAnglePiece, options: IAngleOpt
 	const root = parser.create('node', 'inferredMrow', [], {});
 
 	const degreeValue = +(ang.degrees.whole + (ang.degrees.decimal !== '' ? '.' : '') + ang.degrees.fractional);
-	if (!ang.degrees.whole && options["fill-angle-degrees"]) {
-		if (ang.minutes?.sign === '-') {
+	if (!ang.degrees.whole) {
+		const transferSignToDegrees =
+			!options['fill-angle-minutes'] && !options['fill-angle-seconds'];
+		if (transferSignToDegrees && ang.minutes?.sign === '-') {
 			ang.degrees.sign = '-';
 			ang.minutes.sign = '';
-		} else if (ang.seconds?.sign === '-') {
+			ang.degrees.whole = '0';
+		} else if (transferSignToDegrees && ang.seconds?.sign === '-') {
 			ang.degrees.sign = '-';
 			ang.seconds.sign = '';
+			ang.degrees.whole = '0';
+		} else if (options['fill-angle-degrees']) {
+			ang.degrees.whole = '0';
 		}
-		ang.degrees.whole = '0';
 	}
 	let degreeNodeToAdd: MmlNode | undefined = undefined;
 	if (degreeValue !== 0 || ang.degrees.whole === '0' || options["fill-angle-degrees"]) {

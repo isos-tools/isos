@@ -1,5 +1,5 @@
 export type RefObject = {
-  type: 'theorem' | 'float' | 'equation' | 'appendix';
+  type: 'section' | 'theorem' | 'float' | 'equation' | 'appendix';
   name: string;
   heading: string;
   style?: 'plain' | 'definition' | 'remark';
@@ -14,158 +14,141 @@ export type RefObject = {
   increment?: 'alpha';
 };
 
-export const defaultObjects: RefObject[] = [
-  // Theorems & Proofs
-  // https://quarto.org/docs/authoring/cross-references.html#theorems-and-proofs
+export type RefObjects = Record<string, RefObject>;
+
+export function createDefaultObjects() {
+  return defaultObjects.reduce((acc: RefObjects, obj) => {
+    acc[obj.name] = obj;
+    return acc;
+  }, {});
+}
+
+const defaultObjects: RefObject[] = [
+  // section
   {
-    type: 'theorem',
-    name: 'theorem',
-    heading: 'Theorem',
-    style: 'definition',
-    abbr: 'thm',
-    unnumbered: false,
-  },
-  {
-    type: 'theorem',
-    name: 'lemma',
-    heading: 'Lemma',
-    style: 'definition',
-    abbr: 'lem',
-    unnumbered: false,
-  },
-  {
-    type: 'theorem',
-    name: 'corollary',
-    heading: 'Corollary',
-    style: 'definition',
-    abbr: 'cor',
-    unnumbered: false,
-  },
-  {
-    type: 'theorem',
-    name: 'proposition',
-    heading: 'Proposition',
-    style: 'definition',
-    abbr: 'prp',
-    unnumbered: false,
-  },
-  {
-    type: 'theorem',
-    name: 'conjecture',
-    heading: 'Conjecture',
-    style: 'definition',
-    abbr: 'cnj',
-    unnumbered: false,
-  },
-  {
-    type: 'theorem',
-    name: 'definition',
-    heading: 'Definition',
-    style: 'definition',
-    abbr: 'def',
-    unnumbered: false,
-  },
-  {
-    type: 'theorem',
-    name: 'example',
-    heading: 'Example',
-    style: 'definition',
-    abbr: 'exm',
-    unnumbered: false,
-  },
-  {
-    type: 'theorem',
-    name: 'exercise',
-    heading: 'Exercise',
-    style: 'definition',
-    abbr: 'exr',
-    unnumbered: false,
-  },
-  {
-    type: 'theorem',
-    name: 'solution',
-    heading: 'Solution',
-    style: 'remark',
-    abbr: 'sol',
-    unnumbered: false,
-  },
-  {
-    type: 'theorem',
-    name: 'remark',
-    heading: 'Remark',
-    style: 'remark',
-    abbr: 'rem',
-    unnumbered: false,
-  },
-  {
-    type: 'theorem',
-    name: 'proof',
-    heading: 'Proof',
-    style: 'remark',
+    type: 'section',
+    name: 'section',
+    heading: 'Section',
+    abbr: 'sec',
   },
   // equation
   {
     type: 'equation',
     name: 'equation',
     heading: 'Equation',
-    abbr: 'eq',
-    unnumbered: false,
     numberWithin: 'chapter',
+    abbr: 'eq',
   },
   // floats
+  // https://quarto.org/docs/authoring/cross-references-divs.html#figures-and-tables
   {
     type: 'float',
     name: 'figure',
     heading: 'Figure',
-    abbr: 'fig',
-    unnumbered: false,
     numberWithin: 'chapter',
+    abbr: 'fig',
   },
   {
     type: 'float',
     name: 'table',
     heading: 'Table',
-    abbr: 'tbl',
-    unnumbered: false,
     numberWithin: 'chapter',
+    abbr: 'tbl',
   },
-  {
-    type: 'float',
-    name: 'section',
-    heading: 'Section',
-    abbr: 'sec',
-    unnumbered: false,
-  },
+  // TODO: https://quarto.org/docs/authoring/cross-references-divs.html#listings
+  // {
+  //   type: 'float',
+  //   name: 'listing',
+  //   heading: 'Listing',
+  //   abbr: 'lst',
+  // },
   // appendix
   {
     type: 'appendix',
     name: 'appendix',
     heading: 'Appendix',
-    abbr: 'app',
-    unnumbered: false,
     increment: 'alpha',
+    abbr: 'app',
   },
-  // TODO: listing
-  // https://quarto.org/docs/authoring/cross-references-divs.html#listings
+  // Theorems & Proofs
+  // https://quarto.org/docs/authoring/cross-references.html#theorems-and-proofs
+  {
+    type: 'theorem',
+    name: 'proof',
+    heading: 'Proof',
+    style: 'remark',
+  },
   // {
-  //   name: 'listing',
-  //   heading: 'Listing',
-  //   abbr: 'lst',
-  //   unnumbered: false,
+  //   type: 'theorem',
+  //   name: 'theorem',
+  //   heading: 'Theorem',
+  //   style: 'definition',
+  //   abbr: 'thm',
+  // },
+  // {
+  //   type: 'theorem',
+  //   name: 'lemma',
+  //   heading: 'Lemma',
+  //   style: 'definition',
+  //   abbr: 'lem',
+  // },
+  // {
+  //   type: 'theorem',
+  //   name: 'corollary',
+  //   heading: 'Corollary',
+  //   style: 'definition',
+  //   abbr: 'cor',
+  // },
+  // {
+  //   type: 'theorem',
+  //   name: 'proposition',
+  //   heading: 'Proposition',
+  //   style: 'definition',
+  //   abbr: 'prp',
+  // },
+  // {
+  //   type: 'theorem',
+  //   name: 'conjecture',
+  //   heading: 'Conjecture',
+  //   style: 'definition',
+  //   abbr: 'cnj',
+  // },
+  // {
+  //   type: 'theorem',
+  //   name: 'definition',
+  //   heading: 'Definition',
+  //   style: 'definition',
+  //   abbr: 'def',
+  // },
+  // {
+  //   type: 'theorem',
+  //   name: 'example',
+  //   heading: 'Example',
+  //   style: 'definition',
+  //   abbr: 'exm',
+  // },
+  // {
+  //   type: 'theorem',
+  //   name: 'exercise',
+  //   heading: 'Exercise',
+  //   style: 'definition',
+  //   abbr: 'exr',
+  // },
+  // {
+  //   type: 'theorem',
+  //   name: 'solution',
+  //   heading: 'Solution',
+  //   style: 'remark',
+  //   abbr: 'sol',
+  // },
+  // {
+  //   type: 'theorem',
+  //   name: 'remark',
+  //   heading: 'Remark',
+  //   style: 'remark',
+  //   abbr: 'rem',
   // },
 ];
-
-export type RefObjectYaml = Partial<Omit<RefObject, 'name'>>;
-export type RefObjectsYaml = Record<string, RefObjectYaml> & {
-  custom?: RefObject[];
-};
-
-export function createDefaultObjectsYaml() {
-  return defaultObjects.reduce((acc: RefObjectsYaml, { name, ...obj }) => {
-    acc[name] = obj;
-    return acc;
-  }, {});
-}
 
 // https://quarto.org/docs/authoring/cross-references.html#callouts
 

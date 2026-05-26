@@ -596,9 +596,8 @@ test('maths equation numberwithin', async () => {
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
     ---
-    theorems:
-      equation:
-        numberWithin: h2
+    equation:
+      numberWithin: h2
     ---
 
     $$

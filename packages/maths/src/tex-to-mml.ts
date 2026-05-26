@@ -45,26 +45,37 @@ const packages = [
   'bbm',
 ];
 
-const tex = new TeX({
-  packages,
-  macros: {
-    pounds: '\\textsterling',
-    bm: ['{\\boldsymbol #1}', 1],
-    colonequals: '\\coloneq',
-    hdots: '\\ldots',
-    ensuremath: ['#1', 1],
-  },
-});
-
-const mmlDoc = mathjax.document('', {
-  InputJax: tex,
-});
+// const mmlDoc = mathjax.document('', {
+//   InputJax: new TeX({
+//     packages,
+//     macros: {
+//       pounds: '\\textsterling',
+//       bm: ['{\\boldsymbol #1}', 1],
+//       colonequals: '\\coloneq',
+//       hdots: '\\ldots',
+//       ensuremath: ['#1', 1],
+//     },
+//   }),
+// });
 
 export function texToMml(latex: string) {
   try {
     // https://docs.mathjax.org/en/latest/advanced/typeset.html
     // multiply-defined labels
-    tex.reset();
+    const tex = new TeX({
+      packages,
+      macros: {
+        pounds: '\\textsterling',
+        bm: ['{\\boldsymbol #1}', 1],
+        colonequals: '\\coloneq',
+        hdots: '\\ldots',
+        ensuremath: ['#1', 1],
+      },
+    });
+
+    const mmlDoc = mathjax.document('', {
+      InputJax: tex,
+    });
 
     const mmlNode = mmlDoc.convert(latex, { end: STATE.CONVERT });
     return {
