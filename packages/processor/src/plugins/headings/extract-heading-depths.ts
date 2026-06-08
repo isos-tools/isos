@@ -9,6 +9,7 @@ export function extractHeadingDepths(ctx: Context) {
     const { documentClass } = ctx.frontmatter;
     const hasPart = hasPartHeading(tree);
     ctx.sectionToHeading = createHeadingDepths(documentClass, hasPart);
+    ctx.frontmatter.hasPart = hasPart;
   };
 }
 

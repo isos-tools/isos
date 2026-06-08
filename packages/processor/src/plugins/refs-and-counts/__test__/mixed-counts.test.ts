@@ -192,7 +192,7 @@ test('mixed counts', async () => {
     </figure>
 
     <p>See <a href="#tbl-letters-1" class="ref">Table 1</a>.</p>
-    <h2 id="delta"><span class="count">1</span> Delta</h2>
+    <h2 id="delta"><span class="count">Chapter 1:</span> Delta</h2>
     <div class="theorem solution style-remark">
       <p><span class="title"><em>Solution 1.0.1</em>. </span>See <a href="#fig-ex-3" class="ref">Figure 1.1</a>.</p>
       <figure id="fig-ex-3">
@@ -253,6 +253,113 @@ test('mixed counts', async () => {
     </figure>
 
     <p>See <a href="#tbl-letters-3" class="ref">Table 1.2</a>.</p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('section references in book with parts', async () => {
+  const latex = String.raw`
+    \documentclass[12pt,a4paper,oneside]{book}
+    \usepackage{zref-clever}
+    \usepackage[colorlinks,bookmarks=false]{hyperref}
+    \zcsetup{noabbrev, cap, nameinlink}
+    \begin{document}
+
+    \part{Motion of point particles} % this
+
+    \chapter{Motion in central force fields}
+
+    \section{Central force fields}
+
+    \subsection{Equation of the path}
+    \label{sec:eqofpath}
+
+    Hello
+
+    \subsection{Another}
+    As discussed in \zcref{sec:eqofpath}.
+
+    \chapter{Another chapter}
+
+    \section{Another section}
+
+    \subsection{Another subsection}
+    \label{sec:anothersubsec}
+
+    Another
+
+    \subsection{Another subsection}
+    As discussed in \zcref{sec:anothersubsec}.
+
+    \paragraph{Another paragraph}
+
+    \subparagraph{Another subparagraph}
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    ---
+    documentClass: book
+    hasPart: true
+    ---
+
+    ## Motion of point particles
+
+    ### Motion in central force fields
+
+    #### Central force fields
+
+    ##### Equation of the path {#sec-eqofpath}
+
+    Hello
+
+    ##### Another
+
+    As discussed in @sec-eqofpath.
+
+    ### Another chapter
+
+    #### Another section
+
+    ##### Another subsection {#sec-anothersubsec}
+
+    Another
+
+    ##### Another subsection
+
+    As discussed in @sec-anothersubsec.
+
+    ###### Another paragraph
+
+    ###### Another subparagraph
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <h2 id="motion-of-point-particles"><span class="count">Part 1:</span> Motion of point particles</h2>
+    <h3 id="motion-in-central-force-fields"><span class="count">Chapter 1:</span> Motion in central force fields</h3>
+    <h4 id="central-force-fields"><span class="count">1.1</span> Central force fields</h4>
+    <h5 id="sec-eqofpath"><span class="count">1.1.1</span> Equation of the path</h5>
+    <p>Hello</p>
+    <h5 id="another"><span class="count">1.1.2</span> Another</h5>
+    <p>As discussed in <a href="#sec-eqofpath" class="ref">Section 1.1.1</a>.</p>
+    <h3 id="another-chapter"><span class="count">Chapter 2:</span> Another chapter</h3>
+    <h4 id="another-section"><span class="count">2.1</span> Another section</h4>
+    <h5 id="sec-anothersubsec"><span class="count">2.1.1</span> Another subsection</h5>
+    <p>Another</p>
+    <h5 id="another-subsection"><span class="count">2.1.2</span> Another subsection</h5>
+    <p>As discussed in <a href="#sec-anothersubsec" class="ref">Section 2.1.1</a>.</p>
+    <h6 id="another-paragraph">Another paragraph</h6>
+    <h6 id="another-subparagraph">Another subparagraph</h6>
   `);
 
   expect(html).toBe(expectedHtml);

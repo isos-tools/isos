@@ -111,7 +111,7 @@ test('headings with report documentclass', async () => {
     <header>
       <h1>Alpha</h1>
     </header>
-    <h2 id="bravo"><span class="count">1</span> Bravo</h2>
+    <h2 id="bravo"><span class="count">Chapter 1:</span> Bravo</h2>
     <h3 id="charlie"><span class="count">1.1</span> Charlie</h3>
     <h4 id="delta"><span class="count">1.1.1</span> Delta</h4>
     <h5 id="echo">Echo</h5>
@@ -146,6 +146,7 @@ test('headings with report documentclass and part', async () => {
     ---
     title: Alpha
     documentClass: report
+    hasPart: true
     ---
 
     :::make-title
@@ -171,10 +172,10 @@ test('headings with report documentclass and part', async () => {
     <header>
       <h1>Alpha</h1>
     </header>
-    <h2 id="bravo"><span class="count">1</span> Bravo</h2>
-    <h3 id="charlie"><span class="count">1.1</span> Charlie</h3>
-    <h4 id="delta"><span class="count">1.1.1</span> Delta</h4>
-    <h5 id="echo">Echo</h5>
+    <h2 id="bravo"><span class="count">Part 1:</span> Bravo</h2>
+    <h3 id="charlie"><span class="count">Chapter 1:</span> Charlie</h3>
+    <h4 id="delta"><span class="count">1.1</span> Delta</h4>
+    <h5 id="echo"><span class="count">1.1.1</span> Echo</h5>
     <h6 id="foxtrot">Foxtrot</h6>
   `);
 
@@ -376,6 +377,8 @@ test('theorem with report documentclass and part', async () => {
     \section{My section}
     \begin{theorem} Some text \end{theorem}
     \begin{lemma} Some text \end{lemma}
+    \chapter{My chapter}
+    \section{My section}
     \end{document}
   `;
 
@@ -387,6 +390,7 @@ test('theorem with report documentclass and part', async () => {
     ---
     title: Alpha
     documentClass: report
+    hasPart: true
     theorems:
       theorem:
         style: definition
@@ -420,6 +424,10 @@ test('theorem with report documentclass and part', async () => {
     :::lemma
     Some text
     :::
+
+    ### My chapter
+
+    #### My section
   `);
 
   expect(markdown).toBe(expectedMarkdown);
@@ -432,20 +440,22 @@ test('theorem with report documentclass and part', async () => {
     <header>
       <h1>Alpha</h1>
     </header>
-    <h2 id="in-the-beginning"><span class="count">1</span> In the beginning</h2>
+    <h2 id="in-the-beginning"><span class="count">Part 1:</span> In the beginning</h2>
     <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem 1.1.</strong></span> Some text</p>
     </div>
     <div class="theorem lemma style-definition">
       <p><span class="title"><strong>Lemma 1.2.</strong></span> Some text</p>
     </div>
-    <h4 id="my-section"><span class="count">1.0.1</span> My section</h4>
+    <h4 id="my-section"><span class="count">0.1</span> My section</h4>
     <div class="theorem style-definition">
       <p><span class="title"><strong>Theorem 1.3.</strong></span> Some text</p>
     </div>
     <div class="theorem lemma style-definition">
       <p><span class="title"><strong>Lemma 1.4.</strong></span> Some text</p>
     </div>
+    <h3 id="my-chapter"><span class="count">Chapter 1:</span> My chapter</h3>
+    <h4 id="my-section-1"><span class="count">1.1</span> My section</h4>
   `);
 
   expect(html).toBe(expectedHtml);

@@ -10,12 +10,13 @@ const pattern = /(^|[^a-zA-Z0-9])@([\w-]+)/g;
 
 export function atReferenceToLink(ctx: Context) {
   return (tree: Root) => {
+    const { refMap } = ctx.frontmatter;
     // console.dir(tree, { depth: null });
     // console.log(ctx.frontmatter.refMap);
     findAndReplace(tree, [
       pattern,
       (_, prefix, ref) => {
-        const reference = ctx.frontmatter.refMap[ref];
+        const reference = refMap[ref];
         // console.log({ ref, reference });
 
         const output: (Element | Text)[] = [
@@ -28,6 +29,7 @@ export function atReferenceToLink(ctx: Context) {
         if (reference) {
           output.push(createReferenceLink(reference));
         } else {
+          // console.log(ref, structuredClone(refMap));
           output.push(createBrokenReferenceWarning(ref));
         }
 

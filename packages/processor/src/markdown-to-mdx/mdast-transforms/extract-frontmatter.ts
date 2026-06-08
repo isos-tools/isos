@@ -1,12 +1,11 @@
-import merge from 'lodash.merge';
 import { Root } from 'mdast';
 import { visit } from 'unist-util-visit';
 import { parse } from 'yaml';
 
 import { createHeadingDepths } from '../../plugins/headings/heading-depths';
 import {
-  RefObjectsYaml,
-  createDefaultObjectsYaml,
+  RefObjects,
+  createDefaultObjects,
 } from '../../plugins/refs-and-counts/default-objects';
 import { Context, Frontmatter } from '../context';
 
@@ -19,7 +18,7 @@ export function extractFrontmatter(ctx: Context) {
       parent?.children.splice(idx || 0, 1);
     });
 
-    ctx.frontmatter.theorems = createDefaultObjectsYaml();
+    ctx.frontmatter.theorems = createDefaultObjects();
 
     if (fmStrings.length) {
       const combined = fmStrings.join('\n\n');
@@ -57,21 +56,45 @@ export function extractFrontmatter(ctx: Context) {
       }
 
       if (fm.theorems) {
-        const { custom = [], ...theorems } = fm.theorems;
-        const customObj = custom.reduce(
-          (acc: RefObjectsYaml, { name, ...theorem }) => {
-            acc[name] = { ...theorem, type: 'theorem' };
+        // console.log(fm.theorems);
+        const theorems = Object.entries(fm.theorems).reduce(
+          (acc: RefObjects, [name, theorem]) => {
+            acc[name] = {
+              ...theorem,
+              type: 'theorem',
+              name,
+            };
             return acc;
           },
           {},
         );
-
-        ctx.frontmatter.theorems = merge(
-          ctx.frontmatter.theorems,
-          theorems || {},
-          customObj,
-        );
+        ctx.frontmatter.theorems = {
+          ...ctx.frontmatter.theorems,
+          ...theorems,
+        };
       }
+
+      if (fm.equation) {
+        ctx.frontmatter.theorems.equation = {
+          ...ctx.frontmatter.theorems.equation,
+          ...fm.equation,
+        };
+      }
+
+      if (fm.figure) {
+        ctx.frontmatter.theorems.figure = {
+          ...ctx.frontmatter.theorems.figure,
+          ...fm.figure,
+        };
+      }
+
+      if (fm.table) {
+        ctx.frontmatter.theorems.table = {
+          ...ctx.frontmatter.theorems.table,
+          ...fm.table,
+        };
+      }
+
       if (fm['reference-location']) {
         ctx.frontmatter.referenceLocation = fm['reference-location'];
       }
@@ -98,15 +121,13 @@ export function extractFrontmatter(ctx: Context) {
     // convert section to heading in theorem.numberWithin
     const { documentClass, hasPart } = ctx.frontmatter;
     const depths = createHeadingDepths(documentClass, hasPart);
-    Object.entries(ctx.frontmatter.theorems).forEach(([name, theorem]) => {
-      if (!Array.isArray(theorem)) {
-        if (theorem.numberWithin) {
-          const thm = ctx.frontmatter.theorems[name];
-          if (depths[theorem.numberWithin]) {
-            thm.numberWithin = depths[theorem.numberWithin];
-          }
+    Object.values(ctx.frontmatter.theorems).forEach((theorem) => {
+      if (theorem.numberWithin) {
+        if (depths[theorem.numberWithin]) {
+          theorem.numberWithin = depths[theorem.numberWithin];
         }
       }
+      // }
     });
   };
 }

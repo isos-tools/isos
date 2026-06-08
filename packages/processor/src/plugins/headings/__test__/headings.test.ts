@@ -329,7 +329,7 @@ test('chapter with setcounter', async () => {
   // console.log(html);
 
   const expected = unindentStringAndTrim(`
-    <h2 id="alpha"><span class="count">0</span> Alpha</h2>
+    <h2 id="alpha"><span class="count">Chapter 0:</span> Alpha</h2>
     <h3 id="bravo"><span class="count">0.1</span> Bravo</h3>
     <h4 id="charlie"><span class="count">0.1.1</span> Charlie</h4>
   `);

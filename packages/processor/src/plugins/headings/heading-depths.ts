@@ -13,6 +13,8 @@ export function createHeadingDepths(
         section: 'h4',
         subsection: 'h5',
         subsubsection: 'h6',
+        paragraph: 'h6',
+        subparagraph: 'h6',
       };
     } else {
       return {
@@ -22,6 +24,7 @@ export function createHeadingDepths(
         subsection: 'h4',
         subsubsection: 'h5',
         paragraph: 'h6',
+        subparagraph: 'h6',
       };
     }
   } else {

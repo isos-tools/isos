@@ -4,18 +4,31 @@ import { testProcessor, unindentStringAndTrim } from '@isos/test-utils';
 
 test('framed environment', async () => {
   const markdown = await testProcessor.latex(String.raw`
+    \documentclass{article}
+    \usepackage{amsthm}
+    \newtheorem{definition}{Definition}
+    \begin{document}
+
     \begin{framed}
     \begin{definition} A \emph{matrix}.
     \end{definition}
     \vspace*{-4mm}
     \end{framed}
+
+    \end{document}
   `);
 
   // console.log(markdown);
 
   const expectedMarkdown = unindentStringAndTrim(`
+    ---
+    theorems:
+      definition:
+        heading: Definition
+    ---
+
     ::::framed
-    ::: {#def-1}
+    :::definition
     A *matrix*.
     :::
     ::::
@@ -29,7 +42,7 @@ test('framed environment', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <div class="framed">
-      <div class="definition" id="def-1">
+      <div class="theorem definition">
         <p><span class="title"><strong>Definition 1.</strong></span> A <em>matrix</em>.</p>
       </div>
     </div>
@@ -42,6 +55,8 @@ test('syntax bug', async () => {
   const markdown = await testProcessor.latex(String.raw`
     \documentclass{article}
     \usepackage{framed}
+    \usepackage{amsthm}
+    \newtheorem{exercise}{Exercise}
     \begin{document}
 
     \begin{framed}
@@ -58,8 +73,14 @@ test('syntax bug', async () => {
   // return;
 
   const expectedMarkdown = unindentStringAndTrim(`
+    ---
+    theorems:
+      exercise:
+        heading: Exercise
+    ---
+
     ::::framed
-    ::: {#exr-1}
+    :::exercise
     Verify and explain
     :::
 
@@ -75,7 +96,7 @@ test('syntax bug', async () => {
 
   const expectedHtml = unindentStringAndTrim(`
     <div class="framed">
-      <div class="definition exercise" id="exr-1">
+      <div class="theorem exercise">
         <p><span class="title"><strong>Exercise 1.</strong></span> Verify and explain</p>
       </div>
       <p>These results are summarised</p>

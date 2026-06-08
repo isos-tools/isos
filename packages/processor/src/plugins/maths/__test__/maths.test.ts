@@ -515,7 +515,7 @@ test('maths equation in book documentclass', async () => {
   // return;
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <h2 id="differential-systems"><span class="count">1</span> Differential systems</h2>
+    <h2 id="differential-systems"><span class="count">Chapter 1:</span> Differential systems</h2>
     <p class="maths env-equation"><code class="latex">\begin{equation}x_{0}\end{equation}</code><span class="eq-count">(1.1)</span></p>
   `);
 

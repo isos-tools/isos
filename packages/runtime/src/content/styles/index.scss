@@ -275,35 +275,69 @@ article {
   //   grid-template-columns: max-content;
 
   //   dt {
-  //     width: 1.5em;
+  //     // width: 2.5em;
   //     font-weight: bold;
+  //     margin-right: 0.5em;
   //   }
   //   dd {
-  //     text-indent: 1em;
+  //     // text-indent: 1em;
   //     margin: 0;
   //     grid-column-start: 2;
+
+  //     p:first-child {
+  //       margin-top: 0;
+  //     }
+  //   }
+  // }
+
+  // dl {
+  //   $marginLeft: 1.5em;
+  //   margin-left: $marginLeft;
+
+  //   dt, dd {
+  //     display: inline-block;
+  //   }
+  //   dt {
+  //     margin-left: -$marginLeft;
+  //     margin-right: 0.3em;
+  //     font-weight: bold;
+  //   }
+
+  //   dd {
+  //     margin-left: 0;
+  //     // &::after {
+  //     //   display: block;
+  //     //   margin-bottom: 1em;
+  //     //   content: ''
+  //     // }
   //   }
   // }
 
   dl {
-    $marginLeft: 1.5em;
+    $marginLeft: 2em;
     margin-left: $marginLeft;
 
-    dt, dd {
+    dt, dd, p {
       display: inline;
+      margin: 0;
     }
+
+    dd, p {
+      &::after {
+        content: '';
+        display: block;
+        margin-bottom: 1em;
+      }
+    }
+
     dt {
       margin-left: -$marginLeft;
-      margin-right: 0.3em;
-      font-weight: bold;
     }
 
     dd {
-      margin-left: 0;
-      &::after {
+      padding-left: 0.8em;
+      p.maths {
         display: block;
-        margin-bottom: 1em;
-        content: ''
       }
     }
   }

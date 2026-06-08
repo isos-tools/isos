@@ -8,6 +8,7 @@ export function addFrontmatter(ctx: Context) {
   return (tree: Root) => {
     const {
       documentClass,
+      hasPart,
       date,
       title,
       titleImage,
@@ -52,6 +53,10 @@ export function addFrontmatter(ctx: Context) {
 
     if (documentClass) {
       toExport.documentClass = documentClass;
+    }
+
+    if (hasPart) {
+      toExport.hasPart = hasPart;
     }
 
     if (tableOfContentsPrefix) {

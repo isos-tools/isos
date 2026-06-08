@@ -27,6 +27,7 @@ export type Context = {
   notes: NoteMap;
   frontmatter: {
     documentClass?: string;
+    hasPart?: boolean;
     title: string;
     titleImage?: string;
     tableOfContentsPrefix?: string;

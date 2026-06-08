@@ -3,8 +3,8 @@ import { PluggableList } from 'unified';
 import { createCallouts } from '../../plugins/callout/create-callouts';
 import { codeHighlight } from '../../plugins/code/code-highlight';
 import { cover } from '../../plugins/cover/cover';
-import { divSyntax } from '../../plugins/div-syntax/mdx-divs';
 import { dashesToEndashEmdash } from '../../plugins/endash-emdash';
+import { floats } from '../../plugins/floats/floats';
 import { framed } from '../../plugins/framed/md-to-mdx/md-ast';
 import { appendices } from '../../plugins/headings/mdast-appendices';
 import { headings } from '../../plugins/headings/mdx-headings';
@@ -52,7 +52,7 @@ export function createMdastTransforms(
     setHeadingCounterToDiv,
     exSolSolutionDirective,
     appendices,
-    [divSyntax, ctx],
+    [floats, ctx],
 
     notes,
     [headings, ctx], // headingSections depends on this

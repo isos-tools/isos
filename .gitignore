@@ -25,3 +25,5 @@ runtime_old
 **/fixtures/**/test**
 
 .vitest-attachments
+
+_refactoring-ideas

@@ -12,59 +12,41 @@ import { visit } from 'unist-util-visit';
 
 import { Context } from '../../markdown-to-mdx/context';
 import {
-  RefObjectYaml,
-  defaultObjects,
+  RefObject,
+  createDefaultObjects,
 } from '../refs-and-counts/default-objects';
-import { defaultFloats } from './default-floats';
 
-export function divSyntax(_ctx: Context) {
+export function floats(_ctx: Context) {
   return (tree: Root) => {
-    // console.log('mdast: divSyntax');
-    const floats = defaultObjects.filter((o) => o.type === 'float');
-    // console.dir(tree, { depth: null });
-    visit(tree, 'containerDirective', (node) => {
-      if (node.name === ' ') {
-        const id = node.attributes?.id;
-        const className = node.attributes?.class;
+    const refs = createDefaultObjects();
+    const floats = Object.values(refs).filter((o) => o.type === 'float');
+    const floatNames = floats.map((o) => o.name);
 
-        if (id) {
-          const [abbr] = id.split('-');
-          const float = defaultFloats.find((o) => o.abbr === abbr);
-          if (float) {
-            const ctxObj = floats.find((o) => o.name === float.name);
-            if (ctxObj) {
-              createFigure(node, float.name, ctxObj, id);
-            }
-          }
-        } else if (className) {
-          const classes = className.split(' ');
-          if (classes.includes('fig')) {
-            const float = defaultFloats.find((o) => o.abbr === 'fig');
-            if (float) {
-              const ctxObj = floats.find((o) => o.name === float.name);
-              if (ctxObj) {
-                createFigure(node, float.name, ctxObj);
-              }
-            }
-          }
-        }
+    visit(tree, 'containerDirective', (node) => {
+      if (floatNames.includes(node.name)) {
+        const float = floats.find(
+          (o) => o.name === node.name,
+        ) as RefObject;
+        createFigure(node, float);
       }
     });
   };
 }
 
-function createFigure(
-  node: ContainerDirective,
-  floatName: string,
-  ctxObj: RefObjectYaml,
-  id?: string,
-) {
+function createFigure(node: ContainerDirective, ctxObj: RefObject) {
+  const id = node.attributes?.id;
   const properties: Properties = {
     id,
   };
 
-  const { className } = node.attributes || {};
-  if (Array.isArray(className)) {
+  const className = [];
+  if (node.name !== 'figure') {
+    className.push(node.name);
+  }
+  if (Array.isArray(node.attributes?.className)) {
+    className.push(...node.attributes.className);
+  }
+  if (className.length > 0) {
     properties.className = removeDupes(className);
   }
 
@@ -86,7 +68,7 @@ function createFigure(
         type: 'element',
         tagName: 'span',
         properties: {
-          className: [`${ctxObj.abbr}-count`, floatName],
+          className: [`${ctxObj.abbr}-count`, node.name],
           'data-id': id,
         },
         children: [],
@@ -120,7 +102,7 @@ function createFigure(
     type: 'text',
     value: '\n',
   };
-  if (floatName === 'figure') {
+  if (node.name === 'figure') {
     if (caption.length > 0) {
       children.push(newLine, figCaption);
     }

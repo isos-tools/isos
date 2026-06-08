@@ -131,13 +131,13 @@ test('appendix with book documentClass', async () => {
   // return;
 
   const expectedHtml = unindentStringAndTrim(`
-    <h2 id="the-1st-chapter"><span class="count">1</span> The 1st chapter</h2>
+    <h2 id="the-1st-chapter"><span class="count">Chapter 1:</span> The 1st chapter</h2>
     <h2 id="the-1st-appendix">Appendix <span class="count">A</span>: The 1st appendix</h2>
     <h2 id="the-2nd-appendix">Appendix <span class="count">B</span>: The 2nd appendix</h2>
     <h3 id="the-section"><span class="count">B.1</span> The section</h3>
     <h2 id="the-3rd-appendix">Appendix <span class="count">C</span>: The 3rd appendix</h2>
     <h2 id="the-4th-appendix">Appendix <span class="count">D</span>: The 4th appendix</h2>
-    <h2 id="the-2nd-chapter"><span class="count">2</span> The 2nd chapter</h2>
+    <h2 id="the-2nd-chapter"><span class="count">Chapter 2:</span> The 2nd chapter</h2>
   `);
 
   expect(html).toBe(expectedHtml);

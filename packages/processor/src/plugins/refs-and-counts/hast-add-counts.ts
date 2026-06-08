@@ -1,10 +1,11 @@
-import { Element, ElementContent, Node, Parent, Root } from 'hast';
+import { Element, ElementContent, Node, Parent, Root, Text } from 'hast';
 import remarkRehype from 'remark-rehype';
 import { visit } from 'unist-util-visit';
 
 import { Context } from '../../markdown-to-mdx/context';
 import { createRemarkProcessor } from '../../remark-processor';
 import { formatAppendixCount } from '../headings/format-appendix-count';
+import { formatHeadingCounts } from '../headings/format-heading-counts';
 import {
   HeadingCounter,
   createHeadingCounter,
@@ -125,34 +126,38 @@ function applyHeadingCount(
     const headingDepth = Number(String(className[1]).slice(-1));
     headingCounter.increment(headingDepth);
 
-    if (headingDepth < 2 || headingDepth > 4) {
-      Object.assign(node, { type: 'text', value: '' });
-    } else {
-      const counts = headingCounter.getCounts(headingDepth);
-      const value = formatCount(counts);
+    const { documentClass, hasPart } = ctx.frontmatter;
+    const counts = headingCounter.getCounts(headingDepth);
+    const value = formatHeadingCounts(counts, documentClass, hasPart);
+    // console.log(value);
 
-      const _id = node.properties['data-id'];
-      if (_id) {
-        const id = String(_id);
-        const label = `Section ${value}`;
-        ctx.frontmatter.refMap[id] = { id, label };
-      }
+    if (parent && idx !== undefined && parent.type === 'element') {
+      const element = parent as Element;
 
-      Object.assign(node, {
-        properties: {
-          className: 'count',
-        },
-        children: [{ type: 'text', value }],
-      });
-
-      // add space after span.count
-      if (parent && idx !== undefined && parent.type === 'element') {
-        const element = parent as Element;
-        element.children.splice(idx + 1, 0, {
+      if (value === '') {
+        element.children.splice(idx, 1);
+      } else {
+        const countNode: Element = {
+          type: 'element',
+          tagName: 'span',
+          properties: {
+            className: 'count',
+          },
+          children: [{ type: 'text', value }],
+        };
+        const spaceNode: Text = {
           type: 'text',
           value: ' ',
-        });
+        };
+        element.children.splice(idx, 1, countNode, spaceNode);
       }
+    }
+
+    const _id = node.properties['data-id'];
+    if (_id) {
+      const id = String(_id);
+      const label = `Section ${value}`;
+      ctx.frontmatter.refMap[id] = { id, label };
     }
   }
 }
