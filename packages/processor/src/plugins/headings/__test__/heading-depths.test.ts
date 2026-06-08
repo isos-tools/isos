@@ -366,19 +366,69 @@ test('theorem with report documentclass and part', async () => {
     \title{Alpha}
 
     \theoremstyle{definition}
-    \newtheorem{theorem}{Theorem}[part]
+    \newtheorem{theorem}{Theorem}[section]
     \newtheorem{lemma}[theorem]{Lemma}
 
     \begin{document}
     \maketitle
-    \part{In the beginning}
-    \begin{theorem} Some text \end{theorem}
-    \begin{lemma} Some text \end{lemma}
-    \section{My section}
-    \begin{theorem} Some text \end{theorem}
-    \begin{lemma} Some text \end{lemma}
-    \chapter{My chapter}
-    \section{My section}
+    \part{Alpha}
+    \chapter{Bravo}
+    \section{Charlie}
+    \begin{theorem}
+      This is a theorem.
+    \end{theorem}
+    \begin{lemma}
+      This is a lemma.
+    \end{lemma}
+    \begin{equation}
+      a(b)
+    \end{equation}
+    \begin{equation}
+      a(b)
+    \end{equation}
+    \chapter{Bravo}
+    \section{Delta}
+    \begin{theorem}
+      This is a theorem.
+    \end{theorem}
+    \begin{lemma}
+      This is a lemma.
+    \end{lemma}
+    \begin{equation}
+      a(b)
+    \end{equation}
+    \begin{equation}
+      a(b)
+    \end{equation}
+    \part{Echo}
+    \chapter{Foxtrot}
+    \section{Golf}
+    \begin{theorem}
+      This is a theorem.
+    \end{theorem}
+    \begin{lemma}
+      This is a lemma.
+    \end{lemma}
+    \begin{equation}
+      a(b)
+    \end{equation}
+    \begin{equation}
+      a(b)
+    \end{equation}
+    \chapter{Bravo}
+    \section{Hotel}
+    \begin{theorem}
+      This is a theorem.
+    \end{theorem}
+    \begin{lemma}
+      This is a lemma.
+    \end{lemma}
+    \begin{equation}
+      a(b)
+    \end{equation}
+    \begin{equation}
+      a(b)
+    \end{equation}
     \end{document}
   `;
 
@@ -386,7 +436,7 @@ test('theorem with report documentclass and part', async () => {
   // console.log(markdown);
   // return;
 
-  const expectedMarkdown = unindentStringAndTrim(`
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
     ---
     title: Alpha
     documentClass: report
@@ -395,7 +445,7 @@ test('theorem with report documentclass and part', async () => {
       theorem:
         style: definition
         heading: Theorem
-        numberWithin: h2
+        numberWithin: h4
       lemma:
         style: definition
         heading: Lemma
@@ -405,57 +455,143 @@ test('theorem with report documentclass and part', async () => {
     :::make-title
     :::
 
-    ## In the beginning
+    ## Alpha
+
+    ### Bravo
+
+    #### Charlie
 
     :::theorem
-    Some text
+    This is a theorem.
     :::
 
     :::lemma
-    Some text
+    This is a lemma.
     :::
 
-    #### My section
+    $$
+    \begin{equation}a(b)\end{equation}
+    $$
+
+    $$
+    \begin{equation}a(b)\end{equation}
+    $$
+
+    ### Bravo
+
+    #### Delta
 
     :::theorem
-    Some text
+    This is a theorem.
     :::
 
     :::lemma
-    Some text
+    This is a lemma.
     :::
 
-    ### My chapter
+    $$
+    \begin{equation}a(b)\end{equation}
+    $$
 
-    #### My section
+    $$
+    \begin{equation}a(b)\end{equation}
+    $$
+
+    ## Echo
+
+    ### Foxtrot
+
+    #### Golf
+
+    :::theorem
+    This is a theorem.
+    :::
+
+    :::lemma
+    This is a lemma.
+    :::
+
+    $$
+    \begin{equation}a(b)\end{equation}
+    $$
+
+    $$
+    \begin{equation}a(b)\end{equation}
+    $$
+
+    ### Bravo
+
+    #### Hotel
+
+    :::theorem
+    This is a theorem.
+    :::
+
+    :::lemma
+    This is a lemma.
+    :::
+
+    $$
+    \begin{equation}a(b)\end{equation}
+    $$
+
+    $$
+    \begin{equation}a(b)\end{equation}
+    $$
   `);
 
   expect(markdown).toBe(expectedMarkdown);
 
   const html = await testProcessor.md(markdown);
   // console.log(html);
-  // return;
+  return;
 
-  const expectedHtml = unindentStringAndTrim(`
+  const expectedHtml = unindentStringAndTrim(String.raw`
     <header>
       <h1>Alpha</h1>
     </header>
-    <h2 id="in-the-beginning"><span class="count">Part 1:</span> In the beginning</h2>
+    <h2 id="alpha"><span class="count">Part 1:</span> Alpha</h2>
+    <h3 id="bravo"><span class="count">Chapter 1:</span> Bravo</h3>
+    <h4 id="charlie"><span class="count">1.1</span> Charlie</h4>
     <div class="theorem style-definition">
-      <p><span class="title"><strong>Theorem 1.1.</strong></span> Some text</p>
+      <p><span class="title"><strong>Theorem 1.1.1.</strong></span> This is a theorem.</p>
     </div>
     <div class="theorem lemma style-definition">
-      <p><span class="title"><strong>Lemma 1.2.</strong></span> Some text</p>
+      <p><span class="title"><strong>Lemma 1.1.2.</strong></span> This is a lemma.</p>
     </div>
-    <h4 id="my-section"><span class="count">0.1</span> My section</h4>
+    <p class="maths env-equation"><code class="latex">\begin{equation}a(b)\end{equation}</code><span class="eq-count">(1.1)</span></p>
+    <p class="maths env-equation"><code class="latex">\begin{equation}a(b)\end{equation}</code><span class="eq-count">(1.2)</span></p>
+    <h3 id="bravo-1"><span class="count">Chapter 2:</span> Bravo</h3>
+    <h4 id="delta"><span class="count">2.1</span> Delta</h4>
     <div class="theorem style-definition">
-      <p><span class="title"><strong>Theorem 1.3.</strong></span> Some text</p>
+      <p><span class="title"><strong>Theorem 2.1.1.</strong></span> This is a theorem.</p>
     </div>
     <div class="theorem lemma style-definition">
-      <p><span class="title"><strong>Lemma 1.4.</strong></span> Some text</p>
+      <p><span class="title"><strong>Lemma 2.1.2.</strong></span> This is a lemma.</p>
     </div>
-    <h3 id="my-chapter"><span class="count">Chapter 1:</span> My chapter</h3>
-    <h4 id="my-section-1"><span class="count">1.1</span> My section</h4>
+    <p class="maths env-equation"><code class="latex">\begin{equation}a(b)\end{equation}</code><span class="eq-count">(2.1)</span></p>
+    <p class="maths env-equation"><code class="latex">\begin{equation}a(b)\end{equation}</code><span class="eq-count">(2.2)</span></p>
+    <h2 id="echo"><span class="count">Part 2:</span> Echo</h2>
+    <h3 id="foxtrot"><span class="count">Chapter 3:</span> Foxtrot</h3>
+    <h4 id="golf"><span class="count">3.1</span> Golf</h4>
+    <div class="theorem style-definition">
+      <p><span class="title"><strong>Theorem 3.1.1.</strong></span> This is a theorem.</p>
+    </div>
+    <div class="theorem lemma style-definition">
+      <p><span class="title"><strong>Lemma 3.1.2.</strong></span> This is a lemma.</p>
+    </div>
+    <p class="maths env-equation"><code class="latex">\begin{equation}a(b)\end{equation}</code><span class="eq-count">(3.1)</span></p>
+    <p class="maths env-equation"><code class="latex">\begin{equation}a(b)\end{equation}</code><span class="eq-count">(3.2)</span></p>
+    <h3 id="bravo-2"><span class="count">Chapter 4:</span> Bravo</h3>
+    <h4 id="hotel"><span class="count">4.1</span> Hotel</h4>
+    <div class="theorem style-definition">
+      <p><span class="title"><strong>Theorem 4.1.1.</strong></span> This is a theorem.</p>
+    </div>
+    <div class="theorem lemma style-definition">
+      <p><span class="title"><strong>Lemma 4.1.2.</strong></span> This is a lemma.</p>
+    </div>
+    <p class="maths env-equation"><code class="latex">\begin{equation}a(b)\end{equation}</code><span class="eq-count">(4.1)</span></p>
+    <p class="maths env-equation"><code class="latex">\begin{equation}a(b)\end{equation}</code><span class="eq-count">(4.2)</span></p>
   `);
 
   expect(html).toBe(expectedHtml);

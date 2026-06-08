@@ -123,10 +123,10 @@ function applyHeadingCount(
     });
   } else {
     // Count headings
-    const headingDepth = Number(String(className[1]).slice(-1));
-    headingCounter.increment(headingDepth);
-
     const { documentClass, hasPart } = ctx.frontmatter;
+    const headingDepth = Number(String(className[1]).slice(-1));
+    headingCounter.increment(headingDepth, hasPart);
+
     const counts = headingCounter.getCounts(headingDepth);
     const value = formatHeadingCounts(counts, documentClass, hasPart);
     // console.log(value);
@@ -221,10 +221,15 @@ function applyCount(
         counts.push(theoremCounter.increment(countName));
       }
 
+      const { documentClass, hasPart } = ctx.frontmatter;
       const count =
         countRef.type === 'float'
-          ? formatCount(counts.slice(counts.findIndex((n) => n > 0)))
-          : formatCount(counts);
+          ? formatCount(
+              counts.slice(counts.findIndex((n) => n > 0)),
+              documentClass,
+              hasPart,
+            )
+          : formatCount(counts, documentClass, hasPart);
 
       value = ` ${count}`;
 

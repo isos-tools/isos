@@ -18,7 +18,7 @@ export type RefObjects = Record<string, RefObject>;
 
 export function createDefaultObjects() {
   return defaultObjects.reduce((acc: RefObjects, obj) => {
-    acc[obj.name] = obj;
+    acc[obj.name] = { ...obj };
     return acc;
   }, {});
 }

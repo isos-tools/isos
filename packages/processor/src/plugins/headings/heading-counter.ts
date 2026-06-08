@@ -2,7 +2,7 @@ export type HeadingCounter = {
   get: (depth: number) => number;
   getCounts: (depth: number) => number[];
   setCount: (depth: number, value: number) => void;
-  increment: (depth: number) => void;
+  increment: (depth: number, hasPart?: boolean) => void;
 };
 
 export function createHeadingCounter(): HeadingCounter {
@@ -18,11 +18,16 @@ export function createHeadingCounter(): HeadingCounter {
     setCount(depth, value) {
       count[depth - 1] = value - 1;
     },
-    increment(depth) {
+    increment(depth, hasPart) {
       ++count[depth - 1];
 
       if (depth < lastDepth) {
-        count.fill(0, depth, count.length);
+        // bit awkward, but quick fix to allow chapters to increment independently of parts
+        if (hasPart && depth === 2) {
+          count.fill(0, depth + 1, count.length);
+        } else {
+          count.fill(0, depth, count.length);
+        }
       }
       lastDepth = depth;
     },
