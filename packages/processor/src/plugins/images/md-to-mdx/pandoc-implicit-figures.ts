@@ -1,7 +1,8 @@
 import { Element, ElementContent } from 'hast';
 import { Parent, Root } from 'mdast';
 import remarkRehype from 'remark-rehype';
-import { visit } from 'unist-util-visit';
+// import { visit } from 'unist-util-visit';
+import { visitParents } from 'unist-util-visit-parents';
 
 import { createRemarkProcessor } from '../../../remark-processor';
 
@@ -9,7 +10,15 @@ export function pandocImplicitFigures() {
   return (tree: Root) => {
     // console.log('pandocImplicitFigures');
     // console.dir(tree, { depth: null });
-    visit(tree, 'image', (node, _idx, parent) => {
+
+    visitParents(tree, 'image', (node, ancestors) => {
+      const parent = ancestors[ancestors.length - 1];
+      const isSubfigure = ancestors.some(
+        (ancestor) =>
+          ancestor.type === 'containerDirective' &&
+          ancestor.name === 'figure',
+      );
+
       if (parent?.type !== 'paragraph') {
         return;
       }
@@ -24,6 +33,15 @@ export function pandocImplicitFigures() {
         return;
       }
 
+      // allow width to be set in style attribute
+      const style: string[] = [];
+      if (props.style) {
+        const match = String(props.style).match(/width:\s?(\d+)%/);
+        if (match !== null) {
+          style.push(`width: ${match[1]}%`);
+        }
+      }
+
       const img: Element =
         process.env.NODE_ENV === 'test' || node.url.startsWith('data')
           ? {
@@ -33,6 +51,7 @@ export function pandocImplicitFigures() {
                 src: node.url,
                 alt: node.alt || '',
                 title: node.title || null,
+                style: isSubfigure ? null : style,
               },
               children: [],
             }
@@ -120,22 +139,13 @@ export function pandocImplicitFigures() {
         children.push(figCaption);
       }
 
-      const style: string[] = [];
-      // console.log(props);
-      if (props.style) {
-        const match = String(props.style).match(/width:\s?(\d+)%/);
-        if (match !== null) {
-          style.push(`width: ${match[1]}%`);
-        }
-      }
-
       parent.data = {
         hName: 'figure',
         hProperties: {
           src: null,
           alt: null,
           id,
-          style: style.join(';'),
+          style: isSubfigure ? style : null,
         },
         hChildren: children,
       };

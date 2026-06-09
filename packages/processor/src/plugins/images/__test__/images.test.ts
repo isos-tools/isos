@@ -884,7 +884,7 @@ test('figure with relative width', async () => {
   expect(html).toBe(expectedHtml);
 });
 
-test('syntax bug', async () => {
+test('syntax bug 2', async () => {
   const latex = String.raw`
     \documentclass{article}
 
@@ -926,6 +926,105 @@ test('syntax bug', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <p>Hello</p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('syntax bug 3', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{graphicx}
+    \graphicspath{{figures/}}
+
+    \begin{document}
+
+    \includegraphics[width=0.5\textwidth]{DefWork.png}
+
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.5\textwidth]{DefWork.png}
+      \caption{Schematic showing the relationship}
+    \end{figure}
+
+    \begin{figure}[H]
+      \captionsetup[subfigure]{justification=centering}
+      \centering
+      \begin{subfigure}{ 0.3\textwidth }
+        \centering
+        \includegraphics[width=0.8\textwidth]{DefWork.png}
+        \caption*{injective\\'don't lose information'}
+      \end{subfigure}
+      \quad
+      \begin{subfigure}{0.3\textwidth}
+        \centering
+        \includegraphics[width=0.8\textwidth]{DefWork.png}
+        \caption*{surjective\\'hit everything'}
+      \end{subfigure}
+      \quad
+      \begin{subfigure}{0.3\textwidth}
+        \centering
+        \includegraphics[width=0.8\textwidth]{DefWork.png}
+        \caption*{bijective\\'the same'}
+      \end{subfigure}
+    \end{figure}
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ![](DefWork.png){width="50%"}
+
+    ![Schematic showing the relationship](DefWork.png){width="50%"}
+
+    :::figure
+    ![injective\\n’don’t lose information’](DefWork.png){.unnumbered width="30%"}
+
+    ![surjective\\n’hit everything’](DefWork.png){.unnumbered width="30%"}
+
+    ![bijective\\n’the same’](DefWork.png){.unnumbered width="30%"}
+    :::
+  `);
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <p><img src="DefWork.png" alt="Image" style="width:50%;" /></p>
+    <figure>
+      <div class="fig-content">
+        <p><img src="DefWork.png" alt="Image" style="width:50%;" /></p>
+      </div>
+      <figcaption><strong>Figure 1:</strong> Schematic showing the relationship</figcaption>
+    </figure>
+    <figure>
+      <div class="fig-content">
+        <figure style="width:30%;">
+          <div class="fig-content">
+            <p><img src="DefWork.png" alt="Image" /></p>
+          </div>
+          <figcaption>injective<br />’don’t lose information’</figcaption>
+        </figure>
+        <figure style="width:30%;">
+          <div class="fig-content">
+            <p><img src="DefWork.png" alt="Image" /></p>
+          </div>
+          <figcaption>surjective<br />’hit everything’</figcaption>
+        </figure>
+        <figure style="width:30%;">
+          <div class="fig-content">
+            <p><img src="DefWork.png" alt="Image" /></p>
+          </div>
+          <figcaption>bijective<br />’the same’</figcaption>
+        </figure>
+      </div>
+    </figure>
   `);
 
   expect(html).toBe(expectedHtml);
