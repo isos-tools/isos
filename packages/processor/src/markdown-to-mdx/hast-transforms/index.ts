@@ -17,9 +17,9 @@ import { mathTagToRefLabel } from '../../plugins/maths/math-tag-to-ref-label';
 import { missingMathsImageToSvg } from '../../plugins/missing-maths/missing-maths-img-to-svg';
 import { displayNoteContents } from '../../plugins/notes/md-to-mdx/html-ast';
 import { addPreambleWarnings } from '../../plugins/preamble-warnings/add-preamble-warnings';
-import { atReferenceToLink } from '../../plugins/refs-and-counts/at-reference-to-link';
-import { addCounts } from '../../plugins/refs-and-counts/hast-add-counts';
-import { refToHrefMaths } from '../../plugins/refs-and-counts/ref-to-href-maths';
+import { atReferenceToLink } from '../../plugins/refs-and-counts/md-to-mdx/at-reference-to-link';
+import { addCounts } from '../../plugins/refs-and-counts/md-to-mdx/hast-add-counts';
+import { refToHrefMaths } from '../../plugins/refs-and-counts/md-to-mdx/ref-to-href-maths';
 import {
   exSolSolutionTitle,
   insertQed,

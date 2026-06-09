@@ -2,8 +2,8 @@ import { Macro, Root } from '@unified-latex/unified-latex-types';
 import { visit } from '@unified-latex/unified-latex-util-visit';
 import merge from 'lodash.merge';
 
-import { Context } from '../../input-to-markdown/context';
-import { createDefaultObjects } from './default-objects';
+import { Context } from '../../../input-to-markdown/context';
+import { createDefaultObjects } from '../default-objects';
 
 export function extractNumberWithin(ctx: Context) {
   return (tree: Root) => {

@@ -20,7 +20,7 @@ import {
   createPrintEndnotes,
   createSidenote,
 } from '../../plugins/notes/input-to-md/html-to-md';
-import { createReference } from '../../plugins/refs-and-counts/reference';
+import { createReference } from '../../plugins/refs-and-counts/input-to-md/reference';
 import { rehypeRemarkDel } from '../../plugins/strikethrough/rehypre-remark-del';
 import { superSubHandlers } from '../../plugins/super-sub';
 import { createTheorem } from '../../plugins/theorems-proofs/input-to-md/html-to-md';

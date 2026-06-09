@@ -2,18 +2,18 @@ import { Element, ElementContent, Node, Parent, Root, Text } from 'hast';
 import remarkRehype from 'remark-rehype';
 import { visit } from 'unist-util-visit';
 
-import { Context } from '../../markdown-to-mdx/context';
-import { createRemarkProcessor } from '../../remark-processor';
-import { formatAppendixCount } from '../headings/format-appendix-count';
-import { formatHeadingCounts } from '../headings/format-heading-counts';
+import { Context } from '../../../markdown-to-mdx/context';
+import { createRemarkProcessor } from '../../../remark-processor';
+import { formatAppendixCount } from '../../headings/format-appendix-count';
+import { formatHeadingCounts } from '../../headings/format-heading-counts';
 import {
   HeadingCounter,
   createHeadingCounter,
-} from '../headings/heading-counter';
+} from '../../headings/heading-counter';
 import {
   TheoremCounter,
   createTheoremCounter,
-} from '../theorems-proofs/theorem-counter';
+} from '../../theorems-proofs/theorem-counter';
 import { formatCount } from './format-count';
 
 // Inject counts for numbered headings and theorems

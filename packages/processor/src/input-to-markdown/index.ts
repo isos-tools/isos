@@ -84,7 +84,7 @@ async function latexToMdAstProcessor(
     .use(options.htmlAstTransforms)
     .run(htmlAst as HastRoot);
 
-  // console.dir(htmlAstTransformed, { depth: 6 });
+  // console.dir(htmlAstTransformed, { depth: null });
 
   // const html = unified()
   //   .use(rehypeStringify)

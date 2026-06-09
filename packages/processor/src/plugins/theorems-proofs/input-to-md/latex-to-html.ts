@@ -71,7 +71,6 @@ function extractName(node: Environment) {
 
   // amsthm environments: conjecture, exercise and solution are not set in:
   // https://github.com/siefkenj/unified-latex/blob/main/packages/unified-latex-ctan/package/mathtools/provides.ts#L209-L217
-  // TODO: environments should all be defined by \newtheorem or as yaml theorems
 
   const first = node.content[0];
   if (first && first.type === 'macro' && first.content === 'html-tag:p') {
@@ -89,7 +88,9 @@ function extractName(node: Environment) {
         if (endIdx !== -1) {
           const name = argContent.slice(startIdx + 1, endIdx);
           argContent.splice(startIdx, endIdx + 1);
-          return printRaw(name);
+          const transformed = convertRefsToAt(name);
+          expandUnicodeLigatures(transformed);
+          return printRaw(transformed).trim();
         }
       }
     }

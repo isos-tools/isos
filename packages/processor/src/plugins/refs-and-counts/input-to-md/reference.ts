@@ -5,6 +5,7 @@ import kebabCase from 'lodash.kebabcase';
 
 export function createReference(_state: State, node: Element): Text {
   const id = kebabCase(toString(node));
+  // console.log('id:', id);
   return {
     type: 'text',
     value: id ? `@${id}` : '',

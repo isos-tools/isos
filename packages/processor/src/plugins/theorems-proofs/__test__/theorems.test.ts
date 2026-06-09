@@ -2066,3 +2066,67 @@ test('ligatures in theorem names', async () => {
 
   expect(html).toBe(expectedHtml);
 });
+
+test('references in theorem names', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{amsthm}
+    \usepackage[overload]{keytheorems}
+    \usepackage{zref-clever}
+    \usepackage[colorlinks,bookmarks=false]{hyperref}
+    \zcsetup{noabbrev, cap, nameinlink}
+    \newtheorem{prop}{Proposition}
+    \begin{document}
+
+    \begin{prop}[Conservative]
+    \label{prop:conservative}
+    \end{prop}
+
+    \section{Proof of \zcref{prop:conservative}}
+
+    \begin{prop}[Restatement of \zcref{prop:conservative}]
+    Hello
+    \end{prop}
+
+    \end{document}
+  `;
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ---
+    theorems:
+      prop:
+        heading: Proposition
+    ---
+
+    :::prop[Conservative]{#prop-conservative}
+
+    :::
+
+    ## Proof of @prop-conservative
+
+    :::prop[Restatement of @prop-conservative]
+    Hello
+    :::
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(`
+    <div class="theorem prop" id="prop-conservative">
+      <p><span class="title"><strong>Proposition 1 (Conservative).</strong></span> </p>
+    </div>
+    <h2 id="proof-of-prop-conservative"><span class="count">1</span> Proof of <a href="#prop-conservative" class="ref">Proposition 1</a></h2>
+    <div class="theorem prop">
+      <p><span class="title"><strong>Proposition 2 (Restatement of <a href="#prop-conservative" class="ref">Proposition 1</a>).</strong></span> Hello</p>
+    </div>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});

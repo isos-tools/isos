@@ -1,7 +1,7 @@
 import { Root } from 'mdast';
 import { stringify } from 'yaml';
 
-import { theoremsToFrontmatter } from '../../plugins/refs-and-counts/theorems-to-frontmatter';
+import { theoremsToFrontmatter } from '../../plugins/theorems-proofs/theorems-to-frontmatter';
 import { Context } from '../context';
 
 export function addFrontmatter(ctx: Context) {

@@ -1,5 +1,5 @@
 import { Context } from '../../input-to-markdown/context';
-import { RefObject } from './default-objects';
+import { RefObject } from '../refs-and-counts/default-objects';
 
 export function theoremsToFrontmatter(ctx: Context) {
   const { theorems } = ctx.frontmatter;

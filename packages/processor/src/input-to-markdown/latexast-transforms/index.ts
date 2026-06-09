@@ -14,7 +14,7 @@ import { warnOnHardcodedListLabels } from '../../plugins/lists/warn-hardcoded-li
 import { equationLabelToId } from '../../plugins/maths/equation-label-to-id';
 import { extractNotes } from '../../plugins/notes/input-to-md/latex-ast';
 import { defWarn } from '../../plugins/preamble-warnings/def-warn';
-import { extractNumberWithin } from '../../plugins/refs-and-counts/number-within';
+import { extractNumberWithin } from '../../plugins/refs-and-counts/input-to-md/number-within';
 import { extractTocContents } from '../../plugins/table-of-contents/extract-toc-contents';
 import { tableCaptionToData } from '../../plugins/tables/table-caption-to-data';
 import { extractTheoremDefinitions } from '../../plugins/theorems-proofs/input-to-md/latex-ast';

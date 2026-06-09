@@ -137,3 +137,56 @@ test('prefix for theorems not required', async () => {
 
   expect(html).toBe(expectedHtml);
 });
+
+test('reference hypen reference', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage[overload]{keytheorems}
+    \usepackage{zref-clever}
+    \usepackage[colorlinks,bookmarks=false]{hyperref}
+    \zcsetup{noabbrev, cap, nameinlink}
+    \begin{document}
+
+    \section{Alpha}
+    \label{sec:alpha}
+
+    \section{Bravo}
+    \label{sec:bravo}
+
+    \section{Charlie}
+    \label{sec:charlie}
+
+    Theory developed in \zcref{sec:alpha}-\zcref{sec:charlie}.
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ## Alpha {#sec-alpha}
+
+    ## Bravo {#sec-bravo}
+
+    ## Charlie {#sec-charlie}
+
+    Theory developed in @sec-alpha - @sec-charlie.
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(`
+    <h2 id="sec-alpha"><span class="count">1</span> Alpha</h2>
+    <h2 id="sec-bravo"><span class="count">2</span> Bravo</h2>
+    <h2 id="sec-charlie"><span class="count">3</span> Charlie</h2>
+    <p>Theory developed in <a href="#sec-alpha" class="ref">Section 1</a> - <a href="#sec-charlie" class="ref">Section 3</a>.</p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
