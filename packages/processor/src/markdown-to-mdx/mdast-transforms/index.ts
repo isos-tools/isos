@@ -11,7 +11,7 @@ import { headings } from '../../plugins/headings/mdx-headings';
 import { setHeadingCounterToDiv } from '../../plugins/headings/set-counter-directive-to-div';
 import { imageAttributes } from '../../plugins/images/md-to-mdx/image-attributes';
 import { pandocImplicitFigures } from '../../plugins/images/md-to-mdx/pandoc-implicit-figures';
-import { mathMetaToId } from '../../plugins/maths/math-meta-to-id';
+import { mathMetaToId } from '../../plugins/maths/md-to-mdx/math-meta-to-id';
 import { notes } from '../../plugins/notes/md-to-mdx/md-ast';
 import { headingSections } from '../../plugins/sections/heading-sections';
 import { includeTocContents } from '../../plugins/table-of-contents/include-toc-contents';

@@ -17,6 +17,7 @@ export default defineConfig({
             ...configDefaults.exclude,
             '**/_old/**',
             'unified-latex-forks/**',
+            'packages/maths/src/siunitx/**',
           ],
           testTimeout: 60_000,
           hookTimeout: 60_000,

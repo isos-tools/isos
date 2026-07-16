@@ -1632,7 +1632,7 @@ test('syntax bug 2', async () => {
         numberWithin: h2
     ---
 
-    :::thm[Clairaut's Theroem]
+    :::thm[Clairaut’s Theroem]
     abc \[Roughly speaking] Then
     :::
   `);
@@ -1645,7 +1645,7 @@ test('syntax bug 2', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <div class="theorem thm style-definition">
-      <p><span class="title"><strong>Theorem 0.1 (Clairaut's Theroem).</strong></span> abc [Roughly speaking] Then</p>
+      <p><span class="title"><strong>Theorem 0.1 (Clairaut’s Theroem).</strong></span> abc [Roughly speaking] Then</p>
     </div>
   `);
 
@@ -1740,7 +1740,7 @@ test('syntax bug 4', async () => {
         referenceCounter: dfn
     ---
 
-    :::lem[Rolle's Theorem]{#lem-rolle}
+    :::lem[Rolle’s Theorem]{#lem-rolle}
     Suppose that
     :::
 
@@ -1757,7 +1757,7 @@ test('syntax bug 4', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <div class="theorem lem" id="lem-rolle">
-      <p><span class="title"><strong>Lemma 0.1 (Rolle's Theorem).</strong></span> Suppose that</p>
+      <p><span class="title"><strong>Lemma 0.1 (Rolle’s Theorem).</strong></span> Suppose that</p>
     </div>
     <div class="theorem proof style-remark">
       <p><span class="title"><em>Proof of <a href="#lem-rolle" class="ref">Lemma 0.1</a>.</em>. </span>By the extremal value theorem<span class="qed"> q.e.d.</span></p>

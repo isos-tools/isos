@@ -1,13 +1,10 @@
 import { RunOptions } from '@mdx-js/mdx';
-import classNames from 'classnames';
-import { VNode } from 'preact';
 import { Fragment, jsx, jsxDEV, jsxs } from 'preact/jsx-runtime';
 
 import { Article } from '../../plugins/article/article';
 import { CalloutIcon } from '../../plugins/callout/mdx-callout-icon';
-// import { Authors } from '../../plugins/cover/mdx-authors';
 import { OrcidLink } from '../../plugins/cover/orcid-link';
-import { Maths } from '../../plugins/maths/mdx-handlers/Maths';
+import { Maths } from '../../plugins/maths/md-to-mdx/mdx-handlers/Maths';
 import { ClickToShowTheorem } from '../../plugins/theorems-proofs/md-to-mdx/mdx-handlers';
 import { WarnSpan } from '../../plugins/warn/mdx-warn';
 import { Options } from '../options';
@@ -50,7 +47,6 @@ export function createRunOptions(
         }
       },
       div(props) {
-        // console.log(props);
         const className = String(props.class || '');
         if (className.includes('task')) {
           return <Task {...props} />;
@@ -62,95 +58,51 @@ export function createRunOptions(
       },
       code(props) {
         const className = String(props.class || '');
-
-        if (className.includes('math-inline')) {
+        if (className.includes('mathml')) {
           return (
             <Maths
               expr={props.children}
+              latex={props['data-latex']}
               format="inline"
               maths={maths}
               article={article}
             />
           );
         }
-
-        // if (className.startsWith('language')) {
-        //   const match = className.match(/language-(\S+)/);
-        //   if (match !== null) {
-        //     console.log('code:', match[1]);
-        //     return <code>{props.children}</code>;
-        //   }
-        // }
-
         return <code {...props} />;
       },
-      pre(props) {
-        let children: VNode[] = [];
-        if (Array.isArray(props.children)) {
-          children = props.children;
-        } else if (props.children?.props) {
-          children.push(props.children);
-        } else {
-          children = [];
-        }
-
-        const child = children[0];
-        const count = children[1];
-        // @ts-expect-error
-        const className = String(child.props?.class || '');
-
-        // if (className.startsWith('language')) {
-        //   const match = className.match(/language-(\S+)/);
-        //   if (match !== null) {
-        //     console.log('pre:', match[1]);
-        //     return <pre>{children}</pre>;
-        //   }
-        // }
-
-        if (className.includes('math-display')) {
-          const id = props['data-id'];
-          const className = classNames('maths', { 'env-equation': count });
-          const inSidenote = (props.class || '').includes('in-sidenote');
-
-          if (inSidenote) {
+      p(props) {
+        const className = String(props.class || '');
+        if (className.includes('maths')) {
+          const childCodeElem = props.children;
+          if (className.includes('in-sidenote')) {
             return (
-              <span id={id} className={className}>
+              <span className="maths">
                 <Maths
-                  expr={child.props.children}
+                  expr={childCodeElem.props.children}
+                  latex={childCodeElem.props['data-latex']}
                   format="display"
                   maths={maths}
                   article={article}
-                  inSidenote={inSidenote}
                 />
-                {count}
               </span>
             );
           } else {
             return (
-              <p id={id} className={className}>
+              <p className="maths">
                 <Maths
-                  expr={child.props.children}
+                  expr={childCodeElem.props.children}
+                  latex={childCodeElem.props['data-latex']}
                   format="display"
                   maths={maths}
                   article={article}
-                  inSidenote={inSidenote}
                 />
-                {count}
               </p>
             );
           }
         }
-
-        return <pre {...props} />;
+        return <p {...props} />;
       },
-      // ul(props) {
-      //   const className = String(props.class || '');
-      //   if (className === 'authors') {
-      //     return <Authors {...props} />;
-      //   } else {
-      //     return <ul {...props} />;
-      //   }
-      // },
       section: Section,
     }),
     jsx,
@@ -159,10 +111,11 @@ export function createRunOptions(
   };
 }
 
-export function createSidebarRunOptions({
-  article,
-  maths,
-}: MdxState): RunOptions {
+export function createSidebarRunOptions(): RunOptions {
+// {
+//   article,
+//   maths,
+// }: MdxState
   return {
     Fragment,
     jsx,
@@ -170,30 +123,30 @@ export function createSidebarRunOptions({
     jsxDEV,
     useMDXComponents: () => ({
       li: TocListItem,
-      code(props) {
-        const className = String(props.class || '');
+      // code(props) {
+      //   const className = String(props.class || '');
 
-        if (className.includes('math-inline')) {
-          return (
-            <Maths
-              expr={props.children}
-              format="inline"
-              maths={maths}
-              article={article}
-            />
-          );
-        }
+      //   // if (className.includes('math-inline')) {
+      //   //   return (
+      //   //     <Maths
+      //   //       expr={props.children}
+      //   //       format="inline"
+      //   //       maths={maths}
+      //   //       article={article}
+      //   //     />
+      //   //   );
+      //   // }
 
-        // if (className.startsWith('language')) {
-        //   const match = className.match(/language-(\S+)/);
-        //   if (match !== null) {
-        //     console.log('code:', match[1]);
-        //     return <code>{props.children}</code>;
-        //   }
-        // }
+      //   // if (className.startsWith('language')) {
+      //   //   const match = className.match(/language-(\S+)/);
+      //   //   if (match !== null) {
+      //   //     console.log('code:', match[1]);
+      //   //     return <code>{props.children}</code>;
+      //   //   }
+      //   // }
 
-        return <code {...props} />;
-      },
+      //   return <code {...props} />;
+      // },
     }),
   };
 }

@@ -88,10 +88,10 @@ async function markdownToHtml(
 
   // markdown-to-jsx
   const mdxState = createMdxState();
-  const { mathsAsTex, syntaxHighlight } = state?.maths || {};
+  const { mathsRendering, syntaxHighlight } = state?.maths || {};
 
-  mdxState.maths.mathsAsTex.value =
-    mathsAsTex !== undefined ? mathsAsTex : true;
+  mdxState.maths.mathsRendering.value =
+    mathsRendering !== undefined ? mathsRendering : 'latex-code';
   mdxState.maths.syntaxHighlight.value =
     syntaxHighlight !== undefined ? syntaxHighlight : false;
 
@@ -125,10 +125,10 @@ async function markdownToTableOfContents(
   });
   const markdown = await inputToMarkdown(ctx.content, opts);
   const mdxState = createMdxState();
-  const { mathsAsTex, syntaxHighlight } = state?.maths || {};
+  const { mathsRendering, syntaxHighlight } = state?.maths || {};
 
-  mdxState.maths.mathsAsTex.value =
-    mathsAsTex !== undefined ? mathsAsTex : true;
+  mdxState.maths.mathsRendering.value =
+    mathsRendering !== undefined ? mathsRendering : 'svg';
   mdxState.maths.syntaxHighlight.value =
     syntaxHighlight !== undefined ? syntaxHighlight : false;
 

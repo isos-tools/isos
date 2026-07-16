@@ -9,15 +9,12 @@ export function mathMetaToId() {
     // console.dir(tree, { depth: null });
     visit(tree, 'math', (node) => {
       const meta = node.meta;
-
       if (meta) {
         const attr = parseAttr(meta).prop;
-
         if (attr) {
           const properties = {
             'data-id': attr.id,
           };
-
           node.data = {
             ...(node.data || {}),
             hProperties: {

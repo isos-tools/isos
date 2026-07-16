@@ -39,7 +39,7 @@ export type {
   MathsFormat,
   MathsStateType,
   MathsState,
-} from './plugins/maths/mdx-state';
+} from './plugins/maths/md-to-mdx/mdx-state';
 
 export { embedIncludes } from './embed-includes';
 

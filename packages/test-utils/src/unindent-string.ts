@@ -1,5 +1,6 @@
 export function unindentStringAndTrim(str: string) {
   return unindentString(str).trim();
+  // .replace(/[^\S\r\n]/g, ' ');
 }
 
 function unindentString(str: string) {

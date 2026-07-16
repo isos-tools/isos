@@ -20,9 +20,6 @@ export function createMaths(node: Element): Math {
   const id = String(node.properties.id || '');
   if (id) {
     meta.push(`#${id}`);
-  }
-
-  if (id) {
     result.meta = ` {${meta.join(' ')}}`;
   }
   return result;

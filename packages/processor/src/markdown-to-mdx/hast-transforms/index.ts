@@ -12,8 +12,9 @@ import { defListHastHandlers } from '../../plugins/definition-list';
 import { addFooter } from '../../plugins/footer/add-footer';
 import { appendices } from '../../plugins/headings/hast-appendices';
 import { addDefaultAltText } from '../../plugins/images/md-to-mdx/default-image-alt';
-import { addMathsRefsAndCount } from '../../plugins/maths/add-maths-refs-and-count';
-import { mathTagToRefLabel } from '../../plugins/maths/math-tag-to-ref-label';
+import { addMathsRefsAndCount } from '../../plugins/maths/md-to-mdx/add-maths-refs-and-count';
+import { latexMathToMml } from '../../plugins/maths/md-to-mdx/latex-to-mml';
+import { mmlToOutput } from '../../plugins/maths/md-to-mdx/mml-to-output';
 import { missingMathsImageToSvg } from '../../plugins/missing-maths/missing-maths-img-to-svg';
 import { displayNoteContents } from '../../plugins/notes/md-to-mdx/html-ast';
 import { addPreambleWarnings } from '../../plugins/preamble-warnings/add-preamble-warnings';
@@ -65,7 +66,6 @@ function createRehypeFragmentPlugins(
 
     addDefaultAltText,
     missingMathsImageToSvg,
-    addMathsRefsAndCount,
 
     [displayNoteContents, ctx],
     insertQed,
@@ -80,10 +80,11 @@ function createRehypeFragmentPlugins(
     // ],
     removeEmptyParagraphs,
     [appendices, ctx, options.noSections],
+    latexMathToMml,
 
     // should be last
-    [mathTagToRefLabel, ctx],
     [addCounts, ctx],
+    [mmlToOutput, ctx], // depends on addCounts
     [atCitationToLink, ctx], // depends on addCounts
     [atReferenceToLink, ctx], // depends on addCounts
     [refToHrefMaths, ctx], // depends on addCounts

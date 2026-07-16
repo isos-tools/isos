@@ -32,6 +32,7 @@ export type MathsFont = 'computerModern' | 'fira';
 
 export type MmlToSvgOptions = {
   font: MathsFont;
+  display: boolean;
   width?: number;
 };
 
@@ -70,30 +71,45 @@ packages.forEach((name) => {
   }
 });
 
-const fontOptions = {
-  displayOverflow: 'linebreak',
-  // useXlink: false,
-  fontCache: 'none',
-  // localID: null,
-};
-
-const fonts: Record<MathsFont, any> = {
-  computerModern: new SVG({ ...fontOptions, fontData: NewcmFont }),
-  fira: new SVG({ ...fontOptions, fontData: FiraFont }),
-};
-
 export function mmlToSvg(mml: string, options?: Partial<MmlToSvgOptions>) {
   try {
+    const outputOptions = {
+      displayOverflow: 'linebreak',
+      fontCache: 'none',
+      postFilters: [
+        ({ data }) => {
+          data.attributes.display = options?.display ? 'true' : 'false';
+        },
+      ],
+    };
+    const fonts: Record<MathsFont, any> = {
+      computerModern: new SVG({
+        ...outputOptions,
+        scale: 1.08,
+        fontData: NewcmFont,
+      }),
+      fira: new SVG({
+        ...outputOptions,
+        scale: 1.2,
+        fontData: FiraFont,
+      }),
+    };
+
     htmlDoc.outputJax = fonts[options?.font || 'computerModern'];
     htmlDoc.outputJax.setAdaptor(htmlDoc.adaptor);
 
     const htmlNode = htmlDoc.convert(mml, {
       // https://github.com/mathjax/MathJax/issues/3434
-      containerWidth:
-        mml.includes('\\begin{multiline}') && options?.width !== undefined
-          ? options.width
-          : undefined,
+      containerWidth: options?.width || undefined,
+      // em: 50,
+      // ex: 50,
+      // display: false,
+      // scale: 20,
+      // lineWidth: 10,
+      // lineHeight: 10,
+      // lineSpacing: 10,
     });
+
     if (htmlNode?.children?.length > 0) {
       const svg = htmlNode.children[0];
       const html = adaptor.outerHTML(svg);
@@ -101,16 +117,16 @@ export function mmlToSvg(mml: string, options?: Partial<MmlToSvgOptions>) {
       const match = html.match(/data-mjx-error="(.*?)"/);
       if (match !== null) {
         if (process.env.NODE_ENV !== 'test') {
-          console.log('mathjax:', match[1]);
+          console.log('mathjax svg error:', match[1]);
         }
         return {
           error: true,
-          html: `mathjax: ${match[1]}`,
+          html: `mathjax svg error: ${match[1]}`,
         };
       }
       return {
         error: false,
-        html,
+        html: htmlNode,
       };
     }
     return {
@@ -120,7 +136,7 @@ export function mmlToSvg(mml: string, options?: Partial<MmlToSvgOptions>) {
   } catch (err) {
     return {
       error: true,
-      html: `mathjax: ${String(err)}`,
+      html: `mathjax mml error: ${String(err)}`,
     };
   }
 }

@@ -108,7 +108,7 @@ test('prefix for theorems not required', async () => {
     Bravo
 
     $$
-    \begin{equation}x\end{equation}
+    \begin{equation}\label{one}x\end{equation}
     $$ {#one}
     :::
 
@@ -117,7 +117,13 @@ test('prefix for theorems not required', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(markdown);
+  const html = await testProcessor.md(markdown, {
+    state: {
+      maths: {
+        mathsRendering: 'mathml',
+      },
+    },
+  });
   // console.log(html);
   // return;
 
@@ -130,7 +136,16 @@ test('prefix for theorems not required', async () => {
     <h3 id="polynomials"><span class="count">1.2</span> Polynomials</h3>
     <div class="theorem definition style-definition" id="hello-2">
       <p><span class="title"><strong>Definition 1.2.1.</strong></span> Bravo</p>
-      <p id="one" class="maths env-equation"><code class="latex">\begin{equation}x\end{equation}</code><span class="eq-count">(1)</span></p>
+      <p class="maths"><span class="mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+      <mtable displaystyle="true">
+        <mlabeledtr>
+          <mtd id="one"><mtext>(1)</mtext></mtd>
+          <mtd>
+            <mi>x</mi>
+          </mtd>
+        </mlabeledtr>
+      </mtable>
+    </math></span></p>
     </div>
     <p>See <a href="#revision" class="ref">Section 1</a>, <a href="#hello" class="ref">Definition 1.1.1</a>, <a href="#hello-2" class="ref">Definition 1.2.1</a> and <a href="#one" class="ref">Equation 1</a>.</p>
   `);

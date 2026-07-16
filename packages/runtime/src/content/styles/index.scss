@@ -179,11 +179,11 @@ article {
   //   }
   // }
 
-  mjx-container[display='true'] {
-    margin-bottom: 1.5em;
-    text-align: left;
-    text-indent: 1em;
-  }
+  // mjx-container[display='true'] {
+  //   margin-bottom: 1.5em;
+  //   text-align: left;
+  //   text-indent: 1em;
+  // }
 
   h1,
   h2,
@@ -369,16 +369,10 @@ article {
 
   }
 
-  .maths {
-    svg {
-      max-width: 100%;
-      overflow: visible;
-    }
-  }
-
   code.maths {
     // padding: 2px 0;
     overflow: hidden;
+    font-family: inherit;
 
     .mathjax-error {
       display: inline-block;
@@ -389,31 +383,48 @@ article {
       color: white;
       border-radius: 0.2em;
     }
-    svg.missing-maths {
-      height: 2.5ex;
-      vertical-align: -0.75ex;
-      path {
-        stroke: currentcolor;
-        fill: currentcolor;
-        stroke-width: 0;
+    svg {
+      max-width: 100% !important;
+      overflow: visible;
+
+      &.missing-maths {
+        height: 2.5ex;
+        vertical-align: -0.75ex;
+        path {
+          stroke: currentcolor;
+          fill: currentcolor;
+          stroke-width: 0;
+        }
       }
     }
+  }
+
+  code.latex, code.mathml {
+    width: 100%;
+    box-sizing: border-box;
+    white-space: pre-wrap;
   }
 
   p.maths, .sidenote-content span.maths {
     // padding-left: 1em;
     text-align: center;
     // overflow: auto;
-    code.maths, svg {
-      max-width: 100%;
-      margin: 0 auto;
+    code.maths {
+      // max-width: 100%;
+      svg {
+        display: block;
+        margin: 0 auto;
+      }
     }
     code.maths {
-      display: inline-block;
+      // display: inline-block;
       padding: 2px;
     }
-    svg {
-      display: block;
+
+    code.latex, code.mathml {
+      width: 100%;
+      box-sizing: border-box;
+      white-space: pre-wrap;
     }
 
     .eq-tag, .eq-count {
@@ -566,7 +577,7 @@ article {
     }
   }
 
-  pre {
+  pre:not(.warn) {
     background: hsl(from var(--textColor) h s calc(l - 80));
     border-left: 0.3em solid hsl(from var(--textColor) h s calc(l - 50));
     white-space: pre-wrap;
@@ -577,6 +588,10 @@ article {
       background: none;
       padding: 1em;
     }
+  }
+
+  pre.warn {
+    text-align: center;
   }
 
   .framed:has(pre:only-child) {

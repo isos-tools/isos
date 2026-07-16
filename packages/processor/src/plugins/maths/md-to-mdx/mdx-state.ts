@@ -20,7 +20,7 @@ export type SpeechLocale =
   | 'sv';
 
 export type MathsStateType = {
-  mathsAsTex: boolean;
+  mathsRendering: 'svg' | 'mathml' | 'latex-code' | 'mathml-code';
   syntaxHighlight: boolean;
   mathsFontName: MathsFont;
   ariaMode: MathsAriaMode;
@@ -29,7 +29,7 @@ export type MathsStateType = {
 };
 
 export type MathsState = {
-  mathsAsTex: Signal<MathsStateType['mathsAsTex']>;
+  mathsRendering: Signal<MathsStateType['mathsRendering']>;
   syntaxHighlight: Signal<MathsStateType['syntaxHighlight']>;
   mathsFontName: Signal<MathsStateType['mathsFontName']>;
   ariaMode: Signal<MathsStateType['ariaMode']>;
@@ -38,7 +38,7 @@ export type MathsState = {
 };
 
 export const mathsInitial: MathsStateType = {
-  mathsAsTex: false,
+  mathsRendering: 'svg',
   syntaxHighlight: true,
   mathsFontName: 'computerModern',
   ariaMode: 'both',
@@ -48,7 +48,7 @@ export const mathsInitial: MathsStateType = {
 
 export function mathsSignalState(initial: MathsStateType): MathsState {
   return {
-    mathsAsTex: signal(initial.mathsAsTex),
+    mathsRendering: signal(initial.mathsRendering),
     mathsFontName: signal(initial.mathsFontName),
     syntaxHighlight: signal(initial.syntaxHighlight),
     ariaMode: signal(initial.ariaMode),

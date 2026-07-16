@@ -91,7 +91,7 @@ test('maths equations', async () => {
     ## Hello
 
     $$
-    \begin{equation}x^{2} - 5 x + 6 = 0\end{equation}
+    \begin{equation}\label{eq-myref-1}x^{2} - 5 x + 6 = 0\end{equation}
     $$ {#eq-myref-1}
 
     $$
@@ -99,7 +99,7 @@ test('maths equations', async () => {
     $$
 
     $$
-    \begin{equation}x^{2} - 5 x + 6 = 0\end{equation}
+    \begin{equation}\label{eq-myref-3}x^{2} - 5 x + 6 = 0\end{equation}
     $$ {#eq-myref-3}
 
     Check out @eq-myref-1 and @eq-myref-2 and @eq-myref-3.
@@ -108,21 +108,82 @@ test('maths equations', async () => {
   expect(markdown).toBe(expectedMarkdown);
 
   const html = await testProcessor.md(markdown, {
-    // state: {
-    //   maths: {
-    //     mathsAsTex: false,
-    //     mathsFontName: 'termes',
-    //     syntaxHighlight: false,
-    //   },
-    // },
+    state: {
+      maths: {
+        mathsRendering: 'mathml',
+      },
+    },
   });
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <h2 id="hello"><span class="count">1</span> Hello</h2>
-    <p id="eq-myref-1" class="maths env-equation"><code class="latex">\begin{equation}x^{2} - 5 x + 6 = 0\end{equation}</code><span class="eq-count">(1)</span></p>
-    <p class="maths env-equation"><code class="latex">\begin{equation}x^{2} - 5 x + 6 = 0\end{equation}</code><span class="eq-count">(2)</span></p>
-    <p id="eq-myref-3" class="maths env-equation"><code class="latex">\begin{equation}x^{2} - 5 x + 6 = 0\end{equation}</code><span class="eq-count">(3)</span></p>
+    <p class="maths"><span class="mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+      <mtable displaystyle="true">
+        <mlabeledtr>
+          <mtd id="eq-myref-1"><mtext>(1)</mtext></mtd>
+          <mtd>
+            <msup>
+              <mi>x</mi>
+              <mrow data-mjx-texclass="ORD">
+                <mn>2</mn>
+              </mrow>
+            </msup>
+            <mo>−</mo>
+            <mn>5</mn>
+            <mi>x</mi>
+            <mo>+</mo>
+            <mn>6</mn>
+            <mo>=</mo>
+            <mn>0</mn>
+          </mtd>
+        </mlabeledtr>
+      </mtable>
+    </math></span></p>
+    <p class="maths"><span class="mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+      <mtable displaystyle="true">
+        <mlabeledtr>
+          <mtd><mtext>(2)</mtext></mtd>
+          <mtd>
+            <msup>
+              <mi>x</mi>
+              <mrow data-mjx-texclass="ORD">
+                <mn>2</mn>
+              </mrow>
+            </msup>
+            <mo>−</mo>
+            <mn>5</mn>
+            <mi>x</mi>
+            <mo>+</mo>
+            <mn>6</mn>
+            <mo>=</mo>
+            <mn>0</mn>
+          </mtd>
+        </mlabeledtr>
+      </mtable>
+    </math></span></p>
+    <p class="maths"><span class="mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+      <mtable displaystyle="true">
+        <mlabeledtr>
+          <mtd id="eq-myref-3"><mtext>(3)</mtext></mtd>
+          <mtd>
+            <msup>
+              <mi>x</mi>
+              <mrow data-mjx-texclass="ORD">
+                <mn>2</mn>
+              </mrow>
+            </msup>
+            <mo>−</mo>
+            <mn>5</mn>
+            <mi>x</mi>
+            <mo>+</mo>
+            <mn>6</mn>
+            <mo>=</mo>
+            <mn>0</mn>
+          </mtd>
+        </mlabeledtr>
+      </mtable>
+    </math></span></p>
     <p>Check out <a href="#eq-myref-1" class="ref">Equation 1</a> and <span class="warn"><strong>unknown ref:</strong> <code>eq-myref-2</code></span> and <a href="#eq-myref-3" class="ref">Equation 3</a>.</p>
   `);
 
@@ -159,11 +220,11 @@ test('dont label unnumbered equations', async () => {
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
     $$
-    \begin{equation*}\exists M \in \mathbb{R} \st \forall x \in S, x \leq M.\end{equation*}
+    \begin{equation*}\label{s-1}\exists M \in \mathbb{R} \st \forall x \in S, x \leq M.\end{equation*}
     $$
 
     $$
-    \begin{equation}\forall x \in S, \exists M \in \mathbb{R}, x \leq M\end{equation}
+    \begin{equation}\label{s-2}\forall x \in S, \exists M \in \mathbb{R}, x \leq M\end{equation}
     $$ {#s-2}
 
     Difference between (@s-1) and (@s-2).
@@ -203,16 +264,25 @@ test('maths with \\pounds', async () => {
     state: {
       // @ts-expect-error
       maths: {
-        mathsAsTex: false,
-        mathsFontName: 'computerModern',
-        syntaxHighlight: false,
+        mathsRendering: 'svg',
       },
     },
   });
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <p>i.e. <code class="maths"><svg style="vertical-align: -0.079ex;" xmlns="http://www.w3.org/2000/svg" width="2.828ex" height="1.624ex" role="img" focusable="false" viewBox="0 -683 1250 718"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="\pounds 1"><g data-mml-node="mtext" data-latex="\textsterling"><path data-c="A3" d="M515 529C515 501 537 479 565 479C592 479 614 502 614 529C614 617 536 683 448 683C388 683 340 655 305 598C275 550 260 494 260 430C260 413 262 390 266 361L118 361L118 323L272 323L285 254C292 217 296 188 298 166C268 183 238 192 208 192C135 192 62 154 62 85C62 27 108-22 166-22C261-22 358 8 373 78L398 56C433 26 472-5 502-17C532-29 558-35 580-35C662-35 688 62 688 150L654 150C654 81 607 24 540 24C520 24 500 29 479 38C431 60 419 72 375 108C375 137 366 208 347 323L496 323L496 361L342 361C339 386 337 409 337 430C337 470 340 505 346 536C357 591 389 649 448 649C504 649 550 617 569 578L565 578C538 578 515 556 515 529M166 11C126 11 96 45 96 85C96 135 153 159 208 159C239 159 269 150 300 132L301 117C305 53 231 11 166 11Z"></path></g><g data-mml-node="mn" data-latex="1" transform="translate(750,0)"><path data-c="31" d="M269 666C228 624 168 603 89 603L89 564C141 564 184 572 217 588L217 82C217 64 213 52 204 47C195 42 170 39 130 39L95 39L95 0C120 2 174 3 257 3C340 3 394 2 419 0L419 39L384 39C343 39 318 42 310 47C302 52 297 64 297 82L297 636C297 660 295 666 269 666Z"></path></g></g></g></svg></code> wins</p>
+    <p>i.e. <mjx-container class="MathJax" jax="SVG" overflow="linebreak" display="false" style="font-size: 108%;"><svg xmlns="http://www.w3.org/2000/svg" width="2.828ex" height="1.624ex" role="img" focusable="false" viewBox="0 -683 1250 718" style="vertical-align: -0.079ex;">
+          <g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)">
+            <g data-mml-node="math">
+              <g data-mml-node="mtext">
+                <path data-c="A3" d="M515 529C515 501 537 479 565 479C592 479 614 502 614 529C614 617 536 683 448 683C388 683 340 655 305 598C275 550 260 494 260 430C260 413 262 390 266 361L118 361L118 323L272 323L285 254C292 217 296 188 298 166C268 183 238 192 208 192C135 192 62 154 62 85C62 27 108-22 166-22C261-22 358 8 373 78L398 56C433 26 472-5 502-17C532-29 558-35 580-35C662-35 688 62 688 150L654 150C654 81 607 24 540 24C520 24 500 29 479 38C431 60 419 72 375 108C375 137 366 208 347 323L496 323L496 361L342 361C339 386 337 409 337 430C337 470 340 505 346 536C357 591 389 649 448 649C504 649 550 617 569 578L565 578C538 578 515 556 515 529M166 11C126 11 96 45 96 85C96 135 153 159 208 159C239 159 269 150 300 132L301 117C305 53 231 11 166 11Z"></path>
+              </g>
+              <g data-mml-node="mn" transform="translate(750,0)">
+                <path data-c="31" d="M269 666C228 624 168 603 89 603L89 564C141 564 184 572 217 588L217 82C217 64 213 52 204 47C195 42 170 39 130 39L95 39L95 0C120 2 174 3 257 3C340 3 394 2 419 0L419 39L384 39C343 39 318 42 310 47C302 52 297 64 297 82L297 636C297 660 295 666 269 666Z"></path>
+              </g>
+            </g>
+          </g>
+        </svg></mjx-container> wins</p>
   `);
 
   expect(html).toBe(expectedHtml);
@@ -235,7 +305,7 @@ test('labelled align environments', async () => {
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
     $$
-    \begin{align}x.\end{align}
+    \begin{align}x.\label{i-8}\end{align}
     $$ {#i-8}
 
     Difference between (@i-8).
@@ -243,13 +313,28 @@ test('labelled align environments', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(markdown);
+  const html = await testProcessor.md(markdown, {
+    state: {
+      // @ts-expect-error
+      maths: {
+        mathsRendering: 'mathml',
+      },
+    },
+  });
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <p id="i-8" class="maths env-equation"><code class="latex">\begin{align}
-    x.
-    \end{align}</code><span class="eq-count">(1)</span></p>
+    <p class="maths"><span class="mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+      <mtable displaystyle="true" columnalign="right" columnspacing="" rowspacing="3pt" data-break-align="bottom">
+        <mlabeledtr>
+          <mtd id="i-8"><mtext>(1)</mtext></mtd>
+          <mtd>
+            <mi>x</mi>
+            <mo>.</mo>
+          </mtd>
+        </mlabeledtr>
+      </mtable>
+    </math></span></p>
     <p>Difference between (<a href="#i-8" class="ref">Equation 1</a>).</p>
   `);
 
@@ -382,18 +467,31 @@ test('maths equation with tag', async () => {
   expect(markdown).toBe(expectedMarkdown);
 
   const html = await testProcessor.md(markdown, {
-    // state: {
-    //   maths: {
-    //     mathsAsTex: false,
-    //     mathsFontName: 'computerModern',
-    //     syntaxHighlight: false,
-    //   },
-    // },
+    state: {
+      maths: {
+        mathsRendering: 'mathml',
+      },
+    },
   });
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <p class="maths env-equation"><code class="latex">\begin{equation}a+b\end{equation}</code><span class="eq-tag">(<code class="latex">*</code>)</span></p>
+    <p class="maths"><span class="mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+      <mtable displaystyle="true">
+        <mlabeledtr>
+          <mtd><mtext>(</mtext>
+            <mrow data-mjx-texclass="ORD">
+              <mo>∗</mo>
+            </mrow>
+          <mtext>)</mtext></mtd>
+          <mtd>
+            <mi>a</mi>
+            <mo>+</mo>
+            <mi>b</mi>
+          </mtd>
+        </mlabeledtr>
+      </mtable>
+    </math></span></p>
   `);
 
   expect(html).toBe(expectedHtml);
@@ -416,7 +514,7 @@ test('maths equations with labels and tags', async () => {
     Hello, \cref{eq:einstein1}.
 
     \begin{equation}\label{eq:einstein2}
-      E=mc^2\tag{hello $E$}
+      E=mc^2\tag{hello$E$}
     \end{equation}
 
     Hello, \cref{eq:einstein2}.
@@ -435,19 +533,19 @@ test('maths equations with labels and tags', async () => {
 
   const expectedMarkdown = unindentStringAndTrim(String.raw`
     $$
-    \begin{equation}E=mc^{2}\end{equation}
+    \begin{equation}\label{eq-einstein-1}E=mc^{2}\end{equation}
     $$ {#eq-einstein-1}
 
     Hello, @eq-einstein-1.
 
     $$
-    \begin{equation}E=mc^{2}\tag{hello $E$}\end{equation}
+    \begin{equation}\label{eq-einstein-2}E=mc^{2}\tag{hello$E$}\end{equation}
     $$ {#eq-einstein-2}
 
     Hello, @eq-einstein-2.
 
     $$
-    \begin{equation}E=mc^{2}\end{equation}
+    \begin{equation}\label{eq-einstein-3}E=mc^{2}\end{equation}
     $$ {#eq-einstein-3}
 
     Hello, @eq-einstein-3.
@@ -456,22 +554,80 @@ test('maths equations with labels and tags', async () => {
   expect(markdown).toBe(expectedMarkdown);
 
   const html = await testProcessor.md(markdown, {
-    // state: {
-    //   maths: {
-    //     mathsAsTex: false,
-    //     mathsFontName: 'computerModern',
-    //     syntaxHighlight: false,
-    //   },
-    // },
+    state: {
+      maths: {
+        mathsRendering: 'mathml',
+      },
+    },
   });
   // console.log(html);
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <p id="eq-einstein-1" class="maths env-equation"><code class="latex">\begin{equation}E=mc^{2}\end{equation}</code><span class="eq-count">(1)</span></p>
+    <p class="maths"><span class="mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+      <mtable displaystyle="true">
+        <mlabeledtr>
+          <mtd id="eq-einstein-1"><mtext>(1)</mtext></mtd>
+          <mtd>
+            <mi>E</mi>
+            <mo>=</mo>
+            <mi>m</mi>
+            <msup>
+              <mi>c</mi>
+              <mrow data-mjx-texclass="ORD">
+                <mn>2</mn>
+              </mrow>
+            </msup>
+          </mtd>
+        </mlabeledtr>
+      </mtable>
+    </math></span></p>
     <p>Hello, <a href="#eq-einstein-1" class="ref">Equation 1</a>.</p>
-    <p id="eq-einstein-2" class="maths env-equation"><code class="latex">\begin{equation}E=mc^{2}\end{equation}</code><span class="eq-count"><span class="eq-count">(hello <code class="latex">E</code>)</span></span></p>
-    <p>Hello, <a href="#eq-einstein-2" class="ref">Equation (hello <code class="latex">E</code>)</a>.</p>
-    <p id="eq-einstein-3" class="maths env-equation"><code class="latex">\begin{equation}E=mc^{2}\end{equation}</code><span class="eq-count">(2)</span></p>
+    <p class="maths"><span class="mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+      <mtable displaystyle="true">
+        <mlabeledtr>
+          <mtd id="eq-einstein-2"><mtext>(</mtext>
+            <mrow>
+              <mtext>hello</mtext>
+              <mrow data-mjx-texclass="ORD">
+                <mi>E</mi>
+              </mrow>
+            </mrow>
+          <mtext>)</mtext></mtd>
+          <mtd>
+            <mi>E</mi>
+            <mo>=</mo>
+            <mi>m</mi>
+            <msup>
+              <mi>c</mi>
+              <mrow data-mjx-texclass="ORD">
+                <mn>2</mn>
+              </mrow>
+            </msup>
+          </mtd>
+        </mlabeledtr>
+      </mtable>
+    </math></span></p>
+    <p>Hello, <a href="#eq-einstein-2" class="ref">Equation hello<span class="mathml"><math xmlns="http://www.w3.org/1998/Math/MathML">
+      <mi>E</mi>
+    </math></span></a>.</p>
+    <p class="maths"><span class="mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+      <mtable displaystyle="true">
+        <mlabeledtr>
+          <mtd id="eq-einstein-3"><mtext>(2)</mtext></mtd>
+          <mtd>
+            <mi>E</mi>
+            <mo>=</mo>
+            <mi>m</mi>
+            <msup>
+              <mi>c</mi>
+              <mrow data-mjx-texclass="ORD">
+                <mn>2</mn>
+              </mrow>
+            </msup>
+          </mtd>
+        </mlabeledtr>
+      </mtable>
+    </math></span></p>
     <p>Hello, <a href="#eq-einstein-3" class="ref">Equation 2</a>.</p>
   `);
 
@@ -510,13 +666,33 @@ test('maths equation in book documentclass', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(markdown);
+  const html = await testProcessor.md(markdown, {
+    state: {
+      maths: {
+        mathsRendering: 'mathml',
+      },
+    },
+  });
   // console.log(html);
   // return;
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <h2 id="differential-systems"><span class="count">Chapter 1:</span> Differential systems</h2>
-    <p class="maths env-equation"><code class="latex">\begin{equation}x_{0}\end{equation}</code><span class="eq-count">(1.1)</span></p>
+    <p class="maths"><span class="mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+      <mtable displaystyle="true">
+        <mlabeledtr>
+          <mtd><mtext>(1.1)</mtext></mtd>
+          <mtd>
+            <msub>
+              <mi>x</mi>
+              <mrow data-mjx-texclass="ORD">
+                <mn>0</mn>
+              </mrow>
+            </msub>
+          </mtd>
+        </mlabeledtr>
+      </mtable>
+    </math></span></p>
   `);
 
   expect(html).toBe(expectedHtml);
@@ -601,7 +777,7 @@ test('maths equation numberwithin', async () => {
     ---
 
     $$
-    \begin{equation}x\end{equation}
+    \begin{equation}\label{eq-1}x\end{equation}
     $$ {#eq-1}
 
     See @eq-1.
@@ -609,12 +785,27 @@ test('maths equation numberwithin', async () => {
 
   expect(markdown).toBe(expectedMarkdown);
 
-  const html = await testProcessor.md(markdown);
+  const html = await testProcessor.md(markdown, {
+    state: {
+      maths: {
+        mathsRendering: 'mathml',
+      },
+    },
+  });
   // console.log(html);
   // return;
 
   const expectedHtml = unindentStringAndTrim(String.raw`
-    <p id="eq-1" class="maths env-equation"><code class="latex">\begin{equation}x\end{equation}</code><span class="eq-count">(0.1)</span></p>
+    <p class="maths"><span class="mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+      <mtable displaystyle="true">
+        <mlabeledtr>
+          <mtd id="eq-1"><mtext>(0.1)</mtext></mtd>
+          <mtd>
+            <mi>x</mi>
+          </mtd>
+        </mlabeledtr>
+      </mtable>
+    </math></span></p>
     <p>See <a href="#eq-1" class="ref">Equation 0.1</a>.</p>
   `);
 
@@ -693,6 +884,150 @@ test('maths environments not wrapped in pars', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <p class="maths"><code class="latex">\begin{array}{c}a_{11}\end{array}</code></p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+
+  // const quartoHtml = await markdownToQuartoHtml(markdown);
+  // console.log(quartoHtml);
+});
+
+test('maths align with all labels', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{amsmath}
+    \usepackage{amsfonts}
+
+    \usepackage[overload]{keytheorems}
+    \usepackage{zref-clever}
+    \usepackage[colorlinks,bookmarks=false]{hyperref}
+    \zcsetup{noabbrev, cap, nameinlink}
+
+    \begin{document}
+
+    \begin{align}
+      a &= b \label{eq:a}\\
+      b &= c\\
+      c &= d\tag{$*$}\\
+      d &= e\label{eq:b}\tag{$x$}\\
+      e &= f.\label{eq:c}
+    \end{align}
+
+    See $a = b$ \autoref{eq:a}, \autoref{eq:b} and \autoref{eq:c}.
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(String.raw`
+    $$
+    \begin{align}a&= b \label{eq-a}\\ b&= c\\ c&= d\tag{$*$}\\ d&= e\label{eq-b}\tag{$x$}\\ e&= f.\label{eq-c}\end{align}
+    $$
+
+    See $a = b$ @eq-a, @eq-b and @eq-c.
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(expectedMarkdown, {
+    state: {
+      maths: {
+        mathsRendering: 'mathml',
+      },
+    },
+  });
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <p class="maths"><span class="mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+      <mtable displaystyle="true" columnalign="right left" columnspacing="0em" rowspacing="3pt" data-break-align="bottom top">
+        <mlabeledtr>
+          <mtd id="eq-a"><mtext>(1)</mtext></mtd>
+          <mtd>
+            <mi>a</mi>
+          </mtd>
+          <mtd>
+            <mstyle indentshift="2em">
+              <mi></mi>
+              <mo>=</mo>
+              <mi>b</mi>
+            </mstyle>
+          </mtd>
+        </mlabeledtr>
+        <mlabeledtr>
+          <mtd><mtext>(2)</mtext></mtd>
+          <mtd>
+            <mi>b</mi>
+          </mtd>
+          <mtd>
+            <mstyle indentshift="2em">
+              <mi></mi>
+              <mo>=</mo>
+              <mi>c</mi>
+            </mstyle>
+          </mtd>
+        </mlabeledtr>
+        <mlabeledtr>
+          <mtd><mtext>(</mtext>
+            <mrow data-mjx-texclass="ORD">
+              <mo>∗</mo>
+            </mrow>
+          <mtext>)</mtext></mtd>
+          <mtd>
+            <mi>c</mi>
+          </mtd>
+          <mtd>
+            <mstyle indentshift="2em">
+              <mi></mi>
+              <mo>=</mo>
+              <mi>d</mi>
+            </mstyle>
+          </mtd>
+        </mlabeledtr>
+        <mlabeledtr>
+          <mtd id="eq-b"><mtext>(</mtext>
+            <mrow data-mjx-texclass="ORD">
+              <mi>x</mi>
+            </mrow>
+          <mtext>)</mtext></mtd>
+          <mtd>
+            <mi>d</mi>
+          </mtd>
+          <mtd>
+            <mstyle indentshift="2em">
+              <mi></mi>
+              <mo>=</mo>
+              <mi>e</mi>
+            </mstyle>
+          </mtd>
+        </mlabeledtr>
+        <mlabeledtr>
+          <mtd id="eq-c"><mtext>(3)</mtext></mtd>
+          <mtd>
+            <mi>e</mi>
+          </mtd>
+          <mtd>
+            <mstyle indentshift="2em">
+              <mi></mi>
+              <mo>=</mo>
+              <mi>f</mi>
+              <mo>.</mo>
+            </mstyle>
+          </mtd>
+        </mlabeledtr>
+      </mtable>
+    </math></span></p>
+    <p>See <span class="mathml"><math xmlns="http://www.w3.org/1998/Math/MathML">
+      <mi>a</mi>
+      <mo>=</mo>
+      <mi>b</mi>
+    </math></span> <a href="#eq-a" class="ref">Equation 1</a>, <a href="#eq-b" class="ref">Equation <span class="mathml"><math xmlns="http://www.w3.org/1998/Math/MathML">
+      <mi>x</mi>
+    </math></span></a> and <a href="#eq-c" class="ref">Equation 3</a>.</p>
   `);
 
   expect(html).toBe(expectedHtml);

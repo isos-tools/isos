@@ -5,6 +5,8 @@ import remarkRehype from 'remark-rehype';
 import { Context } from '../../../markdown-to-mdx/context';
 import { createRemarkProcessor } from '../../../remark-processor';
 import { Reference } from '../../bibliography/extract-bibliography';
+import { latexMathToMml } from '../../maths/md-to-mdx/latex-to-mml';
+import { mmlToOutput } from '../../maths/md-to-mdx/mml-to-output';
 
 const pattern = /(^|[^a-zA-Z0-9])@([\w-]+)/g;
 
@@ -27,7 +29,7 @@ export function atReferenceToLink(ctx: Context) {
         ];
 
         if (reference) {
-          output.push(createReferenceLink(reference));
+          output.push(createReferenceLink(reference, ctx));
         } else {
           // console.log(ref, structuredClone(refMap));
           output.push(createBrokenReferenceWarning(ref));
@@ -39,7 +41,7 @@ export function atReferenceToLink(ctx: Context) {
   };
 }
 
-function createReferenceLink(reference: Reference): Element {
+function createReferenceLink(reference: Reference, ctx: Context): Element {
   return {
     type: 'element',
     tagName: 'a',
@@ -47,13 +49,16 @@ function createReferenceLink(reference: Reference): Element {
       href: `#${reference.id}`,
       class: 'ref',
     },
-    children: getTagHast(reference.label),
+    children: getTagHast(reference.label, ctx),
   };
 }
 
-const processor = createRemarkProcessor([remarkRehype]);
-
-function getTagHast(tag: string) {
+function getTagHast(tag: string, ctx: Context) {
+  const processor = createRemarkProcessor([
+    remarkRehype,
+    latexMathToMml,
+    [mmlToOutput, ctx],
+  ]);
   const parsed = processor.parse(String(tag));
   const transformed = processor.runSync(parsed) as Parent;
 

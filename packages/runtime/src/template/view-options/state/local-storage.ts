@@ -10,9 +10,8 @@ export function getCachedState(): Partial<ViewOptions> {
     }
   } catch (err) {
     console.log(err);
-  } finally {
-    return {};
   }
+  return {};
 }
 
 export function setCachedState(data: ViewOptionsState['data']) {

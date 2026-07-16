@@ -13,7 +13,10 @@ import { createFramed } from '../../plugins/framed/input-to-md/html-to-md';
 import { createAppendices } from '../../plugins/headings/rehype-appendices';
 import { createSetCounter } from '../../plugins/headings/set-counter-to-directive';
 import { createFigure } from '../../plugins/images/input-to-md/create-figure';
-import { createInlineMaths, createMaths } from '../../plugins/maths/maths';
+import {
+  createInlineMaths,
+  createMaths,
+} from '../../plugins/maths/input-to-md/maths';
 import {
   createEndnote,
   createFootnote,

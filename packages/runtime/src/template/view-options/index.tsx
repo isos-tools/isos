@@ -103,22 +103,42 @@ export function ViewOptions() {
       </Fieldset>
       <Fieldset>
         <Legend>Maths</Legend>
-        <Checkbox
-          label="Sans-serif font"
-          value={mdxState.maths.mathsFontName.value === 'fira'}
-          onChange={(sansSerif) => {
-            mdxState.maths.mathsFontName.value = sansSerif
-              ? 'fira'
-              : 'computerModern';
+        <Select
+          name="mathsRendering"
+          label="Rendering"
+          value={
+            mdxState.maths.mathsRendering as MathsState['mathsRendering']
+          }
+          options={['svg', 'mathml', 'latex-code', 'mathml-code']}
+          onChange={(val: string) => {
+            mdxState.maths.mathsRendering.value =
+              val as MathsStateType['mathsRendering'];
           }}
         />
-        <Checkbox
-          label="Maths as LaTeX"
-          value={mdxState.maths.mathsAsTex.value}
-          onChange={(val: boolean) => {
-            mdxState.maths.mathsAsTex.value = val;
-          }}
-        />
+
+        {mdxState.maths.mathsRendering.value === 'svg' && (
+          <Checkbox
+            label="Sans-serif font"
+            value={mdxState.maths.mathsFontName.value === 'fira'}
+            onChange={(sansSerif) => {
+              mdxState.maths.mathsFontName.value = sansSerif
+                ? 'fira'
+                : 'computerModern';
+            }}
+          />
+        )}
+
+        {['latex-code', 'mathml-code'].includes(
+          mdxState.maths.mathsRendering.value,
+        ) && (
+          <Checkbox
+            label="Syntax highlighting"
+            value={mdxState.maths.syntaxHighlight.value}
+            onChange={(on) => {
+              mdxState.maths.syntaxHighlight.value = on;
+            }}
+          />
+        )}
         {/* <Checkbox
           label="Set Aria label to braille"
           value={mdxState.maths.ariaMode.value === 'braille-only'}
@@ -127,7 +147,7 @@ export function ViewOptions() {
               ? 'braille-only'
               : 'both';
           }}
-        /> */}
+        />
         <Select
           name="bgColor"
           label="Braille locale"
@@ -139,7 +159,7 @@ export function ViewOptions() {
             mdxState.maths.brailleLocale.value =
               val as MathsStateType['brailleLocale'];
           }}
-        />
+        /> */}
       </Fieldset>
     </ViewOptionsForm>
   );

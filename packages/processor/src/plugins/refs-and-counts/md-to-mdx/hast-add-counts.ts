@@ -55,7 +55,6 @@ export function addCounts(ctx: Context) {
                 idx,
               );
             case 'thm-count':
-            case 'eq-count':
             case 'fig-count':
             case 'tbl-count':
             case 'lst-count':
@@ -67,6 +66,17 @@ export function addCounts(ctx: Context) {
                 theoremStore,
               );
           }
+        }
+      } else if (node.tagName === 'mtd') {
+        const className = node.properties.className;
+        if (Array.isArray(className) && className[0] === 'eq-count') {
+          return applyEquationCount(
+            node,
+            ctx,
+            headingCounter,
+            theoremCounter,
+            theoremStore,
+          );
         }
       }
     });
@@ -264,6 +274,94 @@ function applyCount(
       Object.assign(node, { type: 'text', value });
     }
   }
+}
+
+function applyEquationCount(
+  node: Element,
+  ctx: Context,
+  headingCounter: HeadingCounter,
+  theoremCounter: TheoremCounter,
+  theoremStore: Record<string, string>,
+) {
+  const { refMap } = ctx.frontmatter;
+  const refName = 'equation';
+  const ctxRef = ctx.frontmatter.theorems[refName];
+
+  if (!ctxRef) {
+    return;
+  }
+
+  delete node.properties['className'];
+
+  const { referenceCounter, unnumbered } = ctxRef;
+  const id = String(node.properties.dataId || '');
+  const tag = String(node.properties.dataTag || '');
+
+  let label = '';
+
+  if (tag) {
+    label = tag;
+    delete node.properties.dataTag;
+    Object.assign(node, {
+      children: formatEquationCount(node.children),
+    });
+  } else if (!unnumbered) {
+    const countName = referenceCounter || refName;
+    const countRef = ctx.frontmatter.theorems[countName];
+    const counts: number[] = [];
+
+    if (countRef.numberWithin) {
+      const depth = Number(countRef.numberWithin.slice(1));
+
+      const str = headingCounter.getCounts(depth).join('');
+      if (theoremStore[countName] !== str) {
+        theoremStore[countName] = str;
+        theoremCounter.reset(countName);
+      }
+
+      const headingCounts = headingCounter.getCounts(depth);
+      const count = theoremCounter.increment(countName);
+      counts.push(...headingCounts, count);
+    } else {
+      counts.push(theoremCounter.increment(countName));
+    }
+
+    const { documentClass, hasPart } = ctx.frontmatter;
+    label = formatCount(counts, documentClass, hasPart);
+
+    const mtext: Element = {
+      type: 'element',
+      tagName: 'mtext',
+      properties: {},
+      children: [{ type: 'text', value: `(${label})` }],
+    };
+
+    Object.assign(node, { children: [mtext] });
+  }
+
+  if (id) {
+    node.properties.id = id;
+    delete node.properties.dataId;
+    refMap[id] = { id, label: `Equation ${label}` };
+  }
+}
+
+function formatEquationCount(children: ElementContent[]) {
+  return [
+    {
+      type: 'element',
+      tagName: 'mtext',
+      properties: {},
+      children: [{ type: 'text', value: '(' }],
+    },
+    ...children,
+    {
+      type: 'element',
+      tagName: 'mtext',
+      properties: {},
+      children: [{ type: 'text', value: ')' }],
+    },
+  ];
 }
 
 const processor = createRemarkProcessor([remarkRehype]);

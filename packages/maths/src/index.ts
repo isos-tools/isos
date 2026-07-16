@@ -9,3 +9,4 @@ export type {
 } from './mml-to-speech';
 export { mmlToSvg } from './mml-to-svg';
 export type { MmlToSvgOptions, MathsFont } from './mml-to-svg';
+export { render } from './litedom';

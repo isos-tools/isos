@@ -83,6 +83,16 @@ exports[`DeclareSIUnit > DeclareSIUnit-5 1`] = `
 
 exports[`DeclareSIUnit > DeclareSIUnit-5 2`] = `"mathjax: The unit macro, \\faren, has not been defined."`;
 
+exports[`DeclareSIUnit-5 1`] = `
+"<math xmlns="http://www.w3.org/1998/Math/MathML" data-latex="\\qty{1.2}{\\faren}" display="block">
+  <merror data-mjx-error="The unit macro, \\faren, has not been defined.">
+    <mtext>The unit macro, \\faren, has not been defined.</mtext>
+  </merror>
+</math>"
+`;
+
+exports[`DeclareSIUnit-5 2`] = `"mathjax svg error: The unit macro, \\faren, has not been defined."`;
+
 exports[`ang > ang-0 1`] = `
 "<math xmlns="http://www.w3.org/1998/Math/MathML" data-latex="\\ang{10}" display="block">
   <mrow>
@@ -905,6 +915,621 @@ exports[`ang > ang-29 1`] = `
 `;
 
 exports[`ang > ang-29 2`] = `"<svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="6.894ex" height="1.742ex" role="img" focusable="false" viewBox="0 -748 3047.3 770"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="\\ang[angle-symbol-over-decimal]{6;7;6.5}"><g data-mml-node="mrow"><g data-mml-node="mn"><path data-c="36" d="M383 504C416 504 432 521 432 555C432 627 378 666 304 666C221 666 155 627 106 548C63 480 42 403 42 316C42 189 65 100 112 47C152 1 198-22 251-22C312-22 362 1 401 47C438 91 457 144 457 205C457 266 439 318 403 361C365 407 316 431 257 431C205 431 165 402 138 346L138 352C138 465 166 561 226 605C252 624 279 633 306 633C342 633 368 623 385 602C351 602 334 583 334 553C334 525 355 504 383 504M344 340C355 317 361 272 361 206C361 141 356 98 345 76C325 35 294 14 251 14C222 14 200 24 184 44C171 60 162 74 158 85C146 116 140 163 140 227C140 255 144 282 151 308C164 355 201 399 256 399C295 399 325 379 344 340Z"></path></g></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" data-latex="\\class{MathML-Unit}{\\mathrm{\\degree}}" class="MathML-Unit" transform="translate(500,0)"><g data-mml-node="mi" data-latex="\\degree" class="MathML-Unit"><path data-c="B0" d="M326 544C326 621 265 683 188 683C111 683 49 621 49 544C49 467 111 406 188 406C263 406 326 469 326 544M279 544C279 494 238 453 188 453C137 453 96 493 96 544C96 596 136 636 188 636C239 636 279 595 279 544Z"></path></g></g><g data-mml-node="mrow" transform="translate(875,0)"><g data-mml-node="mn"><path data-c="37" d="M475 604C482 613 485 626 485 644L243 644C174 644 135 648 128 657C125 660 122 667 120 676L89 676L55 464L88 464C98 520 106 550 112 555C115 558 146 560 205 560L401 560L295 410C214 295 174 171 174 36C174-3 190-22 223-22C256-22 272-3 272 36L272 87C272 239 296 349 343 416Z"></path></g></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" data-latex="\\class{MathML-Unit}{\\mathrm{\\arialabel{degree-minutes}{\\degreeminute}}}" class="MathML-Unit" transform="translate(1375,0)"><g data-mml-node="mi" data-latex="\\arialabel{degree-minutes}{\\degreeminute}" aria-label="degree-minutes" class="MathML-Unit"><path data-c="2032" d="M211 748C194 748 182 740 175 725L58 430L92 430L245 686C249 691 251 698 251 707C251 729 234 748 211 748Z"></path></g></g><g data-mml-node="mrow" data-latex="\\ang[angle-symbol-over-decimal]{6;7;6.5}" transform="translate(1686,0)"><g data-mml-node="mn"><path data-c="36" d="M383 504C416 504 432 521 432 555C432 627 378 666 304 666C221 666 155 627 106 548C63 480 42 403 42 316C42 189 65 100 112 47C152 1 198-22 251-22C312-22 362 1 401 47C438 91 457 144 457 205C457 266 439 318 403 361C365 407 316 431 257 431C205 431 165 402 138 346L138 352C138 465 166 561 226 605C252 624 279 633 306 633C342 633 368 623 385 602C351 602 334 583 334 553C334 525 355 504 383 504M344 340C355 317 361 272 361 206C361 141 356 98 345 76C325 35 294 14 251 14C222 14 200 24 184 44C171 60 162 74 158 85C146 116 140 163 140 227C140 255 144 282 151 308C164 355 201 399 256 399C295 399 325 379 344 340Z"></path></g><g data-mml-node="mover" transform="translate(500,0)"><g data-mml-node="mo" transform="translate(41.7,0)"><path data-c="2E" d="M192 53C192 82 168 106 139 106C110 106 86 82 86 53C86 24 110 0 139 0C168 0 192 24 192 53Z"></path></g><g data-mml-node="TeXAtom" transform="translate(0,1.9) scale(0.707)" data-mjx-texclass="ORD" data-latex="\\class{MathML-Unit}{\\mathrm{\\arialabel{degree-seconds}{\\degreesecond}}}" class="MathML-Unit"><g data-mml-node="mi" data-latex="\\arialabel{degree-seconds}{\\degreesecond}" aria-label="degree-seconds" class="MathML-Unit"><path data-c="2033" d="M410 748C392 748 380 740 374 725L254 430L289 430L444 686C449 691 451 698 451 707C451 729 432 748 410 748M214 748C196 748 184 740 178 725L58 430L93 430L248 686C253 691 255 698 255 707C255 729 236 748 214 748Z"></path></g></g></g><g data-mml-node="mn" transform="translate(861.3,0)"><path data-c="35" d="M118 315C123 315 129 319 134 326C164 371 205 393 257 393C292 393 319 373 337 332C348 305 354 264 354 209C354 146 346 102 331 76C306 35 272 14 229 14C162 14 109 62 91 114C94 113 96 114 100 114C130 114 155 137 155 167C155 198 130 219 100 219C65 219 50 200 50 163C50 63 131-22 231-22C292-22 344 0 386 44C428 88 449 141 449 202C449 260 432 310 398 353C361 400 315 423 259 423C212 423 171 408 138 378L138 556C165 548 191 544 218 544C264 544 304 555 338 578C369 597 390 616 402 634C408 642 411 648 411 651C411 661 406 666 396 666C341 645 294 634 256 634C211 634 168 643 127 662C122 664 118 665 114 665C105 665 100 656 100 637L100 345C100 324 100 315 118 315Z"></path></g></g></g></g></svg>"`;
+
+exports[`ang-0 1`] = `
+"<math xmlns="http://www.w3.org/1998/Math/MathML" data-latex="\\ang{10}" display="block">
+  <mrow>
+    <mn>10</mn>
+  </mrow>
+  <mrow data-mjx-texclass="ORD" data-latex="\\ang{10}" class="MathML-Unit">
+    <mi mathvariant="normal" class="MathML-Unit" data-latex="\\degree">&#xB0;</mi>
+  </mrow>
+</math>"
+`;
+
+exports[`ang-0 2`] = `
+LiteElement {
+  "attributes": {
+    "class": "MathJax",
+    "display": "false",
+    "jax": "SVG",
+    "overflow": "linebreak",
+    "style": "font-size: 108%;",
+  },
+  "children": [
+    LiteElement {
+      "attributes": {
+        "focusable": "false",
+        "height": "1.595ex",
+        "role": "img",
+        "style": "vertical-align: -0.05ex;",
+        "viewBox": "0 -683 1375 705",
+        "width": "3.111ex",
+        "xmlns": "http://www.w3.org/2000/svg",
+      },
+      "children": [
+        LiteElement {
+          "attributes": {
+            "fill": "currentColor",
+            "stroke": "currentColor",
+            "stroke-width": "0",
+            "transform": "scale(1,-1)",
+          },
+          "children": [
+            LiteElement {
+              "attributes": {
+                "data-latex": "\\ang{10}",
+                "data-mml-node": "math",
+              },
+              "children": [
+                LiteElement {
+                  "attributes": {
+                    "data-mml-node": "mrow",
+                  },
+                  "children": [
+                    LiteElement {
+                      "attributes": {
+                        "data-mml-node": "mn",
+                      },
+                      "children": [
+                        LiteElement {
+                          "attributes": {
+                            "d": "M269 666C228 624 168 603 89 603L89 564C141 564 184 572 217 588L217 82C217 64 213 52 204 47C195 42 170 39 130 39L95 39L95 0C120 2 174 3 257 3C340 3 394 2 419 0L419 39L384 39C343 39 318 42 310 47C302 52 297 64 297 82L297 636C297 660 295 666 269 666Z",
+                            "data-c": "31",
+                          },
+                          "children": [],
+                          "kind": "path",
+                          "parent": [Circular],
+                          "styles": null,
+                        },
+                        LiteElement {
+                          "attributes": {
+                            "d": "M249-22C390-22 460 92 460 320C460 473 428 575 365 625C330 652 291 666 250 666C109 666 39 551 39 320C39 136 88-22 249-22M361 524C368 489 371 425 371 332C371 240 367 172 360 128C347 48 310 8 249 8C226 8 203 17 182 34C155 57 139 104 132 176C129 201 128 253 128 332C128 419 131 480 136 513C145 568 163 603 191 618C213 630 232 636 249 636C314 636 350 583 361 524Z",
+                            "data-c": "30",
+                            "transform": "translate(500,0)",
+                          },
+                          "children": [],
+                          "kind": "path",
+                          "parent": [Circular],
+                          "styles": null,
+                        },
+                      ],
+                      "kind": "g",
+                      "parent": [Circular],
+                      "styles": null,
+                    },
+                  ],
+                  "kind": "g",
+                  "parent": [Circular],
+                  "styles": null,
+                },
+                LiteElement {
+                  "attributes": {
+                    "class": "MathML-Unit",
+                    "data-latex": "\\ang{10}",
+                    "data-mjx-texclass": "ORD",
+                    "data-mml-node": "TeXAtom",
+                    "transform": "translate(1000,0)",
+                  },
+                  "children": [
+                    LiteElement {
+                      "attributes": {
+                        "class": "MathML-Unit",
+                        "data-latex": "\\degree",
+                        "data-mml-node": "mi",
+                      },
+                      "children": [
+                        LiteElement {
+                          "attributes": {
+                            "d": "M326 544C326 621 265 683 188 683C111 683 49 621 49 544C49 467 111 406 188 406C263 406 326 469 326 544M279 544C279 494 238 453 188 453C137 453 96 493 96 544C96 596 136 636 188 636C239 636 279 595 279 544Z",
+                            "data-c": "B0",
+                          },
+                          "children": [],
+                          "kind": "path",
+                          "parent": [Circular],
+                          "styles": null,
+                        },
+                      ],
+                      "kind": "g",
+                      "parent": [Circular],
+                      "styles": null,
+                    },
+                  ],
+                  "kind": "g",
+                  "parent": [Circular],
+                  "styles": null,
+                },
+              ],
+              "kind": "g",
+              "parent": [Circular],
+              "styles": null,
+            },
+          ],
+          "kind": "g",
+          "parent": [Circular],
+          "styles": null,
+        },
+      ],
+      "kind": "svg",
+      "parent": [Circular],
+      "styles": Styles {
+        "styles": {
+          "vertical-align": "-0.05ex",
+        },
+      },
+    },
+  ],
+  "kind": "mjx-container",
+  "styles": Styles {
+    "styles": {
+      "font-size": "108%",
+    },
+  },
+}
+`;
+
+exports[`ang-1 1`] = `
+"<math xmlns="http://www.w3.org/1998/Math/MathML" data-latex="\\ang{12.3}" display="block">
+  <mrow>
+    <mn>12.3</mn>
+  </mrow>
+  <mrow data-mjx-texclass="ORD" data-latex="\\ang{12.3}" class="MathML-Unit">
+    <mi mathvariant="normal" class="MathML-Unit" data-latex="\\degree">&#xB0;</mi>
+  </mrow>
+</math>"
+`;
+
+exports[`ang-1 2`] = `
+LiteElement {
+  "attributes": {
+    "class": "MathJax",
+    "display": "false",
+    "jax": "SVG",
+    "overflow": "linebreak",
+    "style": "font-size: 108%;",
+  },
+  "children": [
+    LiteElement {
+      "attributes": {
+        "focusable": "false",
+        "height": "1.595ex",
+        "role": "img",
+        "style": "vertical-align: -0.05ex;",
+        "viewBox": "0 -683 2153 705",
+        "width": "4.871ex",
+        "xmlns": "http://www.w3.org/2000/svg",
+      },
+      "children": [
+        LiteElement {
+          "attributes": {
+            "fill": "currentColor",
+            "stroke": "currentColor",
+            "stroke-width": "0",
+            "transform": "scale(1,-1)",
+          },
+          "children": [
+            LiteElement {
+              "attributes": {
+                "data-latex": "\\ang{12.3}",
+                "data-mml-node": "math",
+              },
+              "children": [
+                LiteElement {
+                  "attributes": {
+                    "data-mml-node": "mrow",
+                  },
+                  "children": [
+                    LiteElement {
+                      "attributes": {
+                        "data-mml-node": "mn",
+                      },
+                      "children": [
+                        LiteElement {
+                          "attributes": {
+                            "d": "M269 666C228 624 168 603 89 603L89 564C141 564 184 572 217 588L217 82C217 64 213 52 204 47C195 42 170 39 130 39L95 39L95 0C120 2 174 3 257 3C340 3 394 2 419 0L419 39L384 39C343 39 318 42 310 47C302 52 297 64 297 82L297 636C297 660 295 666 269 666Z",
+                            "data-c": "31",
+                          },
+                          "children": [],
+                          "kind": "path",
+                          "parent": [Circular],
+                          "styles": null,
+                        },
+                        LiteElement {
+                          "attributes": {
+                            "d": "M237 666C186 666 143 648 106 612C69 576 50 534 50 483C50 449 75 424 106 424C136 424 161 450 161 480C161 513 137 536 105 536C102 536 100 536 98 535C117 584 161 627 224 627C306 627 352 556 352 470C352 403 318 331 250 255L62 43C49 28 50 29 50 0L421 0L450 180L417 180C409 129 402 100 396 91C391 86 361 84 306 84L139 84L236 179C304 243 390 312 419 365C439 400 449 435 449 470C449 588 357 666 237 666Z",
+                            "data-c": "32",
+                            "transform": "translate(500,0)",
+                          },
+                          "children": [],
+                          "kind": "path",
+                          "parent": [Circular],
+                          "styles": null,
+                        },
+                        LiteElement {
+                          "attributes": {
+                            "d": "M192 53C192 82 168 106 139 106C110 106 86 82 86 53C86 24 110 0 139 0C168 0 192 24 192 53Z",
+                            "data-c": "2E",
+                            "transform": "translate(1000,0)",
+                          },
+                          "children": [],
+                          "kind": "path",
+                          "parent": [Circular],
+                          "styles": null,
+                        },
+                        LiteElement {
+                          "attributes": {
+                            "d": "M303 353C369 378 431 441 431 526C431 569 410 604 369 631C333 654 292 666 246 666C201 666 162 654 127 631C88 605 68 571 68 528C68 495 90 472 122 472C154 472 176 495 176 527C176 560 157 578 119 580C145 615 186 633 242 633C302 633 332 598 332 527C332 485 324 450 309 421C282 373 245 364 183 364C171 362 165 357 165 348C165 333 172 333 192 333L235 333C310 333 348 280 348 173C348 88 317 14 241 14C176 14 128 36 99 80C134 79 160 105 160 139C160 173 135 198 101 198C62 198 42 178 42 137C42 88 64 49 108 18C147-9 193-22 244-22C301-22 350-3 393 34C436 71 457 117 457 173C457 267 383 332 303 353Z",
+                            "data-c": "33",
+                            "transform": "translate(1278,0)",
+                          },
+                          "children": [],
+                          "kind": "path",
+                          "parent": [Circular],
+                          "styles": null,
+                        },
+                      ],
+                      "kind": "g",
+                      "parent": [Circular],
+                      "styles": null,
+                    },
+                  ],
+                  "kind": "g",
+                  "parent": [Circular],
+                  "styles": null,
+                },
+                LiteElement {
+                  "attributes": {
+                    "class": "MathML-Unit",
+                    "data-latex": "\\ang{12.3}",
+                    "data-mjx-texclass": "ORD",
+                    "data-mml-node": "TeXAtom",
+                    "transform": "translate(1778,0)",
+                  },
+                  "children": [
+                    LiteElement {
+                      "attributes": {
+                        "class": "MathML-Unit",
+                        "data-latex": "\\degree",
+                        "data-mml-node": "mi",
+                      },
+                      "children": [
+                        LiteElement {
+                          "attributes": {
+                            "d": "M326 544C326 621 265 683 188 683C111 683 49 621 49 544C49 467 111 406 188 406C263 406 326 469 326 544M279 544C279 494 238 453 188 453C137 453 96 493 96 544C96 596 136 636 188 636C239 636 279 595 279 544Z",
+                            "data-c": "B0",
+                          },
+                          "children": [],
+                          "kind": "path",
+                          "parent": [Circular],
+                          "styles": null,
+                        },
+                      ],
+                      "kind": "g",
+                      "parent": [Circular],
+                      "styles": null,
+                    },
+                  ],
+                  "kind": "g",
+                  "parent": [Circular],
+                  "styles": null,
+                },
+              ],
+              "kind": "g",
+              "parent": [Circular],
+              "styles": null,
+            },
+          ],
+          "kind": "g",
+          "parent": [Circular],
+          "styles": null,
+        },
+      ],
+      "kind": "svg",
+      "parent": [Circular],
+      "styles": Styles {
+        "styles": {
+          "vertical-align": "-0.05ex",
+        },
+      },
+    },
+  ],
+  "kind": "mjx-container",
+  "styles": Styles {
+    "styles": {
+      "font-size": "108%",
+    },
+  },
+}
+`;
+
+exports[`ang-10 1`] = `
+"<math xmlns="http://www.w3.org/1998/Math/MathML" data-latex="\\ang[angle-mode = arc]{2;3;4}" display="block">
+  <mrow>
+    <mn>2</mn>
+  </mrow>
+  <mrow data-mjx-texclass="ORD" data-latex="\\class{MathML-Unit}{\\mathrm{\\degree}}" class="MathML-Unit">
+    <mi mathvariant="normal" class="MathML-Unit" data-latex="\\degree">&#xB0;</mi>
+  </mrow>
+  <mrow>
+    <mn>3</mn>
+  </mrow>
+  <mrow data-mjx-texclass="ORD" data-latex="\\class{MathML-Unit}{\\mathrm{\\arialabel{degree-minutes}{\\degreeminute}}}" class="MathML-Unit">
+    <mi mathvariant="normal" class="MathML-Unit" data-latex="\\arialabel{degree-minutes}{\\degreeminute}" aria-label="degree-minutes">&#x2032;</mi>
+  </mrow>
+  <mrow>
+    <mn>4</mn>
+  </mrow>
+  <mrow data-mjx-texclass="ORD" data-latex="\\ang[angle-mode = arc]{2;3;4}" class="MathML-Unit">
+    <mi mathvariant="normal" class="MathML-Unit" data-latex="\\arialabel{degree-seconds}{\\degreesecond}" aria-label="degree-seconds">&#x2033;</mi>
+  </mrow>
+</math>"
+`;
+
+exports[`ang-10 2`] = `
+LiteElement {
+  "attributes": {
+    "class": "MathJax",
+    "display": "false",
+    "jax": "SVG",
+    "overflow": "linebreak",
+    "style": "font-size: 108%;",
+  },
+  "children": [
+    LiteElement {
+      "attributes": {
+        "focusable": "false",
+        "height": "1.742ex",
+        "role": "img",
+        "style": "vertical-align: -0.05ex;",
+        "viewBox": "0 -748 2697 770",
+        "width": "6.102ex",
+        "xmlns": "http://www.w3.org/2000/svg",
+      },
+      "children": [
+        LiteElement {
+          "attributes": {
+            "fill": "currentColor",
+            "stroke": "currentColor",
+            "stroke-width": "0",
+            "transform": "scale(1,-1)",
+          },
+          "children": [
+            LiteElement {
+              "attributes": {
+                "data-latex": "\\ang[angle-mode = arc]{2;3;4}",
+                "data-mml-node": "math",
+              },
+              "children": [
+                LiteElement {
+                  "attributes": {
+                    "data-mml-node": "mrow",
+                  },
+                  "children": [
+                    LiteElement {
+                      "attributes": {
+                        "data-mml-node": "mn",
+                      },
+                      "children": [
+                        LiteElement {
+                          "attributes": {
+                            "d": "M237 666C186 666 143 648 106 612C69 576 50 534 50 483C50 449 75 424 106 424C136 424 161 450 161 480C161 513 137 536 105 536C102 536 100 536 98 535C117 584 161 627 224 627C306 627 352 556 352 470C352 403 318 331 250 255L62 43C49 28 50 29 50 0L421 0L450 180L417 180C409 129 402 100 396 91C391 86 361 84 306 84L139 84L236 179C304 243 390 312 419 365C439 400 449 435 449 470C449 588 357 666 237 666Z",
+                            "data-c": "32",
+                          },
+                          "children": [],
+                          "kind": "path",
+                          "parent": [Circular],
+                          "styles": null,
+                        },
+                      ],
+                      "kind": "g",
+                      "parent": [Circular],
+                      "styles": null,
+                    },
+                  ],
+                  "kind": "g",
+                  "parent": [Circular],
+                  "styles": null,
+                },
+                LiteElement {
+                  "attributes": {
+                    "class": "MathML-Unit",
+                    "data-latex": "\\class{MathML-Unit}{\\mathrm{\\degree}}",
+                    "data-mjx-texclass": "ORD",
+                    "data-mml-node": "TeXAtom",
+                    "transform": "translate(500,0)",
+                  },
+                  "children": [
+                    LiteElement {
+                      "attributes": {
+                        "class": "MathML-Unit",
+                        "data-latex": "\\degree",
+                        "data-mml-node": "mi",
+                      },
+                      "children": [
+                        LiteElement {
+                          "attributes": {
+                            "d": "M326 544C326 621 265 683 188 683C111 683 49 621 49 544C49 467 111 406 188 406C263 406 326 469 326 544M279 544C279 494 238 453 188 453C137 453 96 493 96 544C96 596 136 636 188 636C239 636 279 595 279 544Z",
+                            "data-c": "B0",
+                          },
+                          "children": [],
+                          "kind": "path",
+                          "parent": [Circular],
+                          "styles": null,
+                        },
+                      ],
+                      "kind": "g",
+                      "parent": [Circular],
+                      "styles": null,
+                    },
+                  ],
+                  "kind": "g",
+                  "parent": [Circular],
+                  "styles": null,
+                },
+                LiteElement {
+                  "attributes": {
+                    "data-mml-node": "mrow",
+                    "transform": "translate(875,0)",
+                  },
+                  "children": [
+                    LiteElement {
+                      "attributes": {
+                        "data-mml-node": "mn",
+                      },
+                      "children": [
+                        LiteElement {
+                          "attributes": {
+                            "d": "M303 353C369 378 431 441 431 526C431 569 410 604 369 631C333 654 292 666 246 666C201 666 162 654 127 631C88 605 68 571 68 528C68 495 90 472 122 472C154 472 176 495 176 527C176 560 157 578 119 580C145 615 186 633 242 633C302 633 332 598 332 527C332 485 324 450 309 421C282 373 245 364 183 364C171 362 165 357 165 348C165 333 172 333 192 333L235 333C310 333 348 280 348 173C348 88 317 14 241 14C176 14 128 36 99 80C134 79 160 105 160 139C160 173 135 198 101 198C62 198 42 178 42 137C42 88 64 49 108 18C147-9 193-22 244-22C301-22 350-3 393 34C436 71 457 117 457 173C457 267 383 332 303 353Z",
+                            "data-c": "33",
+                          },
+                          "children": [],
+                          "kind": "path",
+                          "parent": [Circular],
+                          "styles": null,
+                        },
+                      ],
+                      "kind": "g",
+                      "parent": [Circular],
+                      "styles": null,
+                    },
+                  ],
+                  "kind": "g",
+                  "parent": [Circular],
+                  "styles": null,
+                },
+                LiteElement {
+                  "attributes": {
+                    "class": "MathML-Unit",
+                    "data-latex": "\\class{MathML-Unit}{\\mathrm{\\arialabel{degree-minutes}{\\degreeminute}}}",
+                    "data-mjx-texclass": "ORD",
+                    "data-mml-node": "TeXAtom",
+                    "transform": "translate(1375,0)",
+                  },
+                  "children": [
+                    LiteElement {
+                      "attributes": {
+                        "aria-label": "degree-minutes",
+                        "class": "MathML-Unit",
+                        "data-latex": "\\arialabel{degree-minutes}{\\degreeminute}",
+                        "data-mml-node": "mi",
+                      },
+                      "children": [
+                        LiteElement {
+                          "attributes": {
+                            "d": "M211 748C194 748 182 740 175 725L58 430L92 430L245 686C249 691 251 698 251 707C251 729 234 748 211 748Z",
+                            "data-c": "2032",
+                          },
+                          "children": [],
+                          "kind": "path",
+                          "parent": [Circular],
+                          "styles": null,
+                        },
+                      ],
+                      "kind": "g",
+                      "parent": [Circular],
+                      "styles": null,
+                    },
+                  ],
+                  "kind": "g",
+                  "parent": [Circular],
+                  "styles": null,
+                },
+                LiteElement {
+                  "attributes": {
+                    "data-mml-node": "mrow",
+                    "transform": "translate(1686,0)",
+                  },
+                  "children": [
+                    LiteElement {
+                      "attributes": {
+                        "data-mml-node": "mn",
+                      },
+                      "children": [
+                        LiteElement {
+                          "attributes": {
+                            "d": "M353 677C344 677 336 672 330 663L28 199L28 163L289 163L289 81C289 63 285 51 278 46C271 41 252 39 219 39L194 39L194 0C223 2 269 3 331 3C393 3 439 2 468 0L468 39L443 39C410 39 391 41 384 46C377 51 373 63 373 81L373 163L471 163L471 202L373 202L373 660C373 670 366 677 353 677M295 553L295 202L67 202Z",
+                            "data-c": "34",
+                          },
+                          "children": [],
+                          "kind": "path",
+                          "parent": [Circular],
+                          "styles": null,
+                        },
+                      ],
+                      "kind": "g",
+                      "parent": [Circular],
+                      "styles": null,
+                    },
+                  ],
+                  "kind": "g",
+                  "parent": [Circular],
+                  "styles": null,
+                },
+                LiteElement {
+                  "attributes": {
+                    "class": "MathML-Unit",
+                    "data-latex": "\\ang[angle-mode = arc]{2;3;4}",
+                    "data-mjx-texclass": "ORD",
+                    "data-mml-node": "TeXAtom",
+                    "transform": "translate(2186,0)",
+                  },
+                  "children": [
+                    LiteElement {
+                      "attributes": {
+                        "aria-label": "degree-seconds",
+                        "class": "MathML-Unit",
+                        "data-latex": "\\arialabel{degree-seconds}{\\degreesecond}",
+                        "data-mml-node": "mi",
+                      },
+                      "children": [
+                        LiteElement {
+                          "attributes": {
+                            "d": "M410 748C392 748 380 740 374 725L254 430L289 430L444 686C449 691 451 698 451 707C451 729 432 748 410 748M214 748C196 748 184 740 178 725L58 430L93 430L248 686C253 691 255 698 255 707C255 729 236 748 214 748Z",
+                            "data-c": "2033",
+                          },
+                          "children": [],
+                          "kind": "path",
+                          "parent": [Circular],
+                          "styles": null,
+                        },
+                      ],
+                      "kind": "g",
+                      "parent": [Circular],
+                      "styles": null,
+                    },
+                  ],
+                  "kind": "g",
+                  "parent": [Circular],
+                  "styles": null,
+                },
+              ],
+              "kind": "g",
+              "parent": [Circular],
+              "styles": null,
+            },
+          ],
+          "kind": "g",
+          "parent": [Circular],
+          "styles": null,
+        },
+      ],
+      "kind": "svg",
+      "parent": [Circular],
+      "styles": Styles {
+        "styles": {
+          "vertical-align": "-0.05ex",
+        },
+      },
+    },
+  ],
+  "kind": "mjx-container",
+  "styles": Styles {
+    "styles": {
+      "font-size": "108%",
+    },
+  },
+}
+`;
 
 exports[`complexnum > complexnum-0 1`] = `
 "<math xmlns="http://www.w3.org/1998/Math/MathML" data-latex="\\complexnum{1 + i}" display="block">

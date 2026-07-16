@@ -1,5 +1,5 @@
 import * as article from '../../plugins/article/mdx-state';
-import * as maths from '../../plugins/maths/mdx-state';
+import * as maths from '../../plugins/maths/md-to-mdx/mdx-state';
 
 export type MdxDefaultState = {
   article: article.ArticleStateType;
