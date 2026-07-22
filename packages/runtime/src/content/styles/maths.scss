@@ -9,6 +9,12 @@ mjx-container[overflow="truncate"][display] {
   min-width: initial !important;
 }
 
+mjx-container[overflow="scale"][display] {
+  svg {
+    max-width: 100%;
+  }
+}
+
 mjx-container[jax="SVG"] {
   direction: ltr;
   white-space: nowrap;
@@ -20,10 +26,10 @@ mjx-container[jax="SVG"] > svg {
   min-width: 1px;
 }
 
-mjx-container[jax="SVG"] > svg a {
-  fill: blue;
-  stroke: blue;
-}
+// mjx-container[jax="SVG"] > svg a {
+//   fill: blue;
+//   stroke: blue;
+// }
 
 rect[sre-highlighter-added] {
   stroke: black;

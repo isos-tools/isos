@@ -12,7 +12,6 @@ import { defListHastHandlers } from '../../plugins/definition-list';
 import { addFooter } from '../../plugins/footer/add-footer';
 import { appendices } from '../../plugins/headings/hast-appendices';
 import { addDefaultAltText } from '../../plugins/images/md-to-mdx/default-image-alt';
-import { addMathsRefsAndCount } from '../../plugins/maths/md-to-mdx/add-maths-refs-and-count';
 import { latexMathToMml } from '../../plugins/maths/md-to-mdx/latex-to-mml';
 import { mmlToOutput } from '../../plugins/maths/md-to-mdx/mml-to-output';
 import { missingMathsImageToSvg } from '../../plugins/missing-maths/missing-maths-img-to-svg';

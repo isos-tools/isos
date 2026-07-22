@@ -77,6 +77,7 @@ test('maths with zcref references', async () => {
 
   const html = await testProcessor.md(markdown, {
     state: {
+      // @ts-expect-error
       maths: {
         mathsRendering: 'mathml',
       },
@@ -170,6 +171,7 @@ test('maths with references in \\text', async () => {
 
   const html = await testProcessor.md(markdown, {
     state: {
+      // @ts-expect-error
       maths: {
         mathsRendering: 'mathml',
       },
@@ -276,6 +278,7 @@ test('maths with cleveref references', async () => {
 
   const html = await testProcessor.md(markdown, {
     state: {
+      // @ts-expect-error
       maths: {
         mathsRendering: 'mathml',
       },

@@ -70,6 +70,7 @@ export function texToMml(latex: string) {
         id: (id: string) => id,
       },
       preFilters: [
+        // @ts-expect-error
         ({ math }) => {
           math.math = math.math.replace(
             /\\(cref|zcref|autoref){/g,

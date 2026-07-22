@@ -2130,3 +2130,63 @@ test('references in theorem names', async () => {
 
   expect(html).toBe(expectedHtml);
 });
+
+test('\\medskip in theorem', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{amsthm}
+    \newtheorem{example}{Example}
+    \begin{document}
+
+    \begin{example}
+    a
+
+    \medskip b
+    \end{example}
+
+    a
+
+    \medskip
+    b
+
+    \end{document}
+  `;
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    ---
+    theorems:
+      example:
+        heading: Example
+    ---
+
+    :::example
+    a
+
+    b
+    :::
+
+    a
+
+    b
+  `);
+
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(`
+    <div class="theorem example">
+      <p><span class="title"><strong>Example 1.</strong></span> a</p>
+      <p>b</p>
+    </div>
+    <p>a</p>
+    <p>b</p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});

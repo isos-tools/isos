@@ -73,6 +73,7 @@ test('syntax bug', async () => {
 
   const html = await testProcessor.md(markdown, {
     state: {
+      // @ts-expect-error
       maths: {
         mathsRendering: 'mathml',
       },

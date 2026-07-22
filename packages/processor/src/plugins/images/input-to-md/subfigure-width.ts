@@ -4,8 +4,8 @@ import { htmlLike } from '@isos/unified-latex-util-html-like';
 
 export function subfigureWidth(node: Environment) {
   let width = '';
-  if (Array.isArray(node.args) && node.args.length === 2) {
-    width = getWidth(node.args[0].content);
+  if (Array.isArray(node.args) && node.args.length > 1) {
+    width = getWidth(node.args[1].content);
   }
   return htmlLike({
     tag: 'div',

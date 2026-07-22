@@ -77,21 +77,21 @@ export const macroReplacements: Record<
   paragraph: createHeading('h6', { className: 'section-paragraph' }),
   subparagraph: createHeading('h6', { className: 'section-subparagraph' }),
   appendix: createHeading('h2', { className: 'appendix' }),
-  smallskip: () =>
-    htmlLike({
-      tag: 'br',
-      attributes: { className: 'smallskip' },
-    }),
-  medskip: () =>
-    htmlLike({
-      tag: 'br',
-      attributes: { className: 'medskip' },
-    }),
-  bigskip: () =>
-    htmlLike({
-      tag: 'br',
-      attributes: { className: 'bigskip' },
-    }),
+  // smallskip: () =>
+  //   htmlLike({
+  //     tag: 'br',
+  //     attributes: { className: 'smallskip' },
+  //   }),
+  // medskip: () =>
+  //   htmlLike({
+  //     tag: 'br',
+  //     attributes: { className: 'medskip' },
+  //   }),
+  // bigskip: () =>
+  //   htmlLike({
+  //     tag: 'br',
+  //     attributes: { className: 'bigskip' },
+  //   }),
   '\n': () =>
     htmlLike({
       tag: 'br',

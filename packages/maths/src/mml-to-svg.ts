@@ -74,9 +74,10 @@ packages.forEach((name) => {
 export function mmlToSvg(mml: string, options?: Partial<MmlToSvgOptions>) {
   try {
     const outputOptions = {
-      displayOverflow: 'linebreak',
+      displayOverflow: 'scale',
       fontCache: 'none',
       postFilters: [
+        // @ts-expect-error
         ({ data }) => {
           data.attributes.display = options?.display ? 'true' : 'false';
         },

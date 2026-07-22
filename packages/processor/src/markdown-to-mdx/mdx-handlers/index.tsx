@@ -111,11 +111,7 @@ export function createRunOptions(
   };
 }
 
-export function createSidebarRunOptions(): RunOptions {
-// {
-//   article,
-//   maths,
-// }: MdxState
+export function createSidebarRunOptions(_state: MdxState): RunOptions {
   return {
     Fragment,
     jsx,

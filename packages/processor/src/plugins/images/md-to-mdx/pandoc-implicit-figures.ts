@@ -1,7 +1,8 @@
 import { Element, ElementContent } from 'hast';
 import { Parent, Root } from 'mdast';
+import { ContainerDirective } from 'mdast-util-directive';
 import remarkRehype from 'remark-rehype';
-// import { visit } from 'unist-util-visit';
+import { visit } from 'unist-util-visit';
 import { visitParents } from 'unist-util-visit-parents';
 
 import { createRemarkProcessor } from '../../../remark-processor';
@@ -13,15 +14,15 @@ export function pandocImplicitFigures() {
 
     visitParents(tree, 'image', (node, ancestors) => {
       const parent = ancestors[ancestors.length - 1];
-      const isSubfigure = ancestors.some(
+
+      const figureParent = ancestors.find(
         (ancestor) =>
           ancestor.type === 'containerDirective' &&
           ancestor.name === 'figure',
       );
-
-      if (parent?.type !== 'paragraph') {
-        return;
-      }
+      const isSubfigure =
+        figureParent &&
+        shouldBeSubfigure(figureParent as ContainerDirective);
 
       const props = node.data?.hProperties || {};
       const id = props['id'] || null;
@@ -29,7 +30,7 @@ export function pandocImplicitFigures() {
       const unnumbered =
         Array.isArray(props.class) && props.class.includes('unnumbered');
 
-      if (!caption && !id) {
+      if (!isSubfigure && !caption && !id) {
         return;
       }
 
@@ -152,6 +153,14 @@ export function pandocImplicitFigures() {
     });
     // console.dir(tree, { depth: null });
   };
+}
+
+function shouldBeSubfigure(figure: ContainerDirective) {
+  let imageCount = 0;
+  visit(figure, 'image', () => {
+    imageCount++;
+  });
+  return imageCount > 1;
 }
 
 const processor = createRemarkProcessor([remarkRehype]);

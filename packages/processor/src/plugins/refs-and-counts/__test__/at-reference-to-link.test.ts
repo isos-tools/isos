@@ -119,6 +119,7 @@ test('prefix for theorems not required', async () => {
 
   const html = await testProcessor.md(markdown, {
     state: {
+      // @ts-expect-error
       maths: {
         mathsRendering: 'mathml',
       },

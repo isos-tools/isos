@@ -27,13 +27,13 @@ export function floats(_ctx: Context) {
         const float = floats.find(
           (o) => o.name === node.name,
         ) as RefObject;
-        createFigure(node, float);
+        createFloat(node, float);
       }
     });
   };
 }
 
-function createFigure(node: ContainerDirective, ctxObj: RefObject) {
+function createFloat(node: ContainerDirective, ctxObj: RefObject) {
   const id = node.attributes?.id;
   const properties: Properties = {
     id,

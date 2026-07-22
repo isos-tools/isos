@@ -276,6 +276,16 @@ test('image with maths in the caption and label', async () => {
 
 test('figure with image and text', async () => {
   const latex = String.raw`
+    \documentclass{article}
+    \usepackage{amsfonts}
+    \usepackage{graphicx}
+
+    \usepackage{zref-clever}
+    \usepackage[colorlinks,bookmarks=false]{hyperref}
+    \zcsetup{noabbrev, cap, nameinlink}
+
+    \begin{document}
+
     \begin{figure}[hbt]
       \begin{center}
         \includegraphics{image.png}
@@ -287,7 +297,9 @@ test('figure with image and text', async () => {
       \label{fig:f(x,y)}
     \end{figure}
 
-    \cref{fig:f(x,y)} illustrates the graph of a function of two variables.
+    \zcref{fig:f(x,y)} illustrates the graph of a function of two variables.
+
+    \end{document}
   `;
 
   // // const latexHtml = await pdfLatexToHtml.mupdf(latex);
@@ -373,8 +385,16 @@ test('figure with two images with alt text and caption', async () => {
   const expectedHtml = unindentStringAndTrim(String.raw`
     <figure>
       <div class="fig-content">
-        <p><img src="image.png" alt="My alt text" /></p>
-        <p><img src="image2.png" alt="My alt text2" /></p>
+        <figure>
+          <div class="fig-content">
+            <p><img src="image.png" alt="My alt text" /></p>
+          </div>
+        </figure>
+        <figure>
+          <div class="fig-content">
+            <p><img src="image2.png" alt="My alt text2" /></p>
+          </div>
+        </figure>
       </div>
       <figcaption><strong>Figure 1:</strong> My <strong>caption</strong> text</figcaption>
     </figure>
@@ -418,8 +438,16 @@ test('figure with two images with alt text, caption and label', async () => {
   const expectedHtml = unindentStringAndTrim(String.raw`
     <figure id="fig-logo">
       <div class="fig-content">
-        <p><img src="image.png" alt="My alt text" /></p>
-        <p><img src="image2.png" alt="My alt text2" /></p>
+        <figure>
+          <div class="fig-content">
+            <p><img src="image.png" alt="My alt text" /></p>
+          </div>
+        </figure>
+        <figure>
+          <div class="fig-content">
+            <p><img src="image2.png" alt="My alt text2" /></p>
+          </div>
+        </figure>
       </div>
       <figcaption><strong>Figure 1:</strong> My <strong>caption</strong> text</figcaption>
     </figure>
@@ -673,9 +701,21 @@ test('images with no label or caption', async () => {
   const expectedHtml = unindentStringAndTrim(String.raw`
     <figure>
       <div class="fig-content">
-        <p><img src="fig/ex1-2a.png" alt="Image" /></p>
-        <p><img src="fig/ex1-2b.png" alt="Image" /></p>
-        <p><img src="fig/ex1-2c.png" alt="Image" /></p>
+        <figure>
+          <div class="fig-content">
+            <p><img src="fig/ex1-2a.png" alt="Image" /></p>
+          </div>
+        </figure>
+        <figure>
+          <div class="fig-content">
+            <p><img src="fig/ex1-2b.png" alt="Image" /></p>
+          </div>
+        </figure>
+        <figure>
+          <div class="fig-content">
+            <p><img src="fig/ex1-2c.png" alt="Image" /></p>
+          </div>
+        </figure>
       </div>
     </figure>
   `);
@@ -719,9 +759,21 @@ test('images with includegraphics*', async () => {
   const expectedHtml = unindentStringAndTrim(String.raw`
     <figure>
       <div class="fig-content">
-        <p><img src="fig/ex1-2a.png" alt="Alpha" /></p>
-        <p><img src="fig/ex1-2b.png" alt="Bravo" /></p>
-        <p><img src="fig/ex1-2c.png" alt="Charlie" /></p>
+        <figure>
+          <div class="fig-content">
+            <p><img src="fig/ex1-2a.png" alt="Alpha" /></p>
+          </div>
+        </figure>
+        <figure>
+          <div class="fig-content">
+            <p><img src="fig/ex1-2b.png" alt="Bravo" /></p>
+          </div>
+        </figure>
+        <figure>
+          <div class="fig-content">
+            <p><img src="fig/ex1-2c.png" alt="Charlie" /></p>
+          </div>
+        </figure>
       </div>
     </figure>
   `);
@@ -780,25 +832,25 @@ test('figure with three subfigures with captions', async () => {
     \begin{document}
 
     \begin{figure}[H]
-    \captionsetup[subfigure]{justification=centering}
-    \centering
-    \begin{subfigure}{ 0.3\textwidth }
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/fig1}
-    \caption*{injective\\'don't lose information'}
-    \end{subfigure}
-    \quad
-    \begin{subfigure}{0.3\textwidth}
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/fig2}
-    \caption*{surjective\\'hit everything'}
-    \end{subfigure}
-    \quad
-    \begin{subfigure}{0.3\textwidth}
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/fig3}
-    \caption*{bijective\\'the same'}
-    \end{subfigure}
+      \captionsetup[subfigure]{justification=centering}
+      \centering
+      \begin{subfigure}{ 0.3\textwidth }
+        \centering
+        \includegraphics[width=0.8\textwidth]{figures/fig1}
+        \caption*{injective\\'don't lose information'}
+      \end{subfigure}
+      \quad
+      \begin{subfigure}{0.3\textwidth}
+        \centering
+        \includegraphics[width=0.8\textwidth]{figures/fig2}
+        \caption*{surjective\\'hit everything'}
+      \end{subfigure}
+      \quad
+      \begin{subfigure}{0.3\textwidth}
+        \centering
+        \includegraphics[width=0.8\textwidth]{figures/fig3}
+        \caption*{bijective\\'the same'}
+      \end{subfigure}
     \end{figure}
 
     \end{document}
@@ -879,6 +931,70 @@ test('figure with relative width', async () => {
 
   const expectedHtml = unindentStringAndTrim(String.raw`
     <p><img src="figures/fig1" alt="My alt text" style="width:80%;" /></p>
+  `);
+
+  expect(html).toBe(expectedHtml);
+});
+
+test('figure with two images no captions', async () => {
+  const latex = String.raw`
+    \documentclass{article}
+    \usepackage{subcaption}
+    \usepackage{graphicx}
+    \usepackage{float}
+    \begin{document}
+
+    \begin{figure}[H]
+      \centering
+      \begin{subfigure}{0.4\linewidth}
+        \centering
+        \includegraphics[width=0.65\textwidth]{ExampleFlatDisc.png}
+        % \caption{Hi}
+      \end{subfigure}
+      \quad
+      \begin{subfigure}{0.4\linewidth}
+        \centering
+        \includegraphics[width=0.65\textwidth]{ExampleFlatDisc2.png}
+        % \caption{Yo}
+      \end{subfigure}
+      % \label{fig:flatdisc}
+    \end{figure}
+
+    \end{document}
+  `;
+
+  const markdown = await testProcessor.latex(latex);
+  // console.log(markdown);
+  // return;
+
+  const expectedMarkdown = unindentStringAndTrim(`
+    :::figure
+    ![](ExampleFlatDisc.png){width="40%"}
+
+    ![](ExampleFlatDisc2.png){width="40%"}
+    :::
+  `);
+  expect(markdown).toBe(expectedMarkdown);
+
+  const html = await testProcessor.md(markdown);
+  // console.log(html);
+  // return;
+
+  const expectedHtml = unindentStringAndTrim(String.raw`
+    <figure>
+      <div class="fig-content">
+        <figure style="width:40%;">
+          <div class="fig-content">
+            <p><img src="ExampleFlatDisc.png" alt="Image" /></p>
+          </div>
+        </figure>
+        <figure style="width:40%;">
+          <div class="fig-content">
+            <p><img src="ExampleFlatDisc2.png" alt="Image" /></p>
+          </div>
+        </figure>
+      </div>
+    </figure>
   `);
 
   expect(html).toBe(expectedHtml);

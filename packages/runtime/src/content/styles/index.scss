@@ -539,9 +539,13 @@ article {
       &:has(figure) {
         display: flex;
         flex-wrap: wrap;
-        align-items: center;
+        align-items: baseline;
         justify-content: center;
         padding: 0;
+      }
+
+      p:last-child {
+        margin-bottom: 0.5em;
       }
     }
 
@@ -559,9 +563,6 @@ article {
     // subfigures
     figure {
       width: 30%;
-      // .fig-content {
-      //   padding: 0;
-      // }
       img {
         width: 80%;
       }

@@ -1,13 +1,7 @@
-import { createElement } from 'preact';
-import { useEffect, useMemo, useState } from 'preact/hooks';
+// import { createElement } from 'preact';
+import { useMemo } from 'preact/hooks';
 
-import {
-  mmlToBraille,
-  mmlToSpeech,
-  mmlToSvg,
-  render,
-  texToMml,
-} from '@isos/maths';
+import { mmlToSvg, render } from '@isos/maths';
 
 import { ArticleState } from '../../../../article/mdx-state';
 import { WarnSpan } from '../../../../warn/mdx-warn';

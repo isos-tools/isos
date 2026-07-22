@@ -53,13 +53,11 @@ export function figureToP() {
                       img.properties.class = 'unnumbered';
                     }
                   }
+                }
 
-                  // console.log(node.properties);
-
-                  const { width } = node.properties;
-                  if (width) {
-                    img.properties.width = width;
-                  }
+                const { width } = node.properties;
+                if (width) {
+                  img.properties.width = width;
                 }
 
                 Object.assign(node, {
@@ -67,7 +65,6 @@ export function figureToP() {
                   children: [img],
                 });
               }
-              // console.log('hey!');
             } else {
               // create figure element
               Object.assign(node, { tagName: 'figure' });

@@ -137,7 +137,7 @@ export const latexAstFromStringOptions: LatexParseOptions = {
   environments: {
     tabularx: { signature: 'm o m', renderInfo: { alignContent: true } },
     comment: { signature: 'm' },
-    subfigure: { signature: 'm m' },
+    subfigure: { signature: 'o m m' },
   },
 };
 
