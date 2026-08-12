@@ -1,8 +1,8 @@
 import { Element, Parent, Root } from 'hast';
 import remarkRehype from 'remark-rehype';
 
-import { Context } from '../../markdown-to-mdx/context';
-import { createRemarkProcessor } from '../../remark-processor';
+import { Context } from '../../../markdown-to-mdx/context';
+import { createRemarkProcessor } from '../../../remark-processor';
 
 export function renderBibliography(ctx: Context) {
   return (tree: Root) => {

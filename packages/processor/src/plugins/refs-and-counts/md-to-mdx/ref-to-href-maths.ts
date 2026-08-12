@@ -3,7 +3,7 @@ import kebabCase from 'lodash.kebabcase';
 import { visit } from 'unist-util-visit';
 
 import { Context } from '../../../markdown-to-mdx/context';
-import { Reference } from '../../bibliography/extract-bibliography';
+import { Reference } from '../../bibliography/input-to-md/extract-bibliography';
 import { createWarn } from '../../warn/hast-warn';
 
 export function refToHrefMaths(ctx: Context) {

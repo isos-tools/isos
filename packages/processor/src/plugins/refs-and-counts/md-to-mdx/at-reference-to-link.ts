@@ -4,7 +4,7 @@ import remarkRehype from 'remark-rehype';
 
 import { Context } from '../../../markdown-to-mdx/context';
 import { createRemarkProcessor } from '../../../remark-processor';
-import { Reference } from '../../bibliography/extract-bibliography';
+import { Reference } from '../../bibliography/input-to-md/extract-bibliography';
 import { latexMathToMml } from '../../maths/md-to-mdx/latex-to-mml';
 import { mmlToOutput } from '../../maths/md-to-mdx/mml-to-output';
 

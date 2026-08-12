@@ -3,7 +3,7 @@ import { PluginOptions as LatexParseOptions } from '@unified-latex/unified-latex
 import { Options as HtmlConvertOptions } from 'rehype-remark';
 import { PluggableList } from 'unified';
 
-import { unescapeCitation } from '../plugins/bibliography/formatted-citation';
+import { unescapeCitation } from '../plugins/bibliography/input-to-md/formatted-citation';
 import { mintedToPre } from '../plugins/code/minted-to-pre';
 import { descriptionToDl } from '../plugins/definition-list';
 import {
@@ -133,6 +133,8 @@ export const latexAstFromStringOptions: LatexParseOptions = {
       signature: 's o o m',
       renderInfo: { breakAround: true, pgfkeysArgs: true },
     },
+
+    bib: { signature: 'm m m' },
   },
   environments: {
     tabularx: { signature: 'm o m', renderInfo: { alignContent: true } },

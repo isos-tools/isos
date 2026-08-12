@@ -1,0 +1,30 @@
+{
+  "name": "@isos/citations",
+  "private": false,
+  "version": "0.0.1",
+  "type": "module",
+  "files": [
+    "src"
+  ],
+  "exports": [
+    "./src/index.ts"
+  ],
+  "scripts": {
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@citation-js/core": "^0.7.21",
+    "@citation-js/plugin-doi": "^0.7.21",
+    "@citation-js/plugin-csl": "^0.7.21",
+    "@types/hast": "^3.0.4",
+    "rehype-parse": "^9.0.1",
+    "rehype-stringify": "^10.0.1",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.1.0"
+  },
+  "devDependencies": {
+    "@isos/test-utils": "workspace:*",
+    "vite": "^7.3.1",
+    "vitest": "^4.1.5"
+  }
+}

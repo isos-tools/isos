@@ -4,8 +4,8 @@ import { ProcessorOptions } from '@mdx-js/mdx';
 import { PluggableList } from 'unified';
 
 import { articleWrapper } from '../../plugins/article/article-wrapper';
-import { atCitationToLink } from '../../plugins/bibliography/at-citation-to-link';
-import { renderBibliography } from '../../plugins/bibliography/render-bibliography';
+import { atCitationToLink } from '../../plugins/bibliography/md-to-mdx/at-citation-to-link';
+import { renderBibliography } from '../../plugins/bibliography/md-to-mdx/render-bibliography';
 // import { visit } from 'unist-util-visit';
 
 import { defListHastHandlers } from '../../plugins/definition-list';

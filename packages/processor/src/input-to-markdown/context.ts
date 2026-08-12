@@ -1,5 +1,5 @@
 import { FileCache } from '../embed-includes/file-cache';
-import { Reference } from '../plugins/bibliography/extract-bibliography';
+import { Reference } from '../plugins/bibliography/input-to-md/extract-bibliography';
 import { NoteMap } from '../plugins/notes/input-to-md/latex-ast';
 import { Warning } from '../plugins/preamble-warnings/def-warn';
 import { RefObjects } from '../plugins/refs-and-counts/default-objects';

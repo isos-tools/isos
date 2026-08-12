@@ -2,9 +2,9 @@ import { Element, ElementContent, Parent, Root, Text } from 'hast';
 import { findAndReplace } from 'hast-util-find-and-replace';
 import remarkRehype from 'remark-rehype';
 
-import { Context } from '../../markdown-to-mdx/context';
-import { createRemarkProcessor } from '../../remark-processor';
-import { Reference } from '../bibliography/extract-bibliography';
+import { Context } from '../../../markdown-to-mdx/context';
+import { createRemarkProcessor } from '../../../remark-processor';
+import { Reference } from '../input-to-md/extract-bibliography';
 
 const pattern = /\[@([^\s]+) (.*?)\]/g;
 

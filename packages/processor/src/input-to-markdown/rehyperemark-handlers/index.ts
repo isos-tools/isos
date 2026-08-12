@@ -2,7 +2,7 @@ import { Element } from 'hast';
 import { Handle, State } from 'hast-util-to-mdast';
 import { Image } from 'mdast';
 
-import { createCitation } from '../../plugins/bibliography/citation';
+import { createCitation } from '../../plugins/bibliography/input-to-md/citation';
 import { displayQuoteToBlockQuote } from '../../plugins/blockquote';
 import { callouts } from '../../plugins/callout/callouts';
 import { createCallout } from '../../plugins/callout/rehype-remark-callout';

@@ -6,12 +6,12 @@ import kebabCase from 'lodash.kebabcase';
 
 import { printRaw } from '@isos/unified-latex-util-print-raw';
 
-import { inputToMarkdown } from '../../input-to-markdown';
+import { inputToMarkdown } from '../../../input-to-markdown';
 import {
   Context,
   createTestContext,
-} from '../../input-to-markdown/context';
-import { createDefaultOptions } from '../../input-to-markdown/options';
+} from '../../../input-to-markdown/context';
+import { createDefaultOptions } from '../../../input-to-markdown/options';
 
 export type Reference = {
   id: string;
@@ -57,6 +57,8 @@ export function extractBibliography(ctx: Context) {
         }
       }
     });
+
+    // console.log(references);
 
     for (const o of references) {
       o.label = await convertToMarkdown(o.label);

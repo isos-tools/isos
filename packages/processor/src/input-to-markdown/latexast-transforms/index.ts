@@ -1,6 +1,7 @@
 import { PluggableList } from 'unified';
 
-import { extractBibliography } from '../../plugins/bibliography/extract-bibliography';
+import { extractBibliography } from '../../plugins/bibliography/input-to-md/extract-bibliography';
+// import { extractCitations } from '../../plugins/citation/input-to-md/extract-citations';
 import { trimVerbatim } from '../../plugins/code/trim-verbatim';
 import { commentEnv } from '../../plugins/comment/extract-comment-envs';
 import { extractTopMatter } from '../../plugins/cover/extract-top-matter';
@@ -67,6 +68,7 @@ export function createLatexastTransforms(ctx: Context): PluggableList {
     [extractNumberWithin, ctx],
     [extractTheoremDefinitions, ctx],
     [extractBibliography, ctx],
+    // [extractCitations, ctx],
     [extractTopMatter, ctx],
     [extractTocContents, ctx],
   );

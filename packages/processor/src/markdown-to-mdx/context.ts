@@ -2,7 +2,7 @@
 //   noEmbedAssetUrl: boolean;
 //   noSyntaxHighlight: boolean;
 // };
-import { Reference } from '../plugins/bibliography/extract-bibliography';
+import { Reference } from '../plugins/bibliography/input-to-md/extract-bibliography';
 import { Warning } from '../plugins/preamble-warnings/def-warn';
 import { RefObjects } from '../plugins/refs-and-counts/default-objects';
 

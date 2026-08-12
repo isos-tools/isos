@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "version": "0.0.119",
-  "packageManager": "pnpm@11.11.0",
+  "packageManager": "pnpm@11.16.0",
   "scripts": {
     "check-types": "tsc",
     "tauri": "pnpm --filter @isos/runtime run build && pnpm --filter @isos/tauri run tauri",

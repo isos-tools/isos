@@ -9,6 +9,7 @@
     "./input-to-markdown": "./src/input-to-markdown/processor.ts"
   },
   "dependencies": {
+    "@isos/citations": "workspace:*",
     "@isos/fs": "workspace:*",
     "@isos/image-tools": "workspace:*",
     "@isos/logger": "workspace:*",
