@@ -17,7 +17,7 @@ jobs:
       has-version-change: ${{ steps.check.outputs.has-version-change }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: main
       - id: check
@@ -32,7 +32,7 @@ jobs:
     outputs:
       release-id: ${{ steps.create-release.outputs.result }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
           node-version: lts/*
@@ -70,7 +70,7 @@ jobs:
 
     runs-on: ${{ matrix.platform }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: pnpm/setup@v2
       - uses: actions/setup-node@v7
         with:
@@ -129,7 +129,7 @@ jobs:
     needs: [create-release, build-tauri]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
           node-version: lts/*
