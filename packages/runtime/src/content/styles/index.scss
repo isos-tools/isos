@@ -605,13 +605,19 @@ article {
   }
 
   .callout {
-    background: hsl(from var(--textColor) h s calc(l - 80));
-    margin-bottom: 2em;
-    border-left: 0.3em solid hsl(from var(--textColor) h s calc(l - 50));
+    // background: hsl(from var(--textColor) h s calc(l - 80));
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--textColor), transparent 70%);
+    // margin-bottom: 2em;
+    padding: 0;
+    margin: 2em 0;
+    border-radius: 0.35rem;
+    // border-left: 0.3em solid hsl(from var(--textColor) h s calc(l - 50));
 
     .callout-header {
-      padding: 0.2em 1em 0.1em;
-      background: hsl(from var(--textColor) h s calc(l - 75));
+      // padding: 0.2em 1em 0.1em;
+      background: color-mix(in srgb, var(--textColor), transparent 90%);
+      border-radius: 0.35rem 0.35em 0 0;
+      padding: 0.25em 2em 0.25em 1.2em;
       font-weight: bold;
 
       display: flex;
@@ -622,14 +628,15 @@ article {
         flex: 0 0 auto;
         width: $size;
         height: $size;
-        fill: var(--textColor);
+        fill: color-mix(in srgb, var(--textColor), transparent 60%);
         margin-right: 0.5em;
-        opacity: 0.5;
+        // opacity: 0.5;
       }
     }
 
     .callout-content {
-      padding: 0 1em 1em;
+      padding: 0em 2em 1em 1.2em;
+      // padding: 0 1em 1em;
     }
 
     *:last-child {
