@@ -1,6 +1,10 @@
 name: 'test'
 
-on: 'push'
+on:
+  # Branches only: a release tag runs these through publish.
+  push:
+    branches: ['**']
+  workflow_call:
 
 jobs:
   unit-test:

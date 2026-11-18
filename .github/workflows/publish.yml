@@ -1,33 +1,37 @@
 name: 'publish'
 
 on:
-  workflow_run:
-    branches: [main]
-    workflows: ['test']
-    types: [completed]
+  # A v* tag pushed to the forge, reaching GitHub through its push mirror.
+  # Tags are made there, never here: the mirror deletes tags only GitHub has.
+  push:
+    tags: ['v*']
 
 env:
   tauriDir: ./packages/tauri/src-tauri
 
 jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
   version-check:
+    needs: test
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.check.outputs.version}}
-      has-version-change: ${{ steps.check.outputs.has-version-change }}
+      version: ${{ steps.check.outputs.version }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
-        with:
-          ref: main
+      - uses: actions/checkout@v7
+      # The tag names the version package.json has at that commit.
       - id: check
-        uses: ./.github/actions/version-check
-        env:
-          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=$(jq -r .version package.json)
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::tag $GITHUB_REF_NAME, but package.json says $version"
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
   create-release:
     needs: version-check
-    if: needs.version-check.outputs.has-version-change == 'true'
     runs-on: ubuntu-latest
     outputs:
       release-id: ${{ steps.create-release.outputs.result }}
