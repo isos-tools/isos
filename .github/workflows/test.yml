@@ -29,6 +29,8 @@ jobs:
   e2e-test:
     # ubuntu-latest is 26.04, which Playwright supports only from 1.65.
     runs-on: ubuntu-24.04
+    # A run takes about 2 minutes; a stalled browser download fails here.
+    timeout-minutes: 15
     strategy:
       matrix:
         browser: [chromium, firefox, webkit]
@@ -52,7 +54,7 @@ jobs:
       #     path: ~/.cache/ms-playwright
       #     key: ${{ runner.os }}-${{ matrix.browser }}-playwright-${{ steps.playwright-v.outputs.v }}
       - name: Install playwright browser
-        run: npx playwright install --with-deps
+        run: npx playwright install --with-deps ${{ matrix.browser }}
       #   if: steps.playwright-cache.outputs.cache-hit != 'true'
       # - run: npx playwright install-deps
       #   if: steps.playwright-cache.outputs.cache-hit != 'true'
